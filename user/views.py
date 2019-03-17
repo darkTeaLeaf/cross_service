@@ -17,18 +17,9 @@ class CreateUserView(View):
         return render(request, self.template_name, {})
 
     def post(self, request):
-        # form = CreateUserForm(request.POST)
-        #
-        # if form.is_valid():
-        #     print('valid')
-        #     form.save()
-        #     username = form.cleaned_data['username']
-        #     password = form.cleaned_data['password1']
-        #     user = authenticate(username=username, password=password)
-        #     user.save()
-        #     return redirect("/user/all/?p=on&l=on")
-        # print('not valid')
-        # return redirect('/user/create_user/')
-        print("I am here")
+        user = User.objects.create_user(username=request.POST.get('username'),
+                                        email=request.POST.get('email'))
+
+        user.set_password(request.POST.get('password'))
         print(request.POST)
-        return redirect('/')
+        return redirect('/user/signup/')
