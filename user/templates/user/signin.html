@@ -1,45 +1,42 @@
+{% extends 'feed/base.html' %}
+
 {% load staticfiles %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Sign In</title>
-</head>
-<body>
 
-    <div class="container">
-    <h1>Sign In</h1>
+{% block body %}
+
+
+
+    <form class="form-signin" action="" method="post">
+  <div class="text-center mb-4">
+    <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+    <h1 class="h3 mb-3 font-weight-normal">Floating labels</h1>
     <p>Please fill in this form to sign in.</p>
-    <hr>
-
-        <form action="" method="post" role="form">
-
-    <label for="username"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="username" required>
-
-    <label for="email"><b>Email</b></label>
-    <input type="text" placeholder="Enter Email" name="email" required>
-
-    <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
-
-    <label>
-      <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
-    </label>
-
-    <div class="clearfix">
-      <button type="button" class="cancelbtn">Cancel</button>
-      <button type="submit" class="signinbtn">Sign In</button>
-    </div>
-    {% csrf_token %}
-
-    </form>
-
   </div>
+
+  <div class="form-label-group">
+    <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Username" required autofocus>
+    <label for="inputEmail">Username</label>
+  </div>
+
+  <div class="form-label-group">
+    <input type="password" id="inputPassword" name="psw" class="form-control" placeholder="Password" required>
+    <label for="inputPassword">Password</label>
+  </div>
+
+  <div class="checkbox mb-3">
+    <label>
+      <input type="checkbox" value="remember-me"> Remember me
+    </label>
+  </div>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+  <p class="mt-5 mb-3 text-muted text-center">&copy; 2017-2019</p>
+
+    {% csrf_token %}
+</form>
 
     <!-- Theme CSS -->
     <link href="{% static 'css/signup.css' %}" rel="stylesheet">
 
-</body>
-</html>
+{% endblock %}
+
