@@ -6,4 +6,5 @@ from . import views
 urlpatterns = [
     url(r'^signup/$', views.CreateUserView.as_view(), name='signup'),
     url(r'^$', views.user_info, name='user_card_info'),
+    url(r'^signin/$', views.CreateUserView.as_view(template_name='user/signin.html'), name='login'),
 ]
