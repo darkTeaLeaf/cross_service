@@ -17,9 +17,12 @@ class CreateUserView(View):
         return render(request, self.template_name, {})
 
     def post(self, request):
+        print(request.POST)
+        print(request.POST.get('username'))
+
         user = User.objects.create_user(username=request.POST.get('username'),
                                         email=request.POST.get('email'))
 
-        user.set_password(request.POST.get('password'))
-        print(request.POST)
+        user.set_password(request.POST.get('psw'))
+        user.save()
         return redirect('/user/signup/')
