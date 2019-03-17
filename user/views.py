@@ -24,7 +24,7 @@ class CreateUserView(View):
 
         user.set_password(request.POST.get('psw'))
         user.save()
-        return redirect('/user/signup/')
+        return redirect('/')
 
 
 def user_info(request):

@@ -3,5 +3,5 @@ from . import views
 
 
 urlpatterns = [
-    # url(r'^$', views.CreateUserView.as_view(), name='signup'),
+    url(r'^$', views.feed, name='signup'),
 ]
