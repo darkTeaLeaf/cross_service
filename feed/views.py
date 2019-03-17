@@ -20,3 +20,8 @@ class IndexView(ListView):
             return Offer.objects.filter(title__icontains=self.request.GET.get('q'))
 
         return Offer.objects.order_by('title')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['q'] = self.request.GET.get('q', '')
+        return context
