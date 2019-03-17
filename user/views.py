@@ -4,7 +4,6 @@ from django.http import Http404
 from .forms import *
 from django.db.models import Q
 from django.views.generic import View, ListView
-import datetime
 
 
 class CreateUserView(View):
@@ -26,3 +25,7 @@ class CreateUserView(View):
         user.set_password(request.POST.get('psw'))
         user.save()
         return redirect('/user/signup/')
+
+
+def user_info(request):
+    return render(request, 'user/index.html', {})
