@@ -8,10 +8,10 @@
             <div class="container">
                 <h1 class="jumbotron-heading">Feed with request & offers</h1>
                 <p class="lead text-muted">You can add your offers and requests fully free of charge!</p>
-                    <p>
-                        <a href="/offer_creation/" class="btn btn-primary my-2">Post new offer</a>
-                        <a href="#" class="btn btn-secondary my-2">Post new request</a>
-                    </p>
+                <p>
+                    <a href="/offer_creation/" class="btn btn-primary my-2">Post new offer</a>
+                    <a href="#" class="btn btn-secondary my-2">Post new request</a>
+                </p>
             </div>
         </section>
 
@@ -38,7 +38,9 @@
                                         <div class="btn-group">
 
                                             <form>
-                                                <button formaction='/offers/{{ offer.id }}' class="btn btn-sm btn-outline-secondary">View</button>
+                                                <button formaction='/offers/{{ offer.id }}'
+                                                        class="btn btn-sm btn-outline-secondary">View
+                                                </button>
                                                 <!--<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>-->
                                                 <!--For the next sprint-->
                                             </form>
@@ -56,6 +58,21 @@
         </div>
 
     </main>
+
+    <table class="paginator">
+
+        {% if page_obj.has_previous %}
+            <td class="td-paginator button">
+                <a href="?page={{ page_obj.previous_page_number }}&q={{ q }}">←</a>
+
+            </td>
+        {% elif page_obj.has_next %}
+            <td class="td-paginator button">
+                <a href="?page={{ page_obj.next_page_number }}&q={{ q }}">→</a>
+
+            </td>
+        {% endif %}
+    </table>
 
     <footer class="text-muted">
         <div class="container">
