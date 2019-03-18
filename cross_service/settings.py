@@ -124,5 +124,5 @@ STATIC_URL = BASE_DIR + '/static/'
 
 
 # Redirected here after a successful login
-LOGIN_REDIRECT_URL = '/user'
+LOGIN_REDIRECT_URL = '/'
 
