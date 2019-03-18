@@ -38,6 +38,7 @@
         </li>
       </ul>
       <form class="form-inline mt-2 mt-md-0" method="get" action="/">
+<<<<<<< HEAD
         {% if user.is_anonymous %}
         <div class="navbar-nav mr-auto">
             <a class="nav-link" href="/user/signup/">Sign up <span class="sr-only">(current)</span></a>
@@ -47,6 +48,10 @@
         <input class="form-control mr-sm-2" name="q" type="text" placeholder="Search" aria-label="Search" {% if q %}
                            value="{{ q }}" {% endif %}>
 
+=======
+        <input class="form-control mr-sm-2" name="q" type="text" placeholder="Search" aria-label="Search" {% if q %}
+                           value="{{ q }}" {% endif %}>
+>>>>>>> origin/master
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
     </div>
