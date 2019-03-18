@@ -38,12 +38,9 @@ def get_offer_creation(request):
         offer.offer_description = request.POST.get('offer_description')
         offer.user = User.objects.get(username=request.user.username)
         offer.save()
-        return redirect('/offers/?id={}'.format(offer.id))
+        return render(request, 'feed/offer_view.html', {'title': offer.title, 'offer_desc': offer.offer_description})
+        # return redirect('/offers/?id={}'.format(offer.id))
 
     elif request.method == "GET":
         form = OfferForm()
-        return render(request, 'feed/offer_creation.html', {'form': form})
-
-
-def offer_info(request):
-    pass
+        return render(request, 'feed/offer_creation.html', {'form': form })

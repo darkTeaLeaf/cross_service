@@ -1,0 +1,26 @@
+{% extends 'feed/base.html' %}
+
+{% load staticfiles %}
+
+{% block body %}
+
+<div class="offer-form">
+    <form class="form-signin" action="" method="post">
+
+        <div class="form-label-group">
+            <input type="text" name="title" class="form-control" value={{ title }} readonly autofocus>
+            <label>Title</label>
+        </div>
+
+        <div class="form-label-group">
+            <input type="text" name="offer_desc" class="form-control" value={{ offer_desc }} readonly>
+            <label>Offer descripion</label>
+        </div>
+
+    </form>
+</div>
+
+<!-- Theme CSS -->
+<link href="{% static 'css/offer_creation.css' %}" rel="stylesheet">
+
+{% endblock %}
