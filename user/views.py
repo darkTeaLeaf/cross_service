@@ -1,9 +1,10 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate
 from django.shortcuts import render, redirect
 from django.http import Http404
 from .forms import *
 from django.db.models import Q
 from django.views.generic import View, ListView
+from django.contrib.auth import logout
 
 
 class CreateUserView(View):
@@ -18,27 +19,19 @@ class CreateUserView(View):
     def post(self, request):
         print(request.POST)
         print(request.POST.get('username'))
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        psw = request.POST.get('psw')
 
-        user = User.objects.create_user(username=username,
-                                        email=email)
+        user = User.objects.create_user(username=request.POST.get('username'),
+                                        email=request.POST.get('email'))
 
         user.set_password(request.POST.get('psw'))
         user.save()
-        login(request, user)
-
         return redirect('/')
 
 
-class EditUserView(View):
-
-    def get(self, request):
-        return render(request, 'user/edit.html', {})
-
-
 def user_info(request):
-    # user = request.user
-    # if user.is_authenticated():    
     return render(request, 'user/index.html', {})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('/user/signin')
