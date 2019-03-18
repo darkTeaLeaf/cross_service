@@ -1,0 +1,31 @@
+{% extends 'feed/base.html' %}
+
+{% load staticfiles %}
+
+{% block body %}
+
+<div class="offer-form">
+    <div class="header">
+        <h1>Offer from <a href="/user/{{offer.user.id}}">{{offer.user}}</a></h1>
+    </div>
+    <form class="form-signin" action="" method="post">
+
+        <div class="form-label-group">
+            <input type="text" name="title" class="form-control" value={{ offer.title }} readonly autofocus>
+            <label>Title</label>
+        </div>
+
+
+        <label for="offer_desc"> Offer description </label>
+        <div class="form-label-group">
+            <textarea class="form-control" name="offer_desc" cols="40" rows="16" readonly>{{ offer.offer_description }}</textarea>
+            <!--<label>Offer descripion</label>-->
+        </div>
+
+    </form>
+</div>
+
+<!-- Theme CSS -->
+<link href="{% static 'css/offer_creation.css' %}" rel="stylesheet">
+
+{% endblock %}

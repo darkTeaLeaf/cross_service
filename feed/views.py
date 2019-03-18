@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.views.generic import ListView
-
+from django.contrib.auth.models import User
 from feed.forms import OfferForm
 from feed.models import Offer
 
@@ -29,16 +29,23 @@ class IndexView(ListView):
         context['q'] = self.request.GET.get('q', '')
         return context
 
-def get_offer_creation(request):
-    if request.method == "POST":
-        form = OfferForm(request.POST)
-        if form.is_valid():
-            offer = form.save(commit=False)
-            offer.user = request.user
-            offer.published_date = timezone.now()
-            offer.save()
-            return redirect('/', pk=offer.pk)
-    else:
-        form = OfferForm()
-    return render(request, 'feed/offer_creation.html', {'form': form})
 
+def get_offer_creation(request):
+
+    if request.method == "POST":
+        offer = Offer()
+        offer.title = request.POST.get('title')
+        offer.offer_description = request.POST.get('offer_description')
+        offer.user = User.objects.get(username=request.user.username)
+        offer.save()
+        return redirect('/offers/{}'.format(offer.id))
+
+    elif request.method == "GET":
+        form = OfferForm()
+        return render(request, 'feed/offer_creation.html', {'form': form })
+
+
+def get_offer(request, id):
+    of = Offer.objects.get(id=id)
+    print(of.title)
+    return render(request, 'feed/offer_view.html', {'offer': of})

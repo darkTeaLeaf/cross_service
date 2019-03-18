@@ -8,37 +8,37 @@
 {#    {% form.as_p %}#}
 
 
+<form class="form-signin" action="" method="post">
+    <div class="text-center mb-4">
+        <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Floating labels</h1>
+        <p>Please fill in this form to sign in.</p>
+    </div>
 
-    <form class="form-signin" action="" method="post">
-  <div class="text-center mb-4">
-    <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-    <h1 class="h3 mb-3 font-weight-normal">Floating labels</h1>
-    <p>Please fill in this form to sign in.</p>
-  </div>
+    <div class="form-label-group">
+        <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Username" required
+               autofocus>
+        <label for="inputEmail">Username</label>
+    </div>
 
-  <div class="form-label-group">
-    <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Username" required autofocus>
-    <label for="inputEmail">Username</label>
-  </div>
+    <div class="form-label-group">
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+        <label for="inputPassword">Password</label>
+    </div>
 
-  <div class="form-label-group">
-    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
-    <label for="inputPassword">Password</label>
-  </div>
-
-  <div class="checkbox mb-3">
-    <label>
-      <input type="checkbox" value="remember-me"> Remember me
-    </label>
-  </div>
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-  <p class="mt-5 mb-3 text-muted text-center">&copy; 2017-2019</p>
+    <div class="checkbox mb-3">
+        <label>
+            <input type="checkbox" value="remember-me"> Remember me
+        </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <p class="mt-5 mb-3 text-muted text-center">&copy; 2017-2019</p>
 
     {% csrf_token %}
 </form>
 
-    <!-- Theme CSS -->
-    <link href="{% static 'css/signup.css' %}" rel="stylesheet">
+<!-- Theme CSS -->
+<link href="{% static 'css/signup.css' %}" rel="stylesheet">
 
 {% endblock %}
 

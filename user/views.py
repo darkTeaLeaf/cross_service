@@ -5,6 +5,8 @@ from .forms import *
 from django.db.models import Q
 from django.views.generic import View, ListView
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth import logout
+
 
 class CreateUserView(View):
     """
@@ -18,24 +20,22 @@ class CreateUserView(View):
     def post(self, request):
         print(request.POST)
         print(request.POST.get('username'))
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        psw = request.POST.get('psw')
 
-        user = User.objects.create_user(username=username,
-                                        email=email)
+        user = User.objects.create_user(username=request.POST.get('username'),
+                                        email=request.POST.get('email'))
 
         user.set_password(request.POST.get('psw'))
         user.save()
         login(request, user)
-
         return redirect('/')
 
 
-class EditUserView(View):
-
-    def get(self, request):
-        return render(request, 'user/edit.html', {})
+def user_info(request, id=0):
+    if id == 0:
+        user = request.user
+    else:
+        user = User.objects.get(id=id)
+    return render(request, 'user/index.html', {'client': user})
 
     def post(self, request):
         user = request.user
@@ -55,3 +55,6 @@ class EditUserView(View):
 
 def user_info(request):
         return render(request, 'user/index.html', {})
+def logout_view(request):
+    logout(request)
+    return redirect('/user/signin')

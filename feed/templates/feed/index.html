@@ -2,65 +2,71 @@
 
 {% block body %}
 
-    <main role="main">
+<main role="main">
 
-        <section class="jumbotron text-center">
-            <div class="container">
-                <h1 class="jumbotron-heading">Feed with request & offers</h1>
-                <p class="lead text-muted">You can add your offers and requests fully free of charge!</p>
-                    <p>
-                        <a href="#" class="btn btn-primary my-2">Post new offer</a>
-                        <a href="#" class="btn btn-secondary my-2">Post new request</a>
-                    </p>
-            </div>
-        </section>
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">Feed with request & offers</h1>
+            <p class="lead text-muted">You can add your offers and requests fully free of charge!</p>
+            <p>
+                <a href="/offer_creation/" class="btn btn-primary my-2">Post new offer</a>
+                <a href="#" class="btn btn-secondary my-2">Post new request</a>
+            </p>
+        </div>
+    </section>
 
-        <div class="album py-5 bg-light">
-            <div class="container">
+    <div class="album py-5 bg-light">
+        <div class="container">
 
-                <div class="row">
+            <div class="row">
 
 
-                    {% for offer in offers %}
+                {% for offer in offers %}
 
-                        <div class="col-md-4">
-                            <div class="card mb-4 shadow-sm">
-                                <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                                     xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
-                                     focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>
-                                    Placeholder</title>
-                                    <rect width="100%" height="100%" fill="#55595c"/>
-                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ offer.title }}</text>
-                                </svg>
-                                <div class="card-body">
-                                    <p class="card-text"> {{ offer.offer_description }} </p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                                        </div>
-                                        <small class="text-muted">{{ offer.published_date }} </small>
-                                    </div>
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                             xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+                             focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>
+                            Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c"/>
+                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ offer.title }}</text>
+                        </svg>
+                        <div class="card-body">
+                            <p class="card-text"> {{ offer.offer_description }} </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+
+                                    <form>
+                                        <button formaction='/offers/{{ offer.id }}'
+                                                class="btn btn-sm btn-outline-secondary">View
+                                        </button>
+                                        <!--<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>-->
+                                        <!--For the next sprint-->
+                                    </form>
                                 </div>
+                                <small class="text-muted">{{ offer.published_date }}</small>
                             </div>
                         </div>
-
-                    {% endfor %}
-
+                    </div>
                 </div>
+
+                {% endfor %}
+
             </div>
         </div>
+    </div>
 
-    </main>
+</main>
 
-    <footer class="text-muted">
-        <div class="container">
-            <p class="float-right">
-                <a href="#">Back to top</a>
-            </p>
-            <p>New to Cross Service? <a href="https://wehavenopolicy.com/">Read our Policy</a> or check out <a
-                    href="/getting-started/introduction/">getting started guide</a>.</p>
-        </div>
-    </footer>
+<footer class="text-muted">
+    <div class="container">
+        <p class="float-right">
+            <a href="#">Back to top</a>
+        </p>
+        <p>New to Cross Service? <a href="https://wehavenopolicy.com/">Read our Policy</a> or check out <a
+                href="/getting-started/introduction/">getting started guide</a>.</p>
+    </div>
+</footer>
 
 {% endblock %}
