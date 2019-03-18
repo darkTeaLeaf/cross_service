@@ -3,6 +3,10 @@
 
 # IDE files
 .idea/
+*/__pycache__/
+
+# Virtual Python env
+venv/
 
 # Compiled Python file(s)
 *.pyc
@@ -21,3 +25,6 @@ env/
 # Local settings file(s)
 local_settings.py
 
+# Local backup files
+*backup*
+*BACKUP*
