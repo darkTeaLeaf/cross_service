@@ -4,10 +4,7 @@ from feed.models import Offer
 
 
 class IndexView(ListView):
-    """
-    main page for browsing documents
-    """
-    template_name = 'feed/index.html'
+    template_name = 'feed/index.htl'
     model = Offer
     context_object_name = 'offers'
     paginate_by = 10
