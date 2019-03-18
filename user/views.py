@@ -30,12 +30,11 @@ class CreateUserView(View):
         return redirect('/')
 
 
-def user_info(request, id=0):
-    if id == 0:
-        user = request.user
-    else:
-        user = User.objects.get(id=id)
-    return render(request, 'user/index.html', {'client': user})
+
+class EditUserView(View):
+
+    def get(self, request):
+        return render(request, 'user/edit.html', {})
 
     def post(self, request):
         user = request.user
@@ -53,8 +52,13 @@ def user_info(request, id=0):
 
         return redirect('/user/')
 
-def user_info(request):
-        return render(request, 'user/index.html', {})
+def user_info(request, id=0):
+    if id == 0:
+        user = request.user
+    else:
+        user = User.objects.get(id=id)
+    return render(request, 'user/index.html', {'client': user})
+
 def logout_view(request):
     logout(request)
     return redirect('/user/signin')

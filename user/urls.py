@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^(?P<id>\d+)$', views.user_info, name='user_info2'),
     url('signin/', auth_views.LoginView.as_view(template_name='user/signin.html')),
     url('signout/', views.logout_view, name='logout'),
+    url(r'edit/', views.EditUserView.as_view(), name="edit")
 ]
