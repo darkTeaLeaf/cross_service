@@ -32,5 +32,11 @@ class CreateUserView(View):
         return redirect('/')
 
 
+class EditUserView(View):
+
+    def get(self, request):
+        return render(request, 'user/edit.html', {})
+
+
 def user_info(request):
     return render(request, 'user/index.html', {})
