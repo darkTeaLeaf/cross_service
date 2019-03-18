@@ -29,8 +29,12 @@ class CreateUserView(View):
         return redirect('/')
 
 
-def user_info(request):
-    return render(request, 'user/index.html', {})
+def user_info(request, id=0):
+    if id == 0:
+        user = request.user
+    else:
+        user = User.objects.get(id=id)
+    return render(request, 'user/index.html', {'client': user})
 
 
 def logout_view(request):
