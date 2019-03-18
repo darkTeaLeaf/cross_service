@@ -5,6 +5,9 @@
 .idea/
 */__pycache__/
 
+# VSC files
+.vscode/
+
 # Virtual Python env
 venv/
 
