@@ -8,12 +8,12 @@
     <form class="form-signin" action="" method="post">
 
         <div class="form-label-group">
-            <input type="text" name="title" class="form-control" value={{ title }} readonly autofocus>
+            <input type="text" name="title" class="form-control" value={{ offer.title }} readonly autofocus>
             <label>Title</label>
         </div>
 
         <div class="form-label-group">
-            <textarea class="form-control" name="offer_desc" cols="40" rows="16" readonly>Offer description {{ offer_desc }}</textarea>
+            <textarea class="form-control" name="offer_desc" cols="40" rows="16" readonly>Offer description {{ offer.offer_description }}</textarea>
             <!--<label>Offer descripion</label>-->
         </div>
 

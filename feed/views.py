@@ -38,10 +38,14 @@ def get_offer_creation(request):
         offer.offer_description = request.POST.get('offer_description')
         offer.user = User.objects.get(username=request.user.username)
         offer.save()
-        print(offer.offer_description)
-        return render(request, 'feed/offer_view.html', {'title': offer.title, 'offer_desc': offer.offer_description})
-        # return redirect('/offers/?id={}'.format(offer.id))
+        return redirect('/offers/{}'.format(offer.id))
 
     elif request.method == "GET":
         form = OfferForm()
         return render(request, 'feed/offer_creation.html', {'form': form })
+
+
+def get_offer(request, id):
+    of = Offer.objects.get(id=id)
+    print(of.title)
+    return render(request, 'feed/offer_view.html', {'offer': of})
