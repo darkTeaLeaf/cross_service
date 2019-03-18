@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.http import Http404
 from .forms import *
@@ -18,12 +18,17 @@ class CreateUserView(View):
     def post(self, request):
         print(request.POST)
         print(request.POST.get('username'))
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        psw = request.POST.get('psw')
 
-        user = User.objects.create_user(username=request.POST.get('username'),
-                                        email=request.POST.get('email'))
+        user = User.objects.create_user(username=username,
+                                        email=email)
 
         user.set_password(request.POST.get('psw'))
         user.save()
+        login(request, user)
+
         return redirect('/')
 
 
