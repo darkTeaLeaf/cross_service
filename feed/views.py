@@ -4,7 +4,7 @@ from feed.models import Offer
 
 
 class IndexView(ListView):
-    template_name = 'feed/index.htl'
+    template_name = 'feed/index.html'
     model = Offer
     context_object_name = 'offers'
     paginate_by = 10
@@ -22,3 +22,8 @@ class IndexView(ListView):
         context = super().get_context_data(**kwargs)
         context['q'] = self.request.GET.get('q', '')
         return context
+
+
+def func(request):
+    request.GET
+    request.POST
