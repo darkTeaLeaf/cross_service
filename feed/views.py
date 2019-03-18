@@ -38,6 +38,7 @@ def get_offer_creation(request):
         offer.offer_description = request.POST.get('offer_description')
         offer.user = User.objects.get(username=request.user.username)
         offer.save()
+        print(offer.offer_description)
         return render(request, 'feed/offer_view.html', {'title': offer.title, 'offer_desc': offer.offer_description})
         # return redirect('/offers/?id={}'.format(offer.id))
 
