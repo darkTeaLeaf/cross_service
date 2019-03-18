@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<div class="offer-form">
+<div class="container bg-light jumbotron">
     <div class="header">
         <h1>Offer from <a href="/user/{{offer.user.id}}">{{offer.user}}</a></h1>
     </div>
@@ -25,7 +25,7 @@
     </form>
 </div>
 
-<!-- Theme CSS -->
-<link href="{% static 'css/offer_creation.css' %}" rel="stylesheet">
+<!--&lt;!&ndash; Theme CSS &ndash;&gt;-->
+<!--<link href="{% static 'css/offer_creation.css' %}" rel="stylesheet">-->
 
 {% endblock %}

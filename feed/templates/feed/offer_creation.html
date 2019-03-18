@@ -5,15 +5,19 @@
 
 {% block body %}
 
-    <form method="POST" class="offer-form" action="">
-        {% csrf_token %}
-    <div class="form-label-group">
-            {{ form.as_p }}
-        </div>
-        <button type="submit" class="btn btn-lg btn-primary btn-block">Save</button>
-    </form>
+<main role="main">
+    <section class="d-flex card container text-muted col-sm-4 bg-light jumbotron justify-content-between ">
+        <form method="POST" class="offer-form" action="">
+            {% csrf_token %}
+            <div class="form-label-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-lg btn-primary btn-block">Save</button>
+        </form>
+    </section>
+</main>
 
-<!-- Theme CSS -->
-<link href="{% static 'css/offer_creation.css' %}" rel="stylesheet">
+<!--&lt;!&ndash; Theme CSS &ndash;&gt;-->
+<!--<link href="{% static 'css/offer_creation.css' %}" rel="stylesheet">-->
 
 {% endblock %}
