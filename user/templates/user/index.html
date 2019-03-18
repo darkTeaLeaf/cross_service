@@ -1,5 +1,24 @@
 {% extends 'feed/base.html' %}
 
+{% load staticfiles %}
+
 {% block body %}
-    здесь информация клиента(тебя сцуко)
+
+    <!-- TODO УДАЛИТЬ
+        ШТУКА ТОЛЬКО ДЛЯ ТОГО, ЧТОБЫ ТЕКСТ ОТОБРАЖАЛСЯ ПОД ШАПКОЙ-->
+    <div class="form-signin">
+        <div class="text-center mb-4">
+            <img class="mb-4" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal">Floating labels</h1>
+            <p>Please fill in this form to sign in.</p>
+        </div>
+    </div>
+
+    <form class="form-info" action="" method="post">
+        <div class="form-label-group"> 
+            <p> Username: {{user.username}} </p>
+            <p> E-mail: {{user.email}} </p> 
+        </div>
+
+    </form>
 {% endblock %}

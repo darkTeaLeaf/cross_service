@@ -33,4 +33,6 @@ class CreateUserView(View):
 
 
 def user_info(request):
+    # user = request.user
+    # if user.is_authenticated():    
     return render(request, 'user/index.html', {})
