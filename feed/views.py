@@ -31,12 +31,15 @@ class IndexView(ListView):
 
 
 def get_offer_creation(request):
+    user = request.user 
+    if not user.is_authenticated:
+        return redirect('/user/signin/')
 
     if request.method == "POST":
         offer = Offer()
         offer.title = request.POST.get('title')
         offer.offer_description = request.POST.get('offer_description')
-        offer.user = User.objects.get(username=request.user.username)
+        offer.user = User.objects.get(username=user.username)
         offer.save()
         return redirect('/offers/{}'.format(offer.id))
 
