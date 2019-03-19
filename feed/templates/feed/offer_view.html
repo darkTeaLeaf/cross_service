@@ -4,28 +4,25 @@
 
 {% block body %}
 
-<div class="offer-form">
-    <div class="header">
-        <h1>Offer from <a href="/user/{{offer.user.id}}">{{offer.user}}</a></h1>
-    </div>
+<div class="container bg-light col-sm-4 jumbotron">
     <form class="form-signin" action="" method="post">
 
+        <h1 class="h3 mb-3 font-weight-normal">Offer from <a href="/user/{{offer.user.id}}">{{offer.user}}</a></h1>
+        <label>Title</label>
         <div class="form-label-group">
-            <input type="text" name="title" class="form-control" value={{ offer.title }} readonly autofocus>
-            <label>Title</label>
+            <text x="50%" y="50%" fill="#eceeef" dy=".3em" class="form-control" readonly>{{ offer.title }}</text>
         </div>
 
-
-        <label for="offer_desc"> Offer description </label>
+        <br>
+        <label>Offer description</label>
         <div class="form-label-group">
             <textarea class="form-control" name="offer_desc" cols="40" rows="16" readonly>{{ offer.offer_description }}</textarea>
-            <!--<label>Offer descripion</label>-->
         </div>
 
     </form>
 </div>
 
-<!-- Theme CSS -->
-<link href="{% static 'css/offer_creation.css' %}" rel="stylesheet">
+<!--&lt;!&ndash; Theme CSS &ndash;&gt;-->
+<!--<link href="{% static 'css/offer_creation.css' %}" rel="stylesheet">-->
 
 {% endblock %}

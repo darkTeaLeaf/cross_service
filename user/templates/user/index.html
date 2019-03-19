@@ -2,11 +2,12 @@
 {% load staticfiles %}
 
 {% block head%}
-    <link href="../../static/css/signup.css" rel="stylesheet">
+    <link href="{% static 'css/signup.css' %}%" rel="stylesheet">
 {% endblock %}
+
 {% block body %}
 
-    <div class="nav-scroller bg-white shadow-sm">
+    {% comment %} <div class="nav-scroller bg-white shadow-sm">
     <nav class="nav nav-underline">
         <a class="nav-link active" href="#">Dashboard</a>
         <a class="nav-link" href="#">
@@ -21,19 +22,19 @@
         <a class="nav-link" href="#">Link</a>
         <a class="nav-link" href="#">Link</a>
     </nav>
-    </div>
+    </div> {% endcomment %}
 
     <main role="main" class="container">
     {% comment %} text-white-50 {% endcomment %}
     <div class="d-flex align-items-center p-3 my-3 rounded shadow-sm bg-purple">
-        {% comment %} <img class="mr-3" src="{% static "bootstrap-outline.svg" %}" alt="" width="48" height="48"> {% endcomment %}
+        <img class="mr-3" src="{% static 'default.png' %}" alt="" width="48" height="48">
         <div class="lh-100">
         {% comment %} text-white {% endcomment %}
         <h6 class="mb-0 lh-100 text-gray-dark">{{user.username}}</h6>
         <small>{{user.email}}</small>
         </div>
-        <a href="/user/edit">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" >Edit</button>
+        <a class="btn-r" href="/user/edit">
+        <button class="btn btn-outline-success my-2 my-sm-0 bs-popover-left mx-2" type="submit" >Edit</button>
         </a>
     </div>
 
