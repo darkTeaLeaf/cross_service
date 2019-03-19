@@ -5,21 +5,19 @@
 {% block body %}
 
 <div class="container bg-light col-sm-4 jumbotron">
-    <div class="header">
-        <h1>Offer from <a href="/user/{{offer.user.id}}">{{offer.user}}</a></h1>
-    </div>
     <form class="form-signin" action="" method="post">
 
+        <h1 class="h3 mb-3 font-weight-normal">Offer from <a href="/user/{{offer.user.id}}">{{offer.user}}</a></h1>
+        <label>Title</label>
         <div class="form-label-group">
             <label for="title">Title</label>
             <input type="text" name="title" class="form-control" value={{ offer.title }} readonly autofocus>
         </div>
 
-
-        <label for="offer_desc"> Offer description </label>
+        <br>
+        <label>Offer description</label>
         <div class="form-label-group">
-            <textarea class="form-control" name="offer_desc" cols="40" rows="16" readonly>{{ offer.offer_description }}</textarea>
-            <!--<label>Offer descripion</label>-->
+            <text class="form-control" name="offer_desc" cols="40" rows="16" readonly>{{ offer.offer_description }}</text>
         </div>
 
     </form>
