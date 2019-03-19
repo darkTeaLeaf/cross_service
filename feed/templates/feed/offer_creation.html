@@ -11,15 +11,15 @@
                 {% csrf_token %}
                 <h1 class="h3 mb-3 font-weight-normal">Create an offer</h1>
 
+                <label for="inputTitle">Title</label>
                 <div class="form-label-group">
-                    <label for="inputTitle">Title</label>
                     <input type="text" id="inputTitle" name="title" class="form-control" placeholder="Title"
                            required autofocus>
                 </div>
                 <br>
+                <label for="inputDescription">Description</label>
                 <div class="form-label-group">
-                    <label for="inputDescription">Description</label>
-                    <input type="Text" id="inputDescription" name="offer_description" class="form-control" placeholder="Some description"
+                    <input type="text" id="inputDescription" name="offer_description" class="form-control" placeholder="Some description"
                            required>
                 </div>
                 <br>
