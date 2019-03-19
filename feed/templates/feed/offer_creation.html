@@ -5,19 +5,30 @@
 
 {% block body %}
 
-<main role="main">
-    <section class="d-flex card container text-muted col-sm-4 bg-light jumbotron justify-content-between ">
-        <form method="POST" class="offer-form" action="">
-            {% csrf_token %}
-            <div class="form-label-group">
-                {{ form.as_p }}
-            </div>
-            <button type="submit" class="btn btn-lg btn-primary btn-block">Save</button>
-        </form>
-    </section>
-</main>
+    <main role="main">
+        <section class="d-flex card container text-muted col-sm-4 bg-light jumbotron justify-content-between ">
+            <form method="POST" class="offer-form" action="">
+                {% csrf_token %}
+                <h1 class="h3 mb-3 font-weight-normal">Create an offer</h1>
 
-<!--&lt;!&ndash; Theme CSS &ndash;&gt;-->
-<!--<link href="{% static 'css/offer_creation.css' %}" rel="stylesheet">-->
+                <div class="form-label-group">
+                    <label for="inputTitle">Title</label>
+                    <input type="text" id="inputTitle" name="title" class="form-control" placeholder="Title"
+                           required autofocus>
+                </div>
+                <br>
+                <div class="form-label-group">
+                    <label for="inputDescription">Description</label>
+                    <input type="Text" id="inputDescription" name="offer_description" class="form-control" placeholder="Some description"
+                           required>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-lg btn-primary btn-block">Save</button>
+            </form>
+        </section>
+    </main>
+
+    <!--&lt;!&ndash; Theme CSS &ndash;&gt;-->
+    <!--<link href="{% static 'css/offer_creation.css' %}" rel="stylesheet">-->
 
 {% endblock %}
