@@ -2,8 +2,9 @@
 {% load staticfiles %}
 
 {% block head%}
-    <link href="../../static/css/signup.css" rel="stylesheet">
+    <link href="{% static 'css/signup.css' %}%" rel="stylesheet">
 {% endblock %}
+
 {% block body %}
 
     {% comment %} <div class="nav-scroller bg-white shadow-sm">
@@ -32,8 +33,8 @@
         <h6 class="mb-0 lh-100 text-gray-dark">{{user.username}}</h6>
         <small>{{user.email}}</small>
         </div>
-        <a href="/user/edit">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" >Edit</button>
+        <a class="btn-r" href="/user/edit">
+        <button class="btn btn-outline-success my-2 my-sm-0 bs-popover-left mx-2" type="submit" >Edit</button>
         </a>
     </div>
 
