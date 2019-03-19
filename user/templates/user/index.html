@@ -6,7 +6,7 @@
 {% endblock %}
 {% block body %}
 
-    <div class="nav-scroller bg-white shadow-sm">
+    {% comment %} <div class="nav-scroller bg-white shadow-sm">
     <nav class="nav nav-underline">
         <a class="nav-link active" href="#">Dashboard</a>
         <a class="nav-link" href="#">
@@ -21,12 +21,12 @@
         <a class="nav-link" href="#">Link</a>
         <a class="nav-link" href="#">Link</a>
     </nav>
-    </div>
+    </div> {% endcomment %}
 
     <main role="main" class="container">
     {% comment %} text-white-50 {% endcomment %}
     <div class="d-flex align-items-center p-3 my-3 rounded shadow-sm bg-purple">
-        <img class="mr-3" src="{% static 'default.svg' %}" alt="" width="48" height="48">
+        <img class="mr-3" src="{% static 'default.png' %}" alt="" width="48" height="48">
         <div class="lh-100">
         {% comment %} text-white {% endcomment %}
         <h6 class="mb-0 lh-100 text-gray-dark">{{user.username}}</h6>
