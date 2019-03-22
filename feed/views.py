@@ -80,4 +80,4 @@ def get_request_creation(request):
 def get_request(request, id):
     req = Request.objects.get(id=id)
     print(req.title)
-    return render(request, 'feed/request_view.html', {'offer': req})
+    return render(request, 'feed/request_view.html', {'req': req})

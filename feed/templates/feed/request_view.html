@@ -7,17 +7,41 @@
 <div class="container bg-light col-sm-4 jumbotron">
     <form class="form-signin" action="" method="post">
 
-        <h1 class="h3 mb-3 font-weight-normal">Offer from <a href="/user/{{offer.user.id}}">{{offer.user}}</a></h1>
+        <h1 class="h3 mb-3 font-weight-normal">Request from <a href="/user/{{req.user.id}}">{{request.user}}</a></h1>
         <label>Title</label>
         <div class="form-label-group">
-            <text x="50%" y="50%" fill="#eceeef" dy=".3em" class="form-control" readonly>{{ offer.title }}</text>
+            <text x="50%" y="50%" fill="#eceeef" dy=".3em" class="form-control" readonly>{{ req.title }}</text>
         </div>
-
         <br>
-        <label>Offer description</label>
+        <label>Type of service</label>
         <div class="form-label-group">
-            <textarea class="form-control" name="offer_desc" cols="40" rows="16" readonly>{{ offer.offer_description }}</textarea>
+            <text x="50%" y="50%" fill="#eceeef" dy=".3em" class="form-control" readonly>{{ req.service_type }}</text>
         </div>
+        <br>
+        <label>Price</label>
+        <div class="form-label-group">
+            <text x="50%" y="50%" fill="#eceeef" dy=".3em" class="form-control" readonly>{{ req.price }}</text>
+        </div>
+        <br>
+        <label>Date of start</label>
+        <div class="form-label-group">
+            <data class="form-control" readonly>{{ req.start_date }}</data>
+        </div>
+        <br>
+        <label>Deadline</label>
+        <div class="form-label-group">
+            <data class="form-control" readonly>{{ req.deadline }}</data>
+        </div>
+        <br>
+        <label>Request description</label>
+        <div class="form-label-group">
+            <textarea class="form-control" cols="40" rows="16" readonly>{{ req.request_description }}</textarea>
+        </div>
+        <label>Image</label>
+        <div class="form-label-group">
+            <img class="form-control" readonly src={{ req.image }}>
+        </div>
+        <br>
 
     </form>
 </div>
