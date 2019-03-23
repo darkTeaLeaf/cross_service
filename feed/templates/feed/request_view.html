@@ -37,9 +37,10 @@
         <div class="form-label-group">
             <textarea class="form-control" cols="40" rows="16" readonly>{{ req.request_description }}</textarea>
         </div>
+        <br>
         <label>Image</label>
         <div class="form-label-group">
-            <img class="form-control" readonly src="{{ req.image }}">
+            <img class="form-control" readonly src="{{ req.image.url }}">
         </div>
         <br>
 
