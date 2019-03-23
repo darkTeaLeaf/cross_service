@@ -1,3 +1,4 @@
+from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils import timezone
@@ -60,7 +61,7 @@ def get_request_creation(request):
     if not user.is_authenticated:
         return redirect('/user/signin/')
 
-    if request.method == "POST":
+    if request.method == "POST" and request.FILES['image']:
         object_request = Request()
         object_request.title = request.POST.get('title')
         object_request.service_type = request.POST.get('service_type')
@@ -68,7 +69,13 @@ def get_request_creation(request):
         object_request.start_date = request.POST.get('start_date')
         object_request.deadline = request.POST.get('deadline')
         object_request.request_description = request.POST.get('offer_description')
-        object_request.image = request.POST.get('image')
+
+        image = request.FILES['image']
+        fs = FileSystemStorage()
+        filename = fs.save(image.name, image)
+        fs.url(filename)
+        object_request.image = image
+
         object_request.user = User.objects.get(username=user.username)
         object_request.save()
         return redirect('/requests/{}'.format(object_request.id))

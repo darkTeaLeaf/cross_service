@@ -18,6 +18,7 @@ venv/
 *.db
 *.sqlite
 *.sqlite3
+media/
 
 # Secret(s)
 *secret*

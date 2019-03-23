@@ -24,7 +24,7 @@ class Request(models.Model):
     start_date = models.DateTimeField()
     deadline = models.DateTimeField()
     request_description = models.TextField(null=True)
-    image = models.ImageField(blank=True, upload_to='requests')
+    image = models.ImageField(blank=True)
     published_date = models.DateTimeField(default=timezone.now)
 
     def publish(self):
