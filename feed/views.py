@@ -2,6 +2,7 @@ from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils import timezone
+from django.views import View
 from django.views.generic import ListView
 from django.contrib.auth.models import User
 from feed.forms import OfferForm, RequestForm
@@ -87,5 +88,29 @@ def get_request_creation(request):
 
 def get_request(request, id):
     req = Request.objects.get(id=id)
-    print(req.title)
     return render(request, 'feed/request_view.html', {'req': req})
+
+
+def edit_request(request, id):
+    if request.method == "POST" and request.FILES['image']:
+
+        object_request = Request.objects.get(id=id)
+        object_request.title = request.POST.get('title')
+        object_request.service_type = request.POST.get('service_type')
+        object_request.price = request.POST.get('price')
+        object_request.start_date = request.POST.get('start_date')
+        object_request.deadline = request.POST.get('deadline')
+        object_request.request_description = request.POST.get('offer_description')
+
+        image = request.FILES['image']
+        fs = FileSystemStorage()
+        filename = fs.save(image.name, image)
+        fs.url(filename)
+        object_request.image = image
+
+        object_request.save()
+        return redirect('/requests/{}'.format(object_request.id))
+
+    elif request.method == "GET":
+        req = Request.objects.get(id=id)
+        return render(request, 'feed/request_edit.html', {'req': req})

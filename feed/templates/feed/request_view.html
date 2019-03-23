@@ -7,7 +7,9 @@
 <div class="container bg-light col-sm-4 jumbotron">
     <form class="form-signin" action="" method="post">
 
-        <h1 class="h3 mb-3 font-weight-normal">Request from <a href="/user/{{req.user.id}}">{{request.user}}</a></h1>
+        <h1 class="h3 mb-3 font-weight-normal">Request from <a href="/user/{{req.user.id}}">{{request.user}}</a>
+        <a href="/request_edit/{{ req.id }}" class="btn btn-primary my-2">Edit</a>
+        </h1>
         <label>Title</label>
         <div class="form-label-group">
             <text x="50%" y="50%" fill="#eceeef" dy=".3em" class="form-control" readonly>{{ req.title }}</text>

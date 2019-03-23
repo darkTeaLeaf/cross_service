@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^offers/(?P<id>\d+)$', views.get_offer, name='get_offer'),
     url(r'^request_creation/$', views.get_request_creation, name='request_creation'),
     url(r'^requests/(?P<id>\d+)$', views.get_request, name='get_request'),
+    url(r'^request_edit/(?P<id>\d+)$', views.edit_request, name='request_edit'),
 ]

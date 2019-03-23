@@ -21,10 +21,10 @@ class Request(models.Model):
     title = models.CharField(max_length=200)
     service_type = models.CharField(max_length=200)
     price = models.CharField(max_length=100)
-    start_date = models.DateTimeField()
-    deadline = models.DateTimeField()
-    request_description = models.TextField(null=True)
-    image = models.ImageField(blank=True)
+    start_date = models.DateField()
+    deadline = models.DateField()
+    request_description = models.TextField()
+    image = models.ImageField(blank=True, null=True)
     published_date = models.DateTimeField(default=timezone.now)
 
     def publish(self):
