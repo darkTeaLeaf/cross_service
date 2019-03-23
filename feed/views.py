@@ -62,7 +62,7 @@ def get_request_creation(request):
     if not user.is_authenticated:
         return redirect('/user/signin/')
 
-    if request.method == "POST" and request.FILES['image']:
+    if request.method == "POST":
         object_request = Request()
         object_request.title = request.POST.get('title')
         object_request.service_type = request.POST.get('service_type')
@@ -71,10 +71,7 @@ def get_request_creation(request):
         object_request.deadline = request.POST.get('deadline')
         object_request.request_description = request.POST.get('offer_description')
 
-        image = request.FILES['image']
-        fs = FileSystemStorage()
-        filename = fs.save(image.name, image)
-        fs.url(filename)
+        image = request.FILES.get('image', False)
         object_request.image = image
 
         object_request.user = User.objects.get(username=user.username)
@@ -92,7 +89,7 @@ def get_request(request, id):
 
 
 def edit_request(request, id):
-    if request.method == "POST" and request.FILES['image']:
+    if request.method == "POST":
 
         object_request = Request.objects.get(id=id)
         object_request.title = request.POST.get('title')
@@ -102,10 +99,7 @@ def edit_request(request, id):
         object_request.deadline = request.POST.get('deadline')
         object_request.request_description = request.POST.get('offer_description')
 
-        image = request.FILES['image']
-        fs = FileSystemStorage()
-        filename = fs.save(image.name, image)
-        fs.url(filename)
+        image = request.FILES.get('image', False)
         object_request.image = image
 
         object_request.save()

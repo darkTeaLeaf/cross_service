@@ -9,47 +9,62 @@
         <section class="d-flex card container text-muted col-sm-4 bg-light jumbotron justify-content-between ">
             <form method="POST" class="offer-form" action="" enctype="multipart/form-data">
                 {% csrf_token %}
-                <h1 class="h3 mb-3 font-weight-normal">Edit request from <a href="/user/{{req.user.id}}">{{request.user}}</a></h1>
+                <h1 class="h3 mb-3 font-weight-normal">Edit request from <a
+                        href="/user/{{ req.user.id }}">{{ request.user }}</a></h1>
 
                 <label for="inputTitle">Title</label>
                 <div class="form-label-group">
-                    <input type="text" id="inputTitle" name="title" class="form-control" placeholder="Title" value="{{ req.title }}"
+                    <input type="text" id="inputTitle" name="title" class="form-control" placeholder="Title"
+                           value="{{ req.title }}"
                            required autofocus>
                 </div>
                 <br>
                 <label for="inputService">Type of service</label>
                 <div class="form-label-group">
-                    <input type="text" id="inputService" name="service_type" class="form-control" placeholder="Type of service" value="{{ req.service_type }}"
+                    <input type="text" id="inputService" name="service_type" class="form-control"
+                           placeholder="Type of service" value="{{ req.service_type }}"
                            required autofocus>
                 </div>
                 <br>
                 <label for="inputPrice">Price</label>
                 <div class="form-label-group">
-                    <input type="text" id="inputPrice" name="price" class="form-control" placeholder="Price" value="{{ req.price }}"
+                    <input type="text" id="inputPrice" name="price" class="form-control" placeholder="Price"
+                           value="{{ req.price }}"
                            required autofocus>
                 </div>
                 <br>
                 <label for="inputStart">Date of start</label>
                 <div class="form-label-group">
-                    <input type="date" id="inputStart" name="start_date" class="form-control" placeholder="Date of start" value="{{ req.start_date|date:"Y-m-d"}}"
+                    <input type="date" id="inputStart" name="start_date" class="form-control"
+                           placeholder="Date of start" value="{{ req.start_date|date:"Y-m-d" }}"
                            required autofocus>
                 </div>
                 <br>
                 <label for="inputDeadline">Deadline</label>
                 <div class="form-label-group">
-                    <input type="date" id="inputDeadline" name="deadline" class="form-control" placeholder="Deadline" value="{{ req.deadline|date:"Y-m-d" }}"
+                    <input type="date" id="inputDeadline" name="deadline" class="form-control" placeholder="Deadline"
+                           value="{{ req.deadline|date:"Y-m-d" }}"
                            required autofocus>
                 </div>
                 <br>
                 <label for="inputDescription">Description</label>
                 <div class="form-label-group">
-                    <textarea id="inputDescription" cols="40" rows="16" name="offer_description" class="form-control" placeholder="Some description"
+                    <textarea id="inputDescription" cols="40" rows="16" name="offer_description" class="form-control"
+                              placeholder="Some description"
                               required>{{ req.request_description }}</textarea>
                 </div>
                 <br>
                 <label for="inputImage">Image</label>
                 <div class="form-label-group">
-                    <input type="file" id="inputImage" name="image" value="{{ req.image.url }}">
+                    {% if req.image != 'False' %}
+                        <img class="form-control" readonly src="{{ req.image.url }}">
+                        <br>
+                    {% else %}
+                        <text>No file uploaded</text>
+                        <br>
+                        <br>
+                    {% endif %}
+                    <input type="file" id="inputImage" name="image">
                 </div>
                 <br>
                 <button type="submit" class="btn btn-lg btn-primary btn-block">Save</button>

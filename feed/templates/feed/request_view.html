@@ -42,7 +42,11 @@
         <br>
         <label>Image</label>
         <div class="form-label-group">
+            {% if req.image != 'False' %}
             <img class="form-control" readonly src="{{ req.image.url }}">
+            {% else %}
+            <text>No file uploaded</text>
+            {% endif %}
         </div>
         <br>
 
