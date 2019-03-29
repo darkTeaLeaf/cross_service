@@ -15,7 +15,7 @@
     <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"-->
-          <!--integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+    <!--integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
 
     <title>Feed</title>
 
@@ -23,50 +23,58 @@
 <body>
 
 <header>
-  <!-- Fixed navbar -->
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
 
-    <a class="navbar-brand" href="/">Cross Service</a>
+        <a class="navbar-brand" href="/">Cross Service</a>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav mr-auto">
-        {% if user.is_authenticated %}
-        <li class="nav-item active">
-          <a class="nav-link" href="/user/">{{ user.username }} <span class="sr-only">(current)</span></a>
-        </li>
-            <div class="navbar-nav mr-auto">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                {% if user.is_authenticated %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="/user/">{{ user.username }} <span class="sr-only">(current)</span></a>
+                </li>
+                <div class="navbar-nav mr-auto">
+                </div>
+                {% endif %}
+                {% if user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">Admin</a>
+                </li>
+                {% endif %}
+            </ul>
+            <form class="form-inline mt-2 mt-md-0" method="get" action="/">
+
+                {% if user.is_anonymous %}
+                <div class="navbar-nav mr-auto">
+                    <a class="nav-link" href="/user/signup/">Sign up <span class="sr-only">(current)</span></a>
+                    <a class="nav-link mr-sm-2" href="/user/signin/">Sign in <span class="sr-only">(current)</span></a>
+                </div>
+                {% elif user.is_authenticated %}
+                <div class="navbar-nav mr-auto">
+                    <a class="nav-link px-xl-4" href="/user/signout/">Sign out <span
+                            class="sr-only">(current)</span></a>
+                </div>
+                {% endif %}
+                <input class="form-control" name="q" type="text" placeholder="Search" aria-label="Search">
+
+                <div class="flex-row d-md-flex ml-md-auto px-xl-2">
+                    <select class="outline-success" id="state" required>
+                        <option>Lorem</option>
+                        <option>Ipsum</option>
+                        <option>Dolor</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
         </div>
-        {% endif %}
-      {% if user.is_superuser %}
-        <li class="nav-item">
-          <a class="nav-link" href="/admin">Admin</a>
-        </li>
-      {% endif %}
-      </ul>
-      <form class="form-inline mt-2 mt-md-0" method="get" action="/">
-
-        {% if user.is_anonymous %}
-        <div class="navbar-nav mr-auto">
-            <a class="nav-link" href="/user/signup/">Sign up <span class="sr-only">(current)</span></a>
-            <a class="nav-link" href="/user/signin/">Sign in <span class="sr-only">(current)</span></a>
-        </div>
-        {% elif user.is_authenticated %}
-        <div class="navbar-nav mr-auto">
-            <a class="nav-link px-xl-4" href="/user/signout/">Sign out <span class="sr-only">(current)</span></a>
-        </div>
-        {% endif %}
-        <input class="form-control mr-sm-2" name="q" type="text" placeholder="Search" aria-label="Search" {% if q %}
-                           value="{{ q }}" {% endif %}>
-
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
-    </div>
-  </nav>
+    </nav>
 </header>
-
 
 
 {% block body %}
