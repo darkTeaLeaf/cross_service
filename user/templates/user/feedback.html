@@ -1,0 +1,32 @@
+{% extends 'feed/base.html' %}
+
+{% load staticfiles %}
+
+{% block body %}
+
+    <link href="{% static 'css/star-rating.min.css' %}" media="all" rel="stylesheet" type="text/css" />
+    
+    {% comment %} <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet"> {% endcomment %}
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
+    <script src="{% static 'js/star-rating.min.js' %}" type="text/javascript"></script>
+
+    <main role="main">
+        <section class="d-flex card container text-muted col-sm-4 bg-light jumbotron justify-content-between ">
+            <form method="POST" class="offer-form" action="">
+                {% csrf_token %}
+                <h1 class="h3 mb-3 font-weight-normal">Leave a feedback</h1>
+
+                <label for="inputFeedback">For the user @{{target.username}}</label>
+                <div class="form-label-group">
+                    <textarea id="inputFeedback" cols="40" rows="10" name="feedback" class="form-control" placeholder="Good deal! Thanks a lot!"
+                              required></textarea>
+                </div>
+                <br>
+                <input id="inputGrade" name="inputGrade" type="number" class="rating">
+                <button type="submit" class="btn btn-lg btn-primary btn-block">Save</button>
+            </form>
+        </section>
+    </main>
+
+{% endblock %}

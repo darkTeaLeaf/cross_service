@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import Group
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
+from .models import Feedback
 
 
 class CreateUserForm(UserCreationForm):
@@ -52,3 +53,8 @@ class EditUserForm(forms.ModelForm):
             user.save()
 
         return user
+
+# class FeedbackForm(forms.ModelForm):
+#     class Meta:
+#         model = Feedback
+#         fields = ('feedback', 'grade', 'type')

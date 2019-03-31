@@ -56,6 +56,14 @@ class EditUserView(View):
         return redirect('/user/')
 
 
+class LeaveFeedback(View):
+    def get(self, request , id):
+        if request.user.id != id: 
+            target = User.objects.get(id=id)
+            return render(request, 'user/feedback.html', {'target': target})
+        # else нельзя оставлять отзыв на самого себя
+
+
 def user_info(request, id=0):
 
     if id == 0:  # my page
