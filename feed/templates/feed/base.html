@@ -60,13 +60,18 @@
                             class="sr-only">(current)</span></a>
                 </div>
                 {% endif %}
-                <input class="form-control" name="q" type="text" placeholder="Search" aria-label="Search">
+                <input class="form-control" name="q" type="text" placeholder="Search" value="{{ q }}"
+                       aria-label="Search">
+
+
+                <script type="text/javascript">
+                    document.getElementById('search_tag').value = "<?php echo $_GET['search_tag'];?>";
+                </script>
 
                 <div class="flex-row d-md-flex ml-md-auto px-xl-2">
-                    <select class="outline-success" id="state" required>
-                        <option>Lorem</option>
-                        <option>Ipsum</option>
-                        <option>Dolor</option>
+                    <select class="outline-success" id="search_tag" name="search_tag">
+                        <option value="title">by title</option>
+                        <option value="user">by user</option>
                     </select>
                 </div>
 

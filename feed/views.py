@@ -22,8 +22,12 @@ class IndexView(ListView):
         get_request = self.request.GET
 
         # quick search
+        search_tag = get_request.get('search_tag')
         if get_request.get('q') and get_request.get('q') != 'None':
-            return Offer.objects.filter(title__icontains=self.request.GET.get('q'))
+            if search_tag == 'title':
+                return Offer.objects.filter(title__icontains=self.request.GET.get('q'))
+            elif search_tag == 'user':
+                return Offer.objects.filter(user__username=self.request.GET.get('q'))
 
         return Offer.objects.order_by('title')
 
@@ -34,7 +38,7 @@ class IndexView(ListView):
 
 
 def get_offer_creation(request):
-    user = request.user 
+    user = request.user
     if not user.is_authenticated:
         return redirect('/user/signin/')
 
@@ -48,7 +52,7 @@ def get_offer_creation(request):
 
     elif request.method == "GET":
         form = OfferForm()
-        return render(request, 'feed/offer_creation.html', {'form': form })
+        return render(request, 'feed/offer_creation.html', {'form': form})
 
 
 def get_offer(request, id):

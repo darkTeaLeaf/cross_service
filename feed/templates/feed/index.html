@@ -62,29 +62,29 @@
 
 </main>
 
-    <table class="paginator">
+<table class="paginator">
 
-        {% if page_obj.has_previous %}
-            <td class="td-paginator button">
-                <a href="?page={{ page_obj.previous_page_number }}&q={{ q }}">←</a>
+    {% if page_obj.has_previous %}
+    <td class="td-paginator button">
+        <a href="?page={{ page_obj.previous_page_number }}&q={{ q }}">←</a>
 
-            </td>
-        {% elif page_obj.has_next %}
-            <td class="td-paginator button">
-                <a href="?page={{ page_obj.next_page_number }}&q={{ q }}">→</a>
+    </td>
+    {% elif page_obj.has_next %}
+    <td class="td-paginator button">
+        <a href="?page={{ page_obj.next_page_number }}&q={{ q }}">→</a>
 
-            </td>
-        {% endif %}
-    </table>
+    </td>
+    {% endif %}
+</table>
 
-    <footer class="text-muted">
-        <div class="container">
-            <p class="float-right">
-                <a href="#">Back to top</a>
-            </p>
-            <p>New to Cross Service? <a href="https://wehavenopolicy.com/">Read our Policy</a> or check out <a
-                    href="/getting-started/introduction/">getting started guide</a>.</p>
-        </div>
-    </footer>
+<footer class="text-muted">
+    <div class="container">
+        <p class="float-right">
+            <a href="#">Back to top</a>
+        </p>
+        <p>New to Cross Service? <a href="https://wehavenopolicy.com/">Read our Policy</a> or check out <a
+                href="/getting-started/introduction/">getting started guide</a>.</p>
+    </div>
+</footer>
 
 {% endblock %}
