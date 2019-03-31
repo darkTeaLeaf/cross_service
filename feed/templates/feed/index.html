@@ -3,88 +3,209 @@
 
 {% block body %}
 
-<main role="main">
+    <style>
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
 
-    <section class="jumbotron text-center">
-        <div class="container">
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
 
-            <h1 class="jumbotron-heading">Feed with requests & offers</h1>
-            <p class="lead text-muted">You can add your offers and requests fully free of charge!</p>
-            <img class="mb-4" src="{% static 'default.png' %}" alt="" width="72" height="72">
-            <p>
-                <a href="/offer_creation/" class="btn btn-primary my-2">Post new offer</a>
-                <a href="/request_creation/" class="btn btn-primary my-2">Post new request</a>
-            </p>
-        </div>
-    </section>
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
 
-    <div class="album py-5 bg-light">
-        <div class="container">
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
 
-            <div class="row">
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
 
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
 
-                {% for offer in offers %}
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
 
-                <div class="col-md-4">
-                    <div class="card mb-4 shadow-sm">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                             xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
-                             focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>
-                            Placeholder</title>
-                            <rect width="100%" height="100%" fill="#55595c"/>
-                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ offer.title }}</text>
-                        </svg>
-                        <div class="card-body">
-                            <p class="card-text"> {{ offer.offer_description }} </p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
 
-                                    <form>
-                                        <button formaction='/offers/{{ offer.id }}'
-                                                class="btn btn-sm btn-outline-secondary">View
-                                        </button>
-                                        <!--<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>-->
-                                        <!--For the next sprint-->
-                                    </form>
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
+    <script>
+        function to_requests() {
+            if (document.getElementById('to_requests').checked) {
+                alert(1);
+                window.location = '/requests';
+                return false;
+            }
+            return true;
+
+        }
+    </script>
+
+    <main role="main">
+
+        <section class="jumbotron text-center">
+            <div class="container">
+
+                <h1 class="jumbotron-heading">Feed with {% if requests %}requests{% endif %} {% if offers %}offers{% endif %}</h1>
+                <form method="get" action="/users">
+                    <label class="switch">
+                        <input type="checkbox" {% if requests %}checked{% endif %} name="to_requests" id="to_requests" value="/requests" onclick="
+                        if (this.checked) {
+                            window.location = this.value;
+                        }
+                        else {
+                            window.location = '/'}"
+                               }>
+                        <span class="slider round"></span>
+                    </label>
+                </form>
+                <p class="lead text-muted">You can add your offers and requests fully free of charge!</p>
+                <img class="mb-4" src="{% static 'default.png' %}" alt="" width="72" height="72">
+                <p>
+                    <a href="/offer_creation/" class="btn btn-primary my-2">Post new offer</a>
+                    <a href="/request_creation/" class="btn btn-primary my-2">Post new request</a>
+                </p>
+            </div>
+        </section>
+
+        <div class="album py-5 bg-light">
+            <div class="container">
+
+                <div class="row">
+
+                    {% if offers %}
+                    {% for offer in offers %}
+
+                        <div class="col-md-4">
+                            <div class="card mb-4 shadow-sm">
+                                <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                                     xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+                                     focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>
+                                    Placeholder</title>
+                                    <rect width="100%" height="100%" fill="#55595c"/>
+                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ offer.title }}</text>
+                                </svg>
+                                <div class="card-body">
+                                    <p class="card-text"> {{ offer.offer_description }} </p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+
+                                            <form>
+                                                <button formaction='/offers/{{ offer.id }}'
+                                                        class="btn btn-sm btn-outline-secondary">View
+                                                </button>
+                                                <!--<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>-->
+                                                <!--For the next sprint-->
+                                            </form>
+                                        </div>
+                                        <small class="text-muted">{{ offer.published_date }}</small>
+                                    </div>
                                 </div>
-                                <small class="text-muted">{{ offer.published_date }}</small>
                             </div>
                         </div>
-                    </div>
+
+                    {% endfor %}
+                    {% endif %}
+
+                    {% if requests %}
+                        {% for request in requests %}
+                            <div class="col-md-4">
+                            <div class="card mb-4 shadow-sm">
+                                <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                                     xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+                                     focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>
+                                    Placeholder</title>
+                                    <rect width="100%" height="100%" fill="#55595c"/>
+                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ request.title }}</text>
+                                </svg>
+                                <div class="card-body">
+                                    <p class="card-text"> {{ request.request_description }} </p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+
+                                            <form>
+                                                <button formaction='/offers/{{ request.id }}'
+                                                        class="btn btn-sm btn-outline-secondary">View
+                                                </button>
+                                                <!--<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>-->
+                                                <!--For the next sprint-->
+                                            </form>
+                                        </div>
+                                        <small class="text-muted">{{ offer.published_date }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+
                 </div>
-
-                {% endfor %}
-
             </div>
         </div>
-    </div>
 
-</main>
+    </main>
 
-<table class="paginator">
+    <table class="paginator">
 
-    {% if page_obj.has_previous %}
-    <td class="td-paginator button">
-        <a href="?page={{ page_obj.previous_page_number }}&q={{ q }}">←</a>
+        {% if page_obj.has_previous %}
+            <td class="td-paginator button">
+                <a href="?page={{ page_obj.previous_page_number }}&q={{ q }}">←</a>
 
-    </td>
-    {% elif page_obj.has_next %}
-    <td class="td-paginator button">
-        <a href="?page={{ page_obj.next_page_number }}&q={{ q }}">→</a>
+            </td>
+        {% elif page_obj.has_next %}
+            <td class="td-paginator button">
+                <a href="?page={{ page_obj.next_page_number }}&q={{ q }}">→</a>
 
-    </td>
-    {% endif %}
-</table>
+            </td>
+        {% endif %}
+    </table>
 
-<footer class="text-muted">
-    <div class="container">
-        <p class="float-right">
-            <a href="#">Back to top</a>
-        </p>
-        <p>New to Cross Service? <a href="https://wehavenopolicy.com/">Read our Policy</a> or check out <a
-                href="/getting-started/introduction/">getting started guide</a>.</p>
-    </div>
-</footer>
+    <footer class="text-muted">
+        <div class="container">
+            <p class="float-right">
+                <a href="#">Back to top</a>
+            </p>
+            <p>New to Cross Service? <a href="https://wehavenopolicy.com/">Read our Policy</a> or check out <a
+                    href="/getting-started/introduction/">getting started guide</a>.</p>
+        </div>
+    </footer>
 
 {% endblock %}

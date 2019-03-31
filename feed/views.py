@@ -37,6 +37,11 @@ class IndexView(ListView):
         return context
 
 
+class IndexRequestsView(IndexView):
+    model = Request
+    context_object_name = 'requests'
+
+
 def get_offer_creation(request):
     user = request.user
     if not user.is_authenticated:
