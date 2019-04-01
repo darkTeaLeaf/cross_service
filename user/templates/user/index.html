@@ -44,12 +44,13 @@
             {% if me %}
                 <a class="btn-r" href="/user/edit">
                 <button class="btn btn-outline-success my-2 my-sm-0 bs-popover-left mx-2" type="submit">Edit</button>
-            {% elif user.is_authenticated%}
-                 <a class="btn-r" href="/user/{{client.id}}/feedback">
-                <button class="btn btn-outline-success my-2 my-sm-0 bs-popover-left mx-2" type="submit">Feedback</button>
             {% endif %}
             </a>
             <div id="rating" class=".mx-1 .mr-1"></div>
+            {% if user.is_authenticated and me is False%}
+                <a class="btn-r" href="/user/{{client.id}}/feedback">
+                <button class="btn btn-outline-success my-2 my-sm-0 bs-popover-left mx-2" type="submit">Feedback</button>
+            {% endif %}
         </div>
 
         <div class="my-3 p-3 bg-white rounded shadow-sm">
