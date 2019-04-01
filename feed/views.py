@@ -22,10 +22,13 @@ class IndexView(ListView):
         get_request = self.request.GET
 
         # quick search
+        search_tag = get_request.get('search_tag')
         if get_request.get('q') and get_request.get('q') != 'None':
-            return Offer.objects.filter(title__icontains=self.request.GET.get('q'))
-
-        return Offer.objects.order_by('title')
+            if search_tag == 'title':
+                return self.model.objects.filter(title__icontains=self.request.GET.get('q'))
+            elif search_tag == 'user':
+                return self.model.objects.filter(user__username=self.request.GET.get('q'))
+        return self.model.objects.order_by('title')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -33,8 +36,13 @@ class IndexView(ListView):
         return context
 
 
+class IndexRequestsView(IndexView):
+    model = Request
+    context_object_name = 'requests'
+
+
 def get_offer_creation(request):
-    user = request.user 
+    user = request.user
     if not user.is_authenticated:
         return redirect('/user/signin/')
 
@@ -48,7 +56,7 @@ def get_offer_creation(request):
 
     elif request.method == "GET":
         form = OfferForm()
-        return render(request, 'feed/offer_creation.html', {'form': form })
+        return render(request, 'feed/offer_creation.html', {'form': form})
 
 
 def get_offer(request, id):
