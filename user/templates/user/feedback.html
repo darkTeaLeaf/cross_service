@@ -2,14 +2,12 @@
 
 {% load staticfiles %}
 
+{% block extrahead %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="{% static 'js/jquery.emojiRatings.min.js' %}"></script>
+{% endblock %}
+
 {% block body %}
-
-    <link href="{% static 'css/star-rating.min.css' %}" media="all" rel="stylesheet" type="text/css" />
-    
-    {% comment %} <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet"> {% endcomment %}
-
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
-    <script src="{% static 'js/star-rating.min.js' %}" type="text/javascript"></script>
 
     <main role="main">
         <section class="d-flex card container text-muted col-sm-4 bg-light jumbotron justify-content-between ">
@@ -23,10 +21,23 @@
                               required></textarea>
                 </div>
                 <br>
-                <input id="inputGrade" name="inputGrade" type="number" class="rating">
+                <div id="rating"></div>
+                <br>
                 <button type="submit" class="btn btn-lg btn-primary btn-block">Save</button>
             </form>
         </section>
     </main>
+
+    <script> 
+            options = {
+            emoji: 'U+2B50',
+            count: 5,
+            fontSize: 16,
+            inputName: 'rating',
+            onUpdate: function() {}
+            }
+            
+            $('#rating').emojiRating(options); 
+        </script>
 
 {% endblock %}
