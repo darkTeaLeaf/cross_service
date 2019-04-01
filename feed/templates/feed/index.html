@@ -84,7 +84,7 @@
         <section class="jumbotron text-center">
             <div class="container">
 
-                <h1 class="jumbotron-heading">Feed with {% if requests %}requests{% endif %} {% if offers %}offers{% endif %}</h1>
+                <h1 class="jumbotron-heading">{% if requests %}Feed with requests{% elif offers %}Feed with offers{% else %}Your query did not match any result;({% endif %}</h1>
                 <form method="get" action="/users">
                     <label class="switch">
                         <input type="checkbox" {% if requests %}checked{% endif %} name="to_requests" id="to_requests" value="/requests" onclick="
@@ -100,8 +100,8 @@
                 <p class="lead text-muted">You can add your offers and requests fully free of charge!</p>
                 <img class="mb-4" src="{% static 'default.png' %}" alt="" width="72" height="72">
                 <p>
-                    <a href="/offer_creation/" class="btn btn-primary my-2">Post new offer</a>
-                    <a href="/request_creation/" class="btn btn-primary my-2">Post new request</a>
+                    {% if offers %}<a href="/offer_creation/" class="btn btn-primary my-2">Post new</a> {% endif %}
+                    {% if requests %}<a href="/request_creation/" class="btn btn-primary my-2">Post new</a> {% endif %}
                 </p>
             </div>
         </section>
@@ -162,14 +162,14 @@
                                         <div class="btn-group">
 
                                             <form>
-                                                <button formaction='/offers/{{ request.id }}'
+                                                <button formaction='/requests/{{ request.id }}'
                                                         class="btn btn-sm btn-outline-secondary">View
                                                 </button>
                                                 <!--<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>-->
                                                 <!--For the next sprint-->
                                             </form>
                                         </div>
-                                        <small class="text-muted">{{ offer.published_date }}</small>
+                                        <small class="text-muted">{{ request.published_date }}</small>
                                     </div>
                                 </div>
                             </div>

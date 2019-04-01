@@ -47,7 +47,8 @@
                 </li>
                 {% endif %}
             </ul>
-            <form class="form-inline mt-2 mt-md-0" method="get" action="/">
+            <form class="form-inline mt-2 mt-md-0" method="get" action={% if offers %}"/"{% endif %}
+                    {% if requests %} "/requests" {% endif %}>
 
                 {% if user.is_anonymous %}
                 <div class="navbar-nav mr-auto">

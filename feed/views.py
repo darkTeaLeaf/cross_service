@@ -25,11 +25,10 @@ class IndexView(ListView):
         search_tag = get_request.get('search_tag')
         if get_request.get('q') and get_request.get('q') != 'None':
             if search_tag == 'title':
-                return Offer.objects.filter(title__icontains=self.request.GET.get('q'))
+                return self.model.objects.filter(title__icontains=self.request.GET.get('q'))
             elif search_tag == 'user':
-                return Offer.objects.filter(user__username=self.request.GET.get('q'))
-
-        return Offer.objects.order_by('title')
+                return self.model.objects.filter(user__username=self.request.GET.get('q'))
+        return self.model.objects.order_by('title')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
