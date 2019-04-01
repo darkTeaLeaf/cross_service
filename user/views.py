@@ -98,7 +98,8 @@ def user_info(request, id=0):
     mean = 0.0
     for feedback in feedbacks:
         mean += float(feedback.grade)
-    mean = round(mean/len(feedbacks))
+    if mean: 
+        mean = round(mean/len(feedbacks))
     return render(request, 'user/index.html', {'client': user, 'me': user.id==request.user.id, 'mean_feedback': int(mean), 'feedbacks': feedbacks})
 
 
