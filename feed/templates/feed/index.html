@@ -87,7 +87,7 @@
                 <h1 class="jumbotron-heading">{% if requests %}Feed with requests{% elif offers %}Feed with offers{% else %}Your query did not match any result;({% endif %}</h1>
                 <form method="get" action="/users">
                     <label class="switch">
-                        <input type="checkbox" {% if requests %}checked{% endif %} name="to_requests" id="to_requests" value="/requests" onclick="
+                        <input type="checkbox" {% if requests or request.path == "/requests/" %}checked{% endif %} name="to_requests" id="to_requests" value="/requests" onclick="
                         if (this.checked) {
                             window.location = this.value;
                         }
