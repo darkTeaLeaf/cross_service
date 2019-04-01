@@ -19,7 +19,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     alias = models.CharField(max_length=250)
     bio = models.CharField(max_length=1000, null=True, blank=True)
-    # avatar = models.ImageField(upload_to='images/', default="/user/static/default.png")
+    avatar = models.ImageField(default="/user/static/default.png")
 
     def __str__(self):
         return self.user.username
