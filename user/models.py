@@ -25,7 +25,7 @@ class Feedback(models.Model):
     userFrom = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='author')
     userTo = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='recipient')
     feedback_text = models.TextField(null=True, blank=True)
-    feedback_for_provider = models.BooleanField(default=True);
+    # feedback_for_provider = models.BooleanField(default=True);
     grade = models.SmallIntegerField()
 
     def publish(self):

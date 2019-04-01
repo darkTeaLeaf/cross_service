@@ -7,6 +7,8 @@ from django.db.models import Q
 from django.views.generic import View, ListView
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import logout
+from django.contrib import messages
+from re import match
 
 
 class CreateUserView(View):
@@ -55,13 +57,26 @@ class EditUserView(View):
 
         return redirect('/user/')
 
+        
+def leave_feedback(request, user_id):
+    if request.method == "POST":
+        if str(request.user.id) == user_id: 
+            messages.error(request, 'You cannot leave feedback for yourself')
+            return redirect('/user/'+user_id+'/feedback')
+        else:
+            feedback = Feedback()
+            feedback.userFrom = request.user
+            feedback.userTo = User.objects.get(id=user_id)
+            feedback.feedback_text = request.POST.get('inputFeedback')
+            feedback.grade = request.POST.get('rating')
+            feedback.save()
+            
+            messages.success(request, 'Your feedback is saved!')
+            return redirect('/user/'+user_id+'/feedback/{}'.format(feedback.id))
 
-class LeaveFeedback(View):
-    def get(self, request , id):
-        if request.user.id != id: 
-            target = User.objects.get(id=id)
-            return render(request, 'user/feedback.html', {'target': target})
-        # else нельзя оставлять отзыв на самого себя
+    elif request.method == "GET":
+        target = User.objects.get(id=user_id)
+        return render(request, 'user/feedback.html', {'target': target})
 
 
 def user_info(request, id=0):

@@ -5,6 +5,12 @@
 {% block extrahead %}
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="{% static 'js/jquery.emojiRatings.min.js' %}"></script>
+
+    <style>
+        red{
+            color: #dc3545;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -25,6 +31,14 @@
                 <br>
                 <button type="submit" class="btn btn-lg btn-primary btn-block">Save</button>
             </form>
+            {% if messages %}
+            <br>
+            <div class="messages">
+                {% for message in messages %}
+                <h4{% if message.tags %} class="{{ message.tags }} text-center" {% endif %} style="color:#dc3545">{{ message }}</h4>
+                {% endfor %}
+            </div>
+            {% endif %}
         </section>
     </main>
 
