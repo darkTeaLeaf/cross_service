@@ -58,7 +58,7 @@ class EditUserView(View):
         return redirect('/user/')
 
         
-def leave_feedback(request, user_id):
+def create_feedback(request, user_id):
     if request.method == "POST":
         if str(request.user.id) == user_id: 
             messages.error(request, 'You cannot leave feedback for yourself')
@@ -71,12 +71,19 @@ def leave_feedback(request, user_id):
             feedback.grade = request.POST.get('rating')
             feedback.save()
             
-            messages.success(request, 'Your feedback is saved!')
-            return redirect('/user/'+user_id+'/feedback/{}'.format(feedback.id))
+            return redirect('/user/feedback/{}'.format(feedback.id))
 
     elif request.method == "GET":
         target = User.objects.get(id=user_id)
-        return render(request, 'user/feedback.html', {'target': target})
+        return render(request, 'user/feedback_creation.html', {'target': target})
+
+
+def get_feedback(request, user_id, feedback_id):
+    feedback = Feedback.objects.get(id=feedback_id)
+    author = feedback.userFrom
+    target = User.objects.get(id=user_id)
+    #TODO what if there is no such feedback ??
+    return render(request, 'user/feedback_view.html', {'author': author, 'feedback': feedback, 'target': target})
 
 
 def user_info(request, id=0):
