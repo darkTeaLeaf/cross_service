@@ -1,0 +1,57 @@
+{% extends 'feed/base.html' %}
+
+{% load staticfiles %}
+
+{% block extrahead %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="{% static 'js/jquery.emojiRatings.min.js' %}"></script>
+
+    <style>
+        red{
+            color: #dc3545;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <main role="main">
+        <section class="d-flex card container text-muted col-sm-4 bg-light jumbotron justify-content-between ">
+            <form method="POST" class="offer-form" action="">
+                {% csrf_token %}
+                <h1 class="h3 mb-3 font-weight-normal">Leave a feedback</h1>
+
+                <label for="inputFeedback">For the user <a href="."> @{{target.username}} </a></label>
+                <div class="form-label-group">
+                    <textarea id="inputFeedback" cols="40" rows="10" name="inputFeedback" class="form-control" placeholder="Good deal! Thanks a lot!"
+                              required></textarea>
+                </div>
+                <br>
+                <div id="rating"></div>
+                <br>
+                <button type="submit" class="btn btn-lg btn-primary btn-block">Save</button>
+            </form>
+            {% if messages %}
+            <br>
+            <div class="messages">
+                {% for message in messages %}
+                <h4{% if message.tags %} class="{{ message.tags }} text-center" {% endif %} style="color:#dc3545">{{ message }}</h4>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </section>
+    </main>
+
+    <script> 
+            options = {
+            emoji: 'U+2B50',
+            count: 5,
+            fontSize: 16,
+            inputName: 'rating',
+            onUpdate: function() {}
+            }
+            
+            $('#rating').emojiRating(options); 
+        </script>
+
+{% endblock %}

@@ -7,6 +7,8 @@ from django.db.models import Q
 from django.views.generic import View, ListView
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import logout
+from django.contrib import messages
+from re import match
 
 
 class CreateUserView(View):
@@ -55,15 +57,49 @@ class EditUserView(View):
 
         return redirect('/user/')
 
+        
+def create_feedback(request, user_id):
+    if request.method == "POST":
+        if str(request.user.id) == user_id: 
+            messages.error(request, 'You cannot leave feedback for yourself')
+            return redirect('/user/'+user_id+'/feedback')
+        else:
+            feedback = Feedback()
+            feedback.userFrom = request.user
+            feedback.userTo = User.objects.get(id=user_id)
+            feedback.feedback_text = request.POST.get('inputFeedback')
+            feedback.grade = request.POST.get('rating')
+            feedback.save()
+            
+            return redirect('/user/{}/feedback/{}'.format(feedback.userTo.id, feedback.id))
+
+    elif request.method == "GET":
+        target = User.objects.get(id=user_id)
+        return render(request, 'user/feedback_creation.html', {'target': target})
+
+
+def get_feedback(request, user_id, feedback_id):
+    feedback = Feedback.objects.get(id=feedback_id)
+    author = feedback.userFrom
+    target = User.objects.get(id=user_id)
+    #TODO what if there is no such feedback ??
+    return render(request, 'user/feedback_view.html', {'author': author, 'feedback': feedback, 'target': target})
+
 
 def user_info(request, id=0):
-
     if id == 0:  # my page
         user = request.user
+        feedbacks = Feedback.objects.filter(userTo=user)      
         # return render(request, 'user/index.html', {''})
     else:  # page of another user
         user = User.objects.get(id=id)
-    return render(request, 'user/index.html', {'client': user, 'me': user.id==request.user.id})
+        feedbacks = Feedback.objects.filter(userTo=user)      
+
+    mean = 0.0
+    for feedback in feedbacks:
+        mean += float(feedback.grade)
+    mean = round(mean/len(feedbacks))
+    return render(request, 'user/index.html', {'client': user, 'me': user.id==request.user.id, 'mean_feedback': int(mean), 'feedbacks': feedbacks})
 
 
 def logout_view(request):

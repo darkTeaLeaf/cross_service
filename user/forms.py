@@ -2,7 +2,13 @@ from django import forms
 from django.contrib.auth.models import Group
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
+from .models import Feedback
 from .models import USER_PROFILE_DATA
+
+# class FeedbackForm(forms.ModelForm):
+#     class Meta:
+#         model = Feedback
+#         fields = ('feedback', 'grade', 'type')
 
 
 # class CreateUserForm(UserCreationForm):

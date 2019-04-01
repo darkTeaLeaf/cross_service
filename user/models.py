@@ -1,5 +1,7 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import User
+
 
 USER_PROFILE_DATA = (
     'alias',
@@ -20,3 +22,13 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+class Feedback(models.Model):
+    userFrom = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='author')
+    userTo = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='recipient')
+    feedback_text = models.TextField(null=True, blank=True)
+    # feedback_for_provider = models.BooleanField(default=True);
+    grade = models.SmallIntegerField()
+
+    def publish(self):
+        self.save()

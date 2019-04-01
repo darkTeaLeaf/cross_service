@@ -1,0 +1,43 @@
+{% extends 'feed/base.html' %}
+
+{% load staticfiles %}
+
+{% block extrahead %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="{% static 'js/jquery.emojiRatingView.js' %}"></script>
+
+{% endblock %}
+
+{% block body %}
+
+    <main role="main">
+        <section class="d-flex card container text-muted col-sm-4 bg-light jumbotron justify-content-between ">
+            <form method="POST" class="offer-form" action="">
+                {% csrf_token %}
+                <h1 class="h3 mb-3 font-weight-normal">Feedback</h1>
+
+                <label>For the user <a href=".."> @{{target.username}} </a> from the user <a href="../../{{author.id}}"> @{{author.username}} </a></label>
+                <div class="form-label-group">
+                    <text x="50%" y="50%" fill="#eceeef" dy=".3em" class="form-control" readonly>{{feedback.feedback_text}}</text>
+                </div>
+                <br>
+                <div id="rating"></div>
+            </form>
+        </section>
+    </main>
+
+    <script> 
+        options = {
+        emoji: 'U+2B50',
+        count: 5,
+        fontSize: 16,
+        inputName: 'rating',
+        value: {{feedback.grade}},
+        onUpdate: function() {
+            }
+        }
+        
+        $('#rating').emojiRating(options); 
+    </script>
+
+{% endblock %}
