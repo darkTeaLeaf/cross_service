@@ -27,22 +27,17 @@
     </main>
 
     <script> 
-            options = {
-            emoji: 'U+2B50',
-            count: 5,
-            fontSize: 16,
-            inputName: 'rating',
-            value: {{feedback.grade}},
-            onUpdate: function() {
-               
-                }
+        options = {
+        emoji: 'U+2B50',
+        count: 5,
+        fontSize: 16,
+        inputName: 'rating',
+        value: {{feedback.grade}},
+        onUpdate: function() {
             }
-            
-            $('#rating').emojiRating(options); 
-            {% comment %} $('input[name="rating"]').prop('readonly', true);
-            $('input[name="rating"]').val('{{feedback.grade}}'); {% endcomment %}
-            {% comment %} $('input[type=hidden].rating').val({{feedback.grade}}); {% endcomment %}
-
-        </script>
+        }
+        
+        $('#rating').emojiRating(options); 
+    </script>
 
 {% endblock %}

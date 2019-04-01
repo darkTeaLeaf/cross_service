@@ -87,13 +87,19 @@ def get_feedback(request, user_id, feedback_id):
 
 
 def user_info(request, id=0):
-
     if id == 0:  # my page
         user = request.user
+        feedbacks = Feedback.objects.filter(userTo=user)      
         # return render(request, 'user/index.html', {''})
     else:  # page of another user
         user = User.objects.get(id=id)
-    return render(request, 'user/index.html', {'client': user, 'me': user.id==request.user.id})
+        feedbacks = Feedback.objects.filter(userTo=user)      
+
+    mean = 0.0
+    for feedback in feedbacks:
+        mean += float(feedback.grade)
+    mean = round(mean/len(feedbacks))
+    return render(request, 'user/index.html', {'client': user, 'me': user.id==request.user.id, 'mean_feedback': int(mean), 'feedbacks': feedbacks})
 
 
 def logout_view(request):
