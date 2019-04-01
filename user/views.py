@@ -71,7 +71,7 @@ def create_feedback(request, user_id):
             feedback.grade = request.POST.get('rating')
             feedback.save()
             
-            return redirect('/user/feedback/{}'.format(feedback.id))
+            return redirect('/user/{}/feedback/{}'.format(feedback.userTo.id, feedback.id))
 
     elif request.method == "GET":
         target = User.objects.get(id=user_id)

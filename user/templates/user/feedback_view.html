@@ -16,7 +16,7 @@
                 {% csrf_token %}
                 <h1 class="h3 mb-3 font-weight-normal">Feedback</h1>
 
-                <label>For the user <a href="."> @{{target.username}} </a> from the user <a href="../{{author.id}}"> @{{author.username}} </a></label>
+                <label>For the user <a href=".."> @{{target.username}} </a> from the user <a href="../../{{author.id}}"> @{{author.username}} </a></label>
                 <div class="form-label-group">
                     <text x="50%" y="50%" fill="#eceeef" dy=".3em" class="form-control" readonly>{{feedback.feedback_text}}</text>
                 </div>
@@ -32,10 +32,15 @@
             count: 5,
             fontSize: 16,
             inputName: 'rating',
-            onUpdate: function() {}
+            value: {{feedback.grade}},
+            onUpdate: function() {
+                    $('input[name="rating"]').val({{feedback.grade}});
+                    }
             }
             
             $('#rating').emojiRating(options); 
+            $('input[name="rating"]').prop('readonly', true);
+            $('input[name="rating"]').val({{feedback.grade}});
         </script>
 
 {% endblock %}
