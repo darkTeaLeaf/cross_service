@@ -84,7 +84,7 @@
         <section class="jumbotron text-center">
             <div class="container">
 
-                <h1 class="jumbotron-heading">{% if requests %}Feed with requests{% elif offers %}Feed with offers{% else %}Your query did not match any result;({% endif %}</h1>
+                <h1 class="jumbotron-heading">{% if requests or request.path == "/requests/" %}Feed with requests{% elif offers or request.path == "/offers/" %}Feed with offers{% else %}Your query did not match any result;({% endif %}</h1>
                 <form method="get" action="/users">
                     <label class="switch">
                         <input type="checkbox" {% if requests or request.path == "/requests/" %}checked{% endif %} name="to_requests" id="to_requests" value="/requests" onclick="
@@ -100,8 +100,8 @@
                 <p class="lead text-muted">You can add your offers and requests fully free of charge!</p>
                 <img class="mb-4" src="{% static 'default.png' %}" alt="" width="72" height="72">
                 <p>
-                    {% if offers %}<a href="/offer_creation/" class="btn btn-primary my-2">Post new</a> {% endif %}
-                    {% if requests %}<a href="/request_creation/" class="btn btn-primary my-2">Post new</a> {% endif %}
+                    {% if offers or request.path == "/offers/" %}<a href="/offer_creation/" class="btn btn-primary my-2">Post new</a> {% endif %}
+                    {% if requests or request.path == "/requests/" %}<a href="/request_creation/" class="btn btn-primary my-2">Post new</a> {% endif %}
                 </p>
             </div>
         </section>
