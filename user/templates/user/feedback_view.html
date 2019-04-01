@@ -4,7 +4,7 @@
 
 {% block extrahead %}
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="{% static 'js/jquery.emojiRatings.min.js' %}"></script>
+    <script src="{% static 'js/jquery.emojiRatingView.js' %}"></script>
 
 {% endblock %}
 
@@ -34,13 +34,15 @@
             inputName: 'rating',
             value: {{feedback.grade}},
             onUpdate: function() {
-                    $('input[name="rating"]').val({{feedback.grade}});
-                    }
+               
+                }
             }
             
             $('#rating').emojiRating(options); 
-            $('input[name="rating"]').prop('readonly', true);
-            $('input[name="rating"]').val({{feedback.grade}});
+            {% comment %} $('input[name="rating"]').prop('readonly', true);
+            $('input[name="rating"]').val('{{feedback.grade}}'); {% endcomment %}
+            {% comment %} $('input[type=hidden].rating').val({{feedback.grade}}); {% endcomment %}
+
         </script>
 
 {% endblock %}
