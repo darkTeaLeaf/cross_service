@@ -6,7 +6,12 @@ from django.utils import timezone
 class Offer(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
+    service_type = models.CharField(max_length=200)
+    price = models.CharField(max_length=100)
+    start_date = models.DateField(blank=True, null=True)
+    deadline = models.DateField(blank=True, null=True)
     offer_description = models.TextField(null=True)
+    image = models.ImageField(blank=True, null=True)
     published_date = models.DateTimeField(default=timezone.now)
 
     def publish(self):

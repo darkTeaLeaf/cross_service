@@ -49,7 +49,15 @@ def get_offer_creation(request):
     if request.method == "POST":
         offer = Offer()
         offer.title = request.POST.get('title')
+        offer.service_type = request.POST.get('service_type')
+        offer.price = request.POST.get('price')
+        offer.start_date = request.POST.get('start_date')
+        offer.deadline = request.POST.get('deadline')
         offer.offer_description = request.POST.get('offer_description')
+
+        image = request.FILES.get('image', False)
+        offer.image = image
+
         offer.user = User.objects.get(username=user.username)
         offer.save()
         return redirect('/offers/{}'.format(offer.id))
@@ -61,8 +69,29 @@ def get_offer_creation(request):
 
 def get_offer(request, id):
     of = Offer.objects.get(id=id)
-    print(of.title)
     return render(request, 'feed/offer_view.html', {'offer': of})
+
+
+def edit_offer(request, id):
+    if request.method == "POST":
+
+        offer = Offer.objects.get(id=id)
+        offer.title = request.POST.get('title')
+        offer.service_type = request.POST.get('service_type')
+        offer.price = request.POST.get('price')
+        offer.start_date = request.POST.get('start_date')
+        offer.deadline = request.POST.get('deadline')
+        offer.offer_description = request.POST.get('offer_description')
+
+        image = request.FILES.get('image', False)
+        offer.image = image
+
+        offer.save()
+        return redirect('/offers/{}'.format(offer.id))
+
+    elif request.method == "GET":
+        offer = Offer.objects.get(id=id)
+        return render(request, 'feed/offer_edit.html', {'offer': offer})
 
 
 def get_request_creation(request):
