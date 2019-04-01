@@ -38,48 +38,48 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 {% if user.is_authenticated %}
-                <li class="nav-item active">
-                    <a class="nav-link" href="/user/">{{ user.username }} <span class="sr-only">(current)</span></a>
-                </li>
-                <div class="navbar-nav mr-auto">
-                </div>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/user/">{{ user.username }} <span class="sr-only">(current)</span></a>
+                    </li>
+                    <div class="navbar-nav mr-auto">
+                    </div>
                 {% endif %}
                 {% if user.is_superuser %}
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin">Admin</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">Admin</a>
+                    </li>
                 {% endif %}
             </ul>
             <form class="form-inline mt-2 mt-md-0" method="get" action={% if offers %}"/"{% endif %}
-                    {% if requests %} "/requests" {% endif %}>
+            {% if requests %} "/requests" {% endif %}>
 
-                {% if user.is_anonymous %}
+            {% if user.is_anonymous %}
                 <div class="navbar-nav mr-auto">
                     <a class="nav-link" href="/user/signup/">Sign up <span class="sr-only">(current)</span></a>
                     <a class="nav-link mr-sm-2" href="/user/signin/">Sign in <span class="sr-only">(current)</span></a>
                 </div>
-                {% elif user.is_authenticated %}
+            {% elif user.is_authenticated %}
                 <div class="navbar-nav mr-auto">
                     <a class="nav-link px-xl-4" href="/user/signout/">Sign out <span
                             class="sr-only">(current)</span></a>
                 </div>
-                {% endif %}
-                <input class="form-control" name="q" type="text" placeholder="Search" value="{{ q }}"
-                       aria-label="Search">
+            {% endif %}
+            <input class="form-control" name="q" type="text" placeholder="Search" value="{{ q }}"
+                   aria-label="Search">
 
 
-                <script type="text/javascript">
-                    document.getElementById('search_tag').value = "<?php echo $_GET['search_tag'];?>";
-                </script>
+            <script type="text/javascript">
+                document.getElementById('search_tag').value = "<?php echo $_GET['search_tag'];?>";
+            </script>
 
-                <div class="flex-row d-md-flex ml-md-auto px-xl-2">
-                    <select class="outline-success" id="search_tag" name="search_tag">
-                        <option value="title">by title</option>
-                        <option value="user">by user</option>
-                    </select>
-                </div>
+            <div class="flex-row d-md-flex ml-md-auto px-xl-2">
+                <select class="outline-success" id="search_tag" name="search_tag">
+                    <option value="title">by title</option>
+                    <option value="user">by user</option>
+                </select>
+            </div>
 
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
     </nav>
@@ -87,15 +87,15 @@
 
 
 {% block body %}
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
 
 {% endblock %}
 
