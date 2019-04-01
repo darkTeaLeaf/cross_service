@@ -8,7 +8,7 @@ from .models import USER_PROFILE_DATA
 # class FeedbackForm(forms.ModelForm):
 #     class Meta:
 #         model = Feedback
-#         fields = ('feedback', 'grade', 'type')
+#         fields = ('feedback', 'grade', 'type', 'published_date')
 
 
 # class CreateUserForm(UserCreationForm):
