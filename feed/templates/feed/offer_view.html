@@ -8,7 +8,9 @@
     <form class="form-signin" action="" method="post">
 
         <h1 class="h3 mb-3 font-weight-normal">Offer from <a href="/user/{{offer.user.id}}">{{offer.user}}</a>
+        {% if request.user == offer.user %}
         <a href="/offer_edit/{{ offer.id }}" class="btn btn-primary my-2">Edit</a>
+        {% endif %}
         </h1>
         <label>Title</label>
         <div class="form-label-group">

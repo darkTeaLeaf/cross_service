@@ -1,0 +1,20 @@
+{% extends 'feed/base.html' %}
+
+{% load staticfiles %}
+
+
+{% block body %}
+
+    <main role="main">
+        <section class="d-flex card container text-muted col-sm-4 bg-light jumbotron justify-content-between ">
+
+            {% csrf_token %}
+            <h1 class="h3 mb-3 font-weight-normal">Your respond is sent to request's creator. Please, wait for answer.</h1>
+
+        </section>
+    </main>
+
+    <!--&lt;!&ndash; Theme CSS &ndash;&gt;-->
+    <!--<link href="{% static 'css/offer_creation.css' %}" rel="stylesheet">-->
+
+{% endblock %}

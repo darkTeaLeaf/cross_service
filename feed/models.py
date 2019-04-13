@@ -37,3 +37,16 @@ class Request(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class RespondRequest(models.Model):
+    respond_user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    request_id = models.ForeignKey(Request, on_delete=models.CASCADE)
+    message = models.TextField()
+    respond_date = models.DateTimeField(default=timezone.now)
+
+    def publish(self):
+        self.save()
+
+    def __str__(self):
+        return self.message

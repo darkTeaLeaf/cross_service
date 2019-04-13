@@ -3,3 +3,4 @@ from .models import *
 
 admin.site.register(Offer)
 admin.site.register(Request)
+admin.site.register(RespondRequest)

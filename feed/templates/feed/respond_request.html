@@ -1,0 +1,28 @@
+{% extends 'feed/base.html' %}
+
+{% load staticfiles %}
+
+
+{% block body %}
+
+    <main role="main">
+        <section class="d-flex card container text-muted col-sm-4 bg-light jumbotron justify-content-between ">
+            <form method="POST" class="offer-form" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h1 class="h3 mb-3 font-weight-normal">Respond to request</h1>
+
+                <label for="inputMessage">Message</label>
+                <div class="form-label-group">
+                    <textarea id="inputMessage" cols="40" rows="16" name="message" class="form-control"
+                              placeholder="You can leave some message" required></textarea>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-lg btn-primary btn-block">Send</button>
+            </form>
+        </section>
+    </main>
+
+    <!--&lt;!&ndash; Theme CSS &ndash;&gt;-->
+    <!--<link href="{% static 'css/offer_creation.css' %}" rel="stylesheet">-->
+
+{% endblock %}
