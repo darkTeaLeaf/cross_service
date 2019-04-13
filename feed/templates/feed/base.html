@@ -27,18 +27,27 @@
     {% endblock %}
 </head>
 
+<style>
+    .mac-style {
+        width: 192px;
+        -webkit-transition: width 0.5s ease-in-out;
+        -moz-transition:width 0.5s ease-in-out;
+        -o-transition: width 0.5s ease-in-out;
+        transition: width 0.5s ease-in-out;
+     }
+    .mac-style:focus{
+        width: 312px;
+    }
+
+</style>
+
+
 <body>
 <header>
-    <!-- Fixed navbar -->
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <div>
             <a class="navbar-brand" href="/">Cross Service</a>
         </div>
-
-        <button class="btn btn-sm btn-outline-secondary" type="button" data-toggle="collapse"
-                data-target="#navbarHeader">
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
@@ -53,54 +62,63 @@
                 </li>
                 {% endif %}
             </ul>
-            <form class="form-inline mt-2 mt-md-0" method="get" action={% if offers %}
-            "/"{% endif %}
-            {% if requests %} "/requests" {% endif %}>
 
-            {% if user.is_anonymous %}
-            <div class="navbar-nav mr-auto">
-                <a class="nav-link" href="/user/signup/">Sign up <span class="sr-only">(current)</span></a>
-                <a class="nav-link mr-sm-2" href="/user/signin/">Sign in <span class="sr-only">(current)</span></a>
-            </div>
-            {% elif user.is_authenticated %}
-            <div class="navbar-nav mr-auto">
-                <a class="nav-link px-xl-4" href="/user/signout/">Sign out <span
-                        class="sr-only">(current)</span></a>
-            </div>
-            {% endif %}
-            <script>
-                function claps() {
-                    $('#navbarHeader').collapse('show')
-                }
-                function smack() {
-                    $('#navbarHeader').collapse('hide')
-                }
-            </script>
-            <input class="form-control mr-sm-2" name="q" type="text" onfocusin="claps()" onfocusout="smack()" placeholder="Search"
-                   value="{{ q }}"
-                   aria-label="Search">
+            <ul class="navbar-nav">
+                {% if user.is_anonymous %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="/user/signup/">Sign up <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mr-sm-2" href="/user/signin/">Sign in <span class="sr-only">(current)</span></a>
+                </li>
+                {% elif user.is_authenticated %}
+                <li class="nav-item active">
+                    <a class="nav-link px-xl-4" href="/user/signout/">Sign out <span
+                            class="sr-only">(current)</span></a>
+                </li>
 
 
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+                {% endif %}
+                <li>
+                    <input class="form-control mr-sm-2 mac-style" name="q" type="text" onfocusin="claps()"
+                           onfocusout="smack()"
+                           placeholder="Search"
+                           value="{{ q }}"
+                           aria-label="Search">
+                </li>
+            </ul>
         </div>
     </nav>
 
-    <div class="bg-light collapse" id="navbarHeader" style="">
+    <div class="bg-light collapse" id="navbarHeader"
+         style="position: absolute; width: 312px; right: 23px;">
         <div class="container">
-            <div class="row">
-                <div class="col-sm-8 col-md-7 py-4">
-                    <h4 class="text-white">About</h4>
-                    <p class="text-muted">Add some information about the album below, the author, or any other
-                        background context. Make it a few sentences long so folks can pick up some informative tidbits.
-                        Then, link them off to some social networking sites or contact information.</p>
-                </div>
-                <div class="col-sm-4 offset-md-1 py-4">
-                    <h4 class="text-white">Contact</h4>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-white">Follow on Twitter</a></li>
-                        <li><a href="#" class="text-white">Like on Facebook</a></li>
-                        <li><a href="#" class="text-white">Email me</a></li>
+            <div class="column">
+                <div class="col-xl-8 offset-md-1 py-4">
+                    <ul class="list-unstyled mt-2 mt-md-0">
+                        <form method="get" action={% if offers %}
+                        "/"{% endif %}
+                        <li class="radio">
+                            <input type="radio" id="contactChoice1"
+                                   name="optradio" value="email">
+                            <label for="contactChoice1">By title</label>
+                        </li>
+                        <li class="radio">
+
+                            <input type="radio" id="contactChoice2"
+                                   name="optradio" value="phone">
+                            <label for="contactChoice2">By author</label>
+                        </li>
+                        <li class="radio">
+
+                            <input type="radio" id="contactChoice3"
+                                   name="optradio" value="mail">
+                            <label for="contactChoice3">By date</label>
+                        </li>
+                        <li>
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        </li>
+                        </form>
                     </ul>
                 </div>
             </div>
@@ -123,5 +141,16 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+
+<script>
+    function claps() {
+        $('#navbarHeader').collapse('show')
+    }
+    function smack() {
+        $('#navbarHeader').collapse('hide')
+    }
+
+</script>
 </body>
+
 </html>
