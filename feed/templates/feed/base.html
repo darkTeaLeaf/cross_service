@@ -58,9 +58,7 @@
                 {% endif %}
             </ul>
 
-            <ul class="navbar-nav"
-                oninput="claps()"
-                onmouseover="claps()">
+            <ul class="navbar-nav">
                 {% if user.is_anonymous %}
                 <li class="nav-item active">
                     <a class="nav-link" href="/user/signup/">Sign up <span class="sr-only">(current)</span></a>
@@ -75,7 +73,7 @@
                 </li>
 
                 {% endif %}
-                <li>
+                <li oninput="claps()" onmouseover="claps()">
                     <form name="search_form" method="get" {% if offers %} action="/" {% endif %}>
                         <input id="search_line" class="form-control mac-style" name="q" type="text"
                                autocomplete="off"
