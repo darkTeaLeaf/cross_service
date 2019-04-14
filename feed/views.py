@@ -1,12 +1,9 @@
-from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from django.utils import timezone
-from django.views import View
+from django.shortcuts import render, redirect, render_to_response
 from django.views.generic import ListView
 from django.contrib.auth.models import User
 from feed.forms import OfferForm, RequestForm
-from feed.models import Offer, Request
+from feed.models import Offer, Request, RespondRequest
 
 
 class IndexView(ListView):
@@ -22,17 +19,21 @@ class IndexView(ListView):
         get_request = self.request.GET
 
         # quick search
-        search_tag = get_request.get('search_tag')
+        search_tag = get_request.get('optradio')
         if get_request.get('q') and get_request.get('q') != 'None':
-            if search_tag == 'title':
+            if search_tag == 'bytitle':
                 return self.model.objects.filter(title__icontains=self.request.GET.get('q'))
-            elif search_tag == 'user':
+            elif search_tag == 'byauthor':
                 return self.model.objects.filter(user__username=self.request.GET.get('q'))
+            elif search_tag == 'bymonth' and 0 < int(self.request.GET.get('q')) < 13:
+                print('here')
+                return self.model.objects.filter(published_date__month=self.request.GET.get('q'))
         return self.model.objects.order_by('title')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['q'] = self.request.GET.get('q', '')
+        context['optradio'] = self.request.GET.get('optradio', '')
         return context
 
 
@@ -101,6 +102,7 @@ def get_request_creation(request):
 
     if request.method == "POST":
         object_request = Request()
+        object_request.visible = True
         object_request.title = request.POST.get('title')
         object_request.service_type = request.POST.get('service_type')
         object_request.price = request.POST.get('price')
@@ -145,3 +147,23 @@ def edit_request(request, id):
     elif request.method == "GET":
         req = Request.objects.get(id=id)
         return render(request, 'feed/request_edit.html', {'req': req})
+
+
+def create_respond_request(request, id):
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('/user/signin/')
+
+    if request.method == "POST":
+        respond_request = RespondRequest()
+        respond_request.request_id = Request.objects.get(id=id)
+        respond_request.user = User.objects.get(username=user.username)
+        respond_request.message = request.POST.get('message')
+
+        respond_request.save()
+        return render_to_response('feed/success_page.html')
+
+    elif request.method == "GET":
+        form = Request()
+        return render(request, 'feed/respond_request.html', {'form': form})
+

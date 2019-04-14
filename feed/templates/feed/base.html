@@ -1,103 +1,155 @@
+<!DOCTYPE html>
+
 {% load staticfiles %}
 
-<!doctype html>
-
+<html>
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://getbootstrap.com/favicon.ico"> <!-- Replace with the kitty -->
 
-    <link rel="icon" href="https://getbootstrap.com/favicon.ico">
+    <title>Album example for Bootstrap</title>
 
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/album/">
 
-    <link href="https://getbootstrap.com/docs/4.0/examples/album/album.css" rel="stylesheet">
-
+    <!-- Bootstrap core CSS -->
     <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap CSS -->
-    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"-->
-    <!--integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+
+    <!-- Custom styles for this template -->
+    <link href="album.css" rel="stylesheet">
 
     <title>Feed</title>
 
     {% block extrahead %}
     {% endblock %}
-
 </head>
+
+<style>
+    .mac-style {
+        -webkit-transition: width 0.3s ease-in-out;
+        -moz-transition:width 0.3s ease-in-out;
+        -o-transition: width 0.3s ease-in-out;
+        transition: width 0.3s ease-in-out;
+     }
+</style>
+
+
 <body>
-
 <header>
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark" onmouseleave="smack()">
+        <div>
+            <a class="navbar-brand" href="/">Cross Service</a>
+        </div>
 
-        <a class="navbar-brand" href="/">Cross Service</a>
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 {% if user.is_authenticated %}
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/user/">{{ user.username }} <span class="sr-only">(current)</span></a>
-                    </li>
-                    <div class="navbar-nav mr-auto">
-                    </div>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/user/">{{ user.username }} <span class="sr-only">(current)</span></a>
+                </li>
                 {% endif %}
                 {% if user.is_superuser %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin">Admin</a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">Admin</a>
+                </li>
                 {% endif %}
             </ul>
-            <form class="form-inline mt-2 mt-md-0" method="get" action={% if offers %}"/"{% endif %}
-            {% if requests %} "/requests" {% endif %}>
 
-            {% if user.is_anonymous %}
-                <div class="navbar-nav mr-auto">
+            <ul class="navbar-nav">
+                {% if user.is_anonymous %}
+                <li class="nav-item active">
                     <a class="nav-link" href="/user/signup/">Sign up <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link mr-sm-2" href="/user/signin/">Sign in <span class="sr-only">(current)</span></a>
-                </div>
-            {% elif user.is_authenticated %}
-                <div class="navbar-nav mr-auto">
+                </li>
+                {% elif user.is_authenticated %}
+                <li class="nav-item active">
                     <a class="nav-link px-xl-4" href="/user/signout/">Sign out <span
                             class="sr-only">(current)</span></a>
-                </div>
-            {% endif %}
-            <input class="form-control" name="q" type="text" placeholder="Search" value="{{ q }}"
-                   aria-label="Search">
+                </li>
 
+                {% endif %}
+                <li oninput="claps()" onmouseover="claps()">
+                    <form name="search_form" method="get" {% if offers %} action="/" {% endif %}>
+                        <input id="search_line" class="form-control mac-style" name="q" type="text"
+                               autocomplete="off"
+                               style="width: 281px;"
+                               placeholder="Search"
+                               {% if q %} value={{ q }} {% else %} value="" {% endif %}
+                               aria-label="Search">
 
-            <script type="text/javascript">
-                document.getElementById('search_tag').value = "<?php echo $_GET['search_tag'];?>";
-            </script>
+                        <div class="bg-light collapse" id="navbarHeader"
+                             style="position: absolute; top: 100%; width: 312px; right: 17px;">
+                            <div class="container">
+                                <div class="column">
+                                    <div class="col-xl-8 offset-md-1 py-4">
+                                        <ul class="list-unstyled mt-2 mt-md-0">
+                                            <li class="radio">
+                                                <input type="radio" id="contactChoice1"
+                                                       name="optradio" value="bytitle" {% if optradio == "bytitle" or optradio == "" %}checked{% endif %}>
+                                                <label for="contactChoice1">By title</label>
+                                            </li>
+                                            <li class="radio">
 
-            <div class="flex-row d-md-flex ml-md-auto px-xl-2">
-                <select class="outline-success" id="search_tag" name="search_tag">
-                    <option value="title">by title</option>
-                    <option value="user">by user</option>
-                </select>
-            </div>
+                                                <input type="radio" id="contactChoice2"
+                                                       name="optradio" value="byauthor" {% if optradio == "byauthor" %}checked{% endif %}>
+                                                <label for="contactChoice2">By author</label>
+                                            </li>
+                                            <li class="radio">
 
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+                                                <input type="radio" id="contactChoice3"
+                                                       name="optradio" value="bymonth" {% if optradio == "bymonth" %}checked{% endif %}>
+                                                <label for="contactChoice3">By month number</label>
+                                            </li>
+                                            <li>
+                                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                                                    Search
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </li>
+            </ul>
         </div>
     </nav>
+
+
 </header>
 
 
 {% block body %}
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
+
 
 {% endblock %}
 
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+<script>
+    function claps() {
+        $('#navbarHeader').collapse('show');
+        $('#search_line').width('289');
+    }
+    function smack() {
+        $('#navbarHeader').collapse('hide');
+        $('#search_line').width('255');
+    }
+</script>
 </body>
+
 </html>

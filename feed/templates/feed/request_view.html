@@ -7,8 +7,10 @@
 <div class="container bg-light col-sm-4 jumbotron">
     <form class="form-signin" action="" method="post">
 
-        <h1 class="h3 mb-3 font-weight-normal">Request from <a href="/user/{{req.user.id}}">{{request.user}}</a>
+        <h1 class="h3 mb-3 font-weight-normal">Request from <a href="/user/{{req.user.id}}">{{req.user}}</a>
+        {% if request.user == req.user %}
         <a href="/request_edit/{{ req.id }}" class="btn btn-primary my-2">Edit</a>
+        {% endif %}
         </h1>
         <label>Title</label>
         <div class="form-label-group">
@@ -49,7 +51,9 @@
             {% endif %}
         </div>
         <br>
-
+        {% if request.user != req.user %}
+        <a href="/requests/{{ req.id }}/respond_request" class="btn btn-primary my-2">Respond</a>
+        {% endif %}
     </form>
 </div>
 

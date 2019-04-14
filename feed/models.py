@@ -23,6 +23,9 @@ class Offer(models.Model):
 
 class Request(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    performer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,
+                                  related_name='performer')
+    visible = models.BooleanField()
     title = models.CharField(max_length=200)
     service_type = models.CharField(max_length=200)
     price = models.CharField(max_length=100)
@@ -37,3 +40,16 @@ class Request(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class RespondRequest(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    request_id = models.ForeignKey(Request, on_delete=models.CASCADE)
+    message = models.TextField()
+    respond_date = models.DateTimeField(default=timezone.now)
+
+    def publish(self):
+        self.save()
+
+    def __str__(self):
+        return self.message
