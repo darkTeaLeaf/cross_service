@@ -16,7 +16,7 @@ class IndexView(ListView):
     template_name = 'feed/index.html'
     model = Offer
     context_object_name = 'offers'
-    paginate_by = 10
+    paginate_by = 9
 
     def get_queryset(self):
         get_request = self.request.GET
