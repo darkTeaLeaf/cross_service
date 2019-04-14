@@ -30,7 +30,7 @@ class Feedback(models.Model):
     feedback_text = models.TextField(null=True, blank=True)
     grade = models.SmallIntegerField()
     published_date = models.DateTimeField(default=timezone.now)
-    request = models.ForeignKey(models.Request, null=True, on_delete=models.CASCADE, related_name='request')
+    request = models.ForeignKey(feed.models.Request, null=True, on_delete=models.CASCADE, related_name='request')
     for_requester = models.BooleanField()
 
     def publish(self):

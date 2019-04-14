@@ -42,16 +42,10 @@
                     <small>{{ client.userprofile.bio }}</small>
                 {% endif %}
             </div>
+            <div id="rating" class=".mx-1 .mr-1"></div>
             {% if me %}
                 <a class="btn-r" href="/user/edit">
                 <button class="btn btn-outline-success my-2 my-sm-0 bs-popover-left mx-2" type="submit">Edit</button>
-            {% endif %}
-            </a>
-            <div id="rating" class=".mx-1 .mr-1"></div>
-            {% if user.is_authenticated and me is False %}
-                <a class="btn-r" href="/user/{{ client.id }}/feedback">
-                <button class="btn btn-outline-success my-2 my-sm-0 bs-popover-left mx-2" type="submit">Feedback
-                </button>
             {% endif %}
             </a>
         </div>
@@ -104,15 +98,17 @@
                             <strong class="text-gray-dark"><a
                                     href="/requests/{{ request.id }}"> {{ request.title }} </a>
                                 {{ request.request_description }} <br>
-                                Performer: <a
-                                        href="/user/{{ request.performer.id }}"> {{ request.performer.username }} </a>
+                                Provider: <a
+                                        href="/user/{{ request.performer.id }}">@{{ request.performer.username }} </a>
                             </strong>
                         </div>
                     </div>
                     <div>
-                        <a class="btn-r" href="/">
-                            <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
-                        </a></div>
+                        {% if me %}
+                            <a class="btn-r" href="/">
+                                <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
+                            </a></div>
+                        {% endif %}
                 </div>
             {% endfor %}
             {% for request in requests_to_do %}
@@ -131,15 +127,17 @@
                                     href="/requests/{{ request.id }}"> {{ request.title }} </a>
                                 {{ request.request_description }} <br>
                                 Requester: <a
-                                        href="/user/{{ request.user.id }}"> {{ request.user.username }} </a>
+                                        href="/user/{{ request.user.id }}">@{{ request.user.username }} </a>
                             </strong>
                         </div>
                     </div>
                     <div>
-                        <a class="btn-r" href="/">
-                            <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
-                        </a></div>
-                </div>
+                        {% if me %}
+                            <a class="btn-r" href="/">
+                                <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
+                            </a></div>
+                        {% endif %}
+                    </div>
             {% endfor %}
             <small class="d-block text-right mt-3">
                 <a href="#">All current requests</a>
