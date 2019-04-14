@@ -87,6 +87,23 @@ def get_feedback(request, user_id, feedback_id):
     #TODO what if there is no such feedback ??
     return render(request, 'user/feedback_view.html', {'author': author, 'feedback': feedback, 'target': target})
 
+def get_all_feedbacks(request, user_id=0):
+    if id == 0:  # my page
+        user = request.user
+    else:  # page of another user
+        user = User.objects.get(id=id)
+
+    feedbacks = Feedback.objects.filter(userTo=user).order_by('-published_date')
+
+    mean = 0.0
+    for feedback in feedbacks:
+        mean += float(feedback.grade)
+    if mean: 
+        mean = round(mean/len(feedbacks))
+
+    return render(request, 'user/feedback_page.html', {'client': user,
+         'mean_feedback': int(mean), 'feedbacks': feedbacks})
+
 
 def user_info(request, id=0):
     if id == 0:  # my page
@@ -94,8 +111,7 @@ def user_info(request, id=0):
     else:  # page of another user
         user = User.objects.get(id=id)
 
-    # feedbacks = Feedback.objects.filter(userTo=user).order_by('-published_date')
-    feedbacks = Feedback.objects.filter(userTo=user)
+    feedbacks = Feedback.objects.filter(userTo=user).order_by('-published_date')
     requests = user.request_set.order_by('-published_date')
     offers = user.offer_set.order_by('-published_date')
 
