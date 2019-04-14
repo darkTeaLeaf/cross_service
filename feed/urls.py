@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^requests/(?P<id>\d+)$', views.get_request, name='get_request'),
     url(r'^requests/$', views.IndexRequestsView.as_view(), name='requests'),
     url(r'^request_edit/(?P<id>\d+)$', views.edit_request, name='request_edit'),
+    url(r'^requests/(?P<id>\d+)/respond_request/$', views.create_respond_request, name='respond_request_creation'),
 ]

@@ -1,6 +1,8 @@
 from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.http import Http404
+
+from feed.models import RespondRequest, Request
 from .forms import *
 from .models import *
 from django.db.models import Q
@@ -57,12 +59,12 @@ class EditUserView(View):
 
         return redirect('/user/')
 
-        
+
 def create_feedback(request, user_id):
     if request.method == "POST":
-        if str(request.user.id) == user_id: 
+        if str(request.user.id) == user_id:
             messages.error(request, 'You cannot leave feedback for yourself')
-            return redirect('/user/'+user_id+'/feedback')
+            return redirect('/user/' + user_id + '/feedback')
         else:
             feedback = Feedback()
             feedback.userFrom = request.user
@@ -70,7 +72,7 @@ def create_feedback(request, user_id):
             feedback.feedback_text = request.POST.get('inputFeedback')
             feedback.grade = request.POST.get('rating')
             feedback.save()
-            
+
             return redirect('/user/{}/feedback/{}'.format(feedback.userTo.id, feedback.id))
 
     elif request.method == "GET":
@@ -82,7 +84,7 @@ def get_feedback(request, user_id, feedback_id):
     feedback = Feedback.objects.get(id=feedback_id)
     author = feedback.userFrom
     target = User.objects.get(id=user_id)
-    #TODO what if there is no such feedback ??
+    # TODO what if there is no such feedback ??
     return render(request, 'user/feedback_view.html', {'author': author, 'feedback': feedback, 'target': target})
 
 
@@ -95,18 +97,37 @@ def user_info(request, id=0):
     # feedbacks = Feedback.objects.filter(userTo=user).order_by('-published_date')
     feedbacks = Feedback.objects.filter(userTo=user)
     requests = user.request_set.order_by('-published_date')
+    requests = requests.filter(visible=True)
+    accepted_requests = user.request_set.order_by('-published_date')
+    accepted_requests = accepted_requests.filter(visible=False)
+    requests_to_do = Request.objects.filter(performer=user)
     offers = user.offer_set.order_by('-published_date')
 
     mean = 0.0
     for feedback in feedbacks:
         mean += float(feedback.grade)
-    if mean: 
-        mean = round(mean/len(feedbacks))
+    if mean:
+        mean = round(mean / len(feedbacks))
 
-    return render(request, 'user/index.html', {'client': user, 'me': user.id==request.user.id,
-         'mean_feedback': int(mean), 'feedbacks': feedbacks, 'requests': requests, 'offers': offers})
+    return render(request, 'user/index.html', {'client': user, 'me': user.id == request.user.id,
+                                               'mean_feedback': int(mean), 'feedbacks': feedbacks,
+                                               'accepted_requests': accepted_requests, 'requests_to_do': requests_to_do,
+                                               'requests': requests, 'offers': offers})
 
 
 def logout_view(request):
     logout(request)
     return redirect('/user/signin')
+
+
+def accept_request_performer(request, id):
+    respond = RespondRequest.objects.get(id=id)
+    object_request = Request.objects.get(id=respond.request_id.id)
+    object_request.performer = respond.user
+    object_request.visible = False
+
+    responds = RespondRequest.objects.filter(request_id=respond.request_id)
+    responds.delete()
+
+    object_request.save()
+    return redirect('/user/{}'.format(request.user.id))
