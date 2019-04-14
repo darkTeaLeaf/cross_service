@@ -94,15 +94,18 @@ def get_all_feedbacks(request, user_id=0):
         user = User.objects.get(id=id)
 
     feedbacks = Feedback.objects.filter(userTo=user).order_by('-published_date')
+    as_provider = Feedback.objects.filter(userTo=user, for_requester=False)
+    as_requestor = Feedback.objects.filter(userTo=user, for_requester=True)
 
     mean = 0.0
+
     for feedback in feedbacks:
         mean += float(feedback.grade)
     if mean: 
         mean = round(mean/len(feedbacks))
 
     return render(request, 'user/feedback_page.html', {'client': user,
-         'mean_feedback': int(mean), 'feedbacks': feedbacks})
+         'mean_feedback': int(mean), 'as_provider': as_provider, 'as_requestor': as_requestor})
 
 
 def user_info(request, id=0):

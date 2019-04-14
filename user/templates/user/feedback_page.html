@@ -33,9 +33,35 @@
         </div>
 
         <div class="my-3 p-3 bg-white rounded shadow-sm">
-            <h6 class="border-bottom border-gray pb-2 mb-0">Feedbacks</h6>
+            <h6 class="border-bottom border-gray pb-2 mb-0">Feedbacks as provider</h6>
 
-            {% for feedback in feedbacks %}
+            {% for feedback in as_provider %}
+                <div class="media text-muted pt-3">
+                    <img class="mr-3" src="{{ feedback.userFrom.userprofile.avatar.url }}" alt="" width="32" height="32">
+                    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <strong class="d-block text-gray-dark"> <a href="/user/{{ feedback.userFrom.id }}">
+                            @{{ feedback.userFrom.username }} </a> {{ feedback.feedback_text }}
+                            <div id='{{ feedback.id }}'></div>
+                        </strong>
+                    </p>
+
+                    <script>
+                        options = {
+                            inputName: 'rating' + {{feedback.id}},
+                            value: {{feedback.grade}},
+                        }
+
+                        $('#{{feedback.id}}').emojiRating(options);
+                    </script>
+                </div>
+
+            {% endfor %}
+        </div>
+
+        <div class="my-3 p-3 bg-white rounded shadow-sm">
+            <h6 class="border-bottom border-gray pb-2 mb-0">Feedbacks as requestor</h6>
+
+            {% for feedback in as_requestor %}
                 <div class="media text-muted pt-3">
                     <img class="mr-3" src="{{ feedback.userFrom.userprofile.avatar.url }}" alt="" width="32" height="32">
                     <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
@@ -57,9 +83,6 @@
 
             {% endfor %}
 
-            <small class="d-block text-right mt-3">
-                <a href="#">All feedbacks</a>
-            </small>
         </div>
 
     </main>

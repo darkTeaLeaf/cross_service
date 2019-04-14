@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils import timezone
-from feed.models import Request
+import feed.models
 
 USER_PROFILE_DATA = (
     'alias',
@@ -30,7 +30,8 @@ class Feedback(models.Model):
     feedback_text = models.TextField(null=True, blank=True)
     grade = models.SmallIntegerField()
     published_date = models.DateTimeField(default=timezone.now)
-    request = models.ForeignKey(Request, null=True, on_delete=models.CASCADE, related_name='request')
+    request = models.ForeignKey(models.Request, null=True, on_delete=models.CASCADE, related_name='request')
+    for_requester = models.BooleanField()
 
     def publish(self):
         self.save()
