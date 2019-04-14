@@ -8,6 +8,7 @@
 
 
 {% block body %}
+    {% load filter_tags %}
 
     {% comment %} <div class="nav-scroller bg-white shadow-sm">
     <nav class="nav nav-underline">
@@ -37,8 +38,8 @@
                 <br>
                 <small>@{{ client.userprofile.alias }}</small>
                 {% if client.userprofile.bio != None %}
-                <br>
-                <small>{{ client.userprofile.bio }}</small>
+                    <br>
+                    <small>{{ client.userprofile.bio }}</small>
                 {% endif %}
             </div>
             {% if me %}
@@ -47,39 +48,46 @@
             {% endif %}
             </a>
             <div id="rating" class=".mx-1 .mr-1"></div>
-            {% if user.is_authenticated and me is False%}
-                <a class="btn-r" href="/user/{{client.id}}/feedback">
-                <button class="btn btn-outline-success my-2 my-sm-0 bs-popover-left mx-2" type="submit">Feedback</button>
+            {% if user.is_authenticated and me is False %}
+                <a class="btn-r" href="/user/{{ client.id }}/feedback">
+                <button class="btn btn-outline-success my-2 my-sm-0 bs-popover-left mx-2" type="submit">Feedback
+                </button>
             {% endif %}
+            </a>
         </div>
 
         <div class="my-3 p-3 bg-white rounded shadow-sm">
             <h6 class="border-bottom border-gray pb-2 mb-0">Feedbacks</h6>
-            
+
             {% for feedback in feedbacks %}
-            <div class="media text-muted pt-3">
-                <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg"
-                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#007bff"/>
-                    <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
-                </svg>
-                <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                    <strong class="d-block text-gray-dark"> <a href="/user/{{feedback.userFrom.id}}"> @{{feedback.userFrom.username}} </a> {{feedback.feedback_text}} <div id='{{feedback.id}}'> </div> </strong>
-                </p>
-    
-                <script> 
-                    options = {
-                    inputName: 'rating' + {{feedback.id}},
-                    value: {{feedback.grade}},
-                    }
-                    
-                    $('#{{feedback.id}}').emojiRating(options); 
-                </script>
-            </div>
+                <div class="media text-muted pt-3">
+                    <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
+                         xmlns="http://www.w3.org/2000/svg"
+                         preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+                         aria-label="Placeholder: 32x32">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#007bff"/>
+                        <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
+                    </svg>
+                    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <strong class="d-block text-gray-dark"> <a href="/user/{{ feedback.userFrom.id }}">
+                            @{{ feedback.userFrom.username }} </a> {{ feedback.feedback_text }}
+                            <div id='{{ feedback.id }}'></div>
+                        </strong>
+                    </p>
+
+                    <script>
+                        options = {
+                            inputName: 'rating' + {{feedback.id}},
+                            value: {{feedback.grade}},
+                        }
+
+                        $('#{{feedback.id}}').emojiRating(options);
+                    </script>
+                </div>
 
             {% endfor %}
-            
+
             <small class="d-block text-right mt-3">
                 <a href="#">All feedbacks</a>
             </small>
@@ -87,21 +95,25 @@
 
         <div class="my-3 p-3 bg-white rounded shadow-sm">
             <h6 class="border-bottom border-gray pb-2 mb-0">Offers</h6>
-            
+
             {% for offer in offers %}
-            <div class="media text-muted pt-3">
-                <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg"
-                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#007bff"/>
-                    <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
-                </svg>
-                <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                    <div class="d-flex justify-content-between align-items-center w-100">
-                        <strong class="text-gray-dark"><a href="/offers/{{offer.id}}"> {{offer.title}} </a> {{offer.offer_description}}</strong>
+                <div class="media text-muted pt-3">
+                    <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
+                         xmlns="http://www.w3.org/2000/svg"
+                         preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+                         aria-label="Placeholder: 32x32">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#007bff"/>
+                        <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
+                    </svg>
+                    <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <strong class="text-gray-dark"><a
+                                    href="/offers/{{ offer.id }}"> {{ offer.title }} </a> {{ offer.offer_description }}
+                            </strong>
+                        </div>
                     </div>
                 </div>
-            </div>
             {% endfor %}
             <small class="d-block text-right mt-3">
                 <a href="#">All offers</a>
@@ -110,9 +122,9 @@
 
         <div class="my-3 p-3 bg-white rounded shadow-sm">
             <h6 class="border-bottom border-gray pb-2 mb-0">Requests</h6>
-            
+
             {% for request in requests %}
-            <div class="media text-muted pt-3">
+                <div class="media text-muted pt-3">
                 <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg"
                      preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32">
                     <title>Placeholder</title>
@@ -120,31 +132,55 @@
                     <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
                 </svg>
                 <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                    <div class="d-flex justify-content-between align-items-center w-100">
-                        <strong class="text-gray-dark"><a href="/requests/{{request.id}}"> {{request.title}} </a> {{request.request_description}}</strong>
-                    </div>
-                </div>
+                <div class="d-flex justify-content-between align-items-center w-100">
+                <strong class="text-gray-dark"><a
+                        href="/requests/{{ request.id }}"> {{ request.title }} </a> {{ request.request_description }}
+                </strong>
+            </div>
+                    {% with respond_requests=request|get_respond %}
+                    {% for respond in respond_requests %}
+                        <div class="media text-muted pt-3">
+                        <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
+                             xmlns="http://www.w3.org/2000/svg"
+                             preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+                             aria-label="Placeholder: 32x32">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#007bff"/>
+                            <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
+                        </svg>
+                        <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <strong class="text-gray-dark">
+                                <a href="/user/{{ respond.user }}"> {{ respond.user.username }} </a>
+                                <text>{{ respond.message }}</text>
+                            </strong>
+                        </div>
+                        </div>
+                        </div>
+                    {% endfor %}
+                {% endwith %}
+            </div>
             </div>
             {% endfor %}
 
             <small class="d-block text-right mt-3">
                 <a href="#">All requests</a>
             </small>
-        </div>
+            </div>
     </main>
 
-    <script> 
+    <script>
         options = {
-        emoji: 'U+2B50',
-        count: 5,
-        fontSize: 16,
-        inputName: 'rating',
-        value: {{mean_feedback}},
-        onUpdate: function() {
+            emoji: 'U+2B50',
+            count: 5,
+            fontSize: 16,
+            inputName: 'rating',
+            value: {{mean_feedback}},
+            onUpdate: function () {
             }
         }
-        
-        $('#rating').emojiRating(options); 
+
+        $('#rating').emojiRating(options);
     </script>
 
 {% endblock %}

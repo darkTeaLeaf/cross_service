@@ -152,7 +152,7 @@ def create_respond_request(request, id):
     if request.method == "POST":
         respond_request = RespondRequest()
         respond_request.request_id = Request.objects.get(id=id)
-        respond_request.respond_user_id = User.objects.get(username=user.username)
+        respond_request.user = User.objects.get(username=user.username)
         respond_request.message = request.POST.get('message')
 
         respond_request.save()

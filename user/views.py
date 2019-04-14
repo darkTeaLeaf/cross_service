@@ -1,6 +1,8 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.http import Http404
+
+from feed.models import RespondRequest
 from .forms import *
 from .models import *
 from django.db.models import Q
