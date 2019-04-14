@@ -35,14 +35,14 @@
                 <br>
                 <label for="inputStart">Date of start</label>
                 <div class="form-label-group">
-                    <input type="date" id="inputStart" name="start_date" class="form-control"
+                    <input type="date" id="inputStart" name="start_date" max="2100-12-31" class="form-control"
                            placeholder="Date of start" value="{{ offer.start_date|date:"Y-m-d" }}"
                            required autofocus>
                 </div>
                 <br>
                 <label for="inputDeadline">Deadline</label>
                 <div class="form-label-group">
-                    <input type="date" id="inputDeadline" name="deadline" class="form-control" placeholder="Deadline"
+                    <input type="date" id="inputDeadline" name="deadline" max="2100-12-31" class="form-control" placeholder="Deadline"
                            value="{{ offer.deadline|date:"Y-m-d" }}"
                            required autofocus>
                 </div>
