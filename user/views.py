@@ -1,8 +1,8 @@
 from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.http import Http404
 
-from feed.models import RespondRequest
+from feed.models import RespondRequest, Request
 from .forms import *
 from .models import *
 from django.db.models import Q
@@ -113,6 +113,9 @@ def user_info(request, id=0):
 
     feedbacks = Feedback.objects.filter(userTo=user).order_by('-published_date')
     requests = user.request_set.order_by('-published_date')
+    requests = requests.filter(visible=True)
+    accepted_requests = user.request_set.order_by('-published_date')
+    accepted_requests = accepted_requests.filter(visible=False)
     offers = user.offer_set.order_by('-published_date')
 
     mean = 0.0
@@ -122,9 +125,24 @@ def user_info(request, id=0):
         mean = round(mean/len(feedbacks))
 
     return render(request, 'user/index.html', {'client': user, 'me': user.id==request.user.id,
-         'mean_feedback': int(mean), 'feedbacks': feedbacks, 'requests': requests, 'offers': offers})
+         'mean_feedback': int(mean), 'feedbacks': feedbacks, 'accepted_requests':accepted_requests,
+                                               'requests': requests, 'offers': offers})
 
 
 def logout_view(request):
     logout(request)
     return redirect('/user/signin')
+
+
+def accept_request_performer(request, id):
+    respond = RespondRequest.objects.get(id=id)
+    object_request = Request.objects.get(id=respond.request_id.id)
+    object_request.performer = respond.user
+    object_request.visible = False
+
+    responds = RespondRequest.objects.filter(request_id=respond.request_id)
+    responds.delete()
+
+    object_request.save()
+    return redirect('/user/{}'.format(request.user.id))
+
