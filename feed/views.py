@@ -22,17 +22,21 @@ class IndexView(ListView):
         get_request = self.request.GET
 
         # quick search
-        search_tag = get_request.get('search_tag')
+        search_tag = get_request.get('optradio')
         if get_request.get('q') and get_request.get('q') != 'None':
-            if search_tag == 'title':
+            if search_tag == 'bytitle':
                 return self.model.objects.filter(title__icontains=self.request.GET.get('q'))
-            elif search_tag == 'user':
+            elif search_tag == 'byauthor':
                 return self.model.objects.filter(user__username=self.request.GET.get('q'))
+            elif search_tag == 'bymonth' and 0 < int(self.request.GET.get('q')) < 13:
+                print('here')
+                return self.model.objects.filter(published_date__month=self.request.GET.get('q'))
         return self.model.objects.order_by('title')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['q'] = self.request.GET.get('q', '')
+        context['optradio'] = self.request.GET.get('optradio', '')
         return context
 
 

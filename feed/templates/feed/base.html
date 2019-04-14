@@ -29,22 +29,17 @@
 
 <style>
     .mac-style {
-        width: 192px;
-        -webkit-transition: width 0.5s ease-in-out;
-        -moz-transition:width 0.5s ease-in-out;
-        -o-transition: width 0.5s ease-in-out;
-        transition: width 0.5s ease-in-out;
+        -webkit-transition: width 0.3s ease-in-out;
+        -moz-transition:width 0.3s ease-in-out;
+        -o-transition: width 0.3s ease-in-out;
+        transition: width 0.3s ease-in-out;
      }
-    .mac-style:focus{
-        width: 312px;
-    }
-
 </style>
 
 
 <body>
 <header>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark" onmouseleave="smack()">
         <div>
             <a class="navbar-brand" href="/">Cross Service</a>
         </div>
@@ -63,7 +58,9 @@
                 {% endif %}
             </ul>
 
-            <ul class="navbar-nav">
+            <ul class="navbar-nav"
+                oninput="claps()"
+                onmouseover="claps()">
                 {% if user.is_anonymous %}
                 <li class="nav-item active">
                     <a class="nav-link" href="/user/signup/">Sign up <span class="sr-only">(current)</span></a>
@@ -77,53 +74,56 @@
                             class="sr-only">(current)</span></a>
                 </li>
 
-
                 {% endif %}
                 <li>
-                    <input class="form-control mr-sm-2 mac-style" name="q" type="text" onfocusin="claps()"
-                           onfocusout="smack()"
-                           placeholder="Search"
-                           value="{{ q }}"
-                           aria-label="Search">
+                    <form name="search_form" method="get" {% if offers %} action="/" {% endif %}>
+                        <input id="search_line" class="form-control mac-style" name="q" type="text"
+                               autocomplete="off"
+                               style="width: 281px;"
+                               placeholder="Search"
+                               {% if q %} value={{ q }} {% else %} value="" {% endif %}
+                               aria-label="Search">
+
+                        <div class="bg-light collapse" id="navbarHeader"
+                             style="position: absolute; top: 100%; width: 312px; right: 17px;">
+                            <div class="container">
+                                <div class="column">
+                                    <div class="col-xl-8 offset-md-1 py-4">
+                                        <ul class="list-unstyled mt-2 mt-md-0">
+                                            <li class="radio">
+                                                <input type="radio" id="contactChoice1"
+                                                       name="optradio" value="bytitle" {% if optradio == "bytitle" or optradio == "" %}checked{% endif %}>
+                                                <label for="contactChoice1">By title</label>
+                                            </li>
+                                            <li class="radio">
+
+                                                <input type="radio" id="contactChoice2"
+                                                       name="optradio" value="byauthor" {% if optradio == "byauthor" %}checked{% endif %}>
+                                                <label for="contactChoice2">By author</label>
+                                            </li>
+                                            <li class="radio">
+
+                                                <input type="radio" id="contactChoice3"
+                                                       name="optradio" value="bymonth" {% if optradio == "bymonth" %}checked{% endif %}>
+                                                <label for="contactChoice3">By month number</label>
+                                            </li>
+                                            <li>
+                                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                                                    Search
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </li>
             </ul>
         </div>
     </nav>
 
-    <div class="bg-light collapse" id="navbarHeader"
-         style="position: absolute; width: 312px; right: 23px;">
-        <div class="container">
-            <div class="column">
-                <div class="col-xl-8 offset-md-1 py-4">
-                    <ul class="list-unstyled mt-2 mt-md-0">
-                        <form method="get" action={% if offers %}
-                        "/"{% endif %}
-                        <li class="radio">
-                            <input type="radio" id="contactChoice1"
-                                   name="optradio" value="email">
-                            <label for="contactChoice1">By title</label>
-                        </li>
-                        <li class="radio">
 
-                            <input type="radio" id="contactChoice2"
-                                   name="optradio" value="phone">
-                            <label for="contactChoice2">By author</label>
-                        </li>
-                        <li class="radio">
-
-                            <input type="radio" id="contactChoice3"
-                                   name="optradio" value="mail">
-                            <label for="contactChoice3">By date</label>
-                        </li>
-                        <li>
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                        </li>
-                        </form>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
 </header>
 
 
@@ -144,12 +144,13 @@
 
 <script>
     function claps() {
-        $('#navbarHeader').collapse('show')
+        $('#navbarHeader').collapse('show');
+        $('#search_line').width('289');
     }
     function smack() {
-        $('#navbarHeader').collapse('hide')
+        $('#navbarHeader').collapse('hide');
+        $('#search_line').width('255');
     }
-
 </script>
 </body>
 
