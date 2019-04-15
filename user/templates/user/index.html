@@ -103,7 +103,7 @@
                             </strong>
                         </div>
                     </div>
-                    <div>
+                    <div style="float: right"> 
                         {% if me %}
                             <a class="btn-r" href="/user/{{ request.performer.id }}/feedback/request_{{ request.id }}">
                                 <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
@@ -130,13 +130,9 @@
                                 Requester: <a
                                         href="/user/{{ request.user.id }}">@{{ request.user.username }} </a>
                             </strong>
-                            <div style="float: right">
-                                <a class="btn-r" href="/">
-                                    <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
-                                </a></div>
                         </div>
                     </div>
-                    <div>
+                    <div style="float: right">
                         {% if me %}
                             <a class="btn-r" href="/user/{{ request.user.id }}/feedback/request_{{ request.id }}">
                                 <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
