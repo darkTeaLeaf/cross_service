@@ -93,7 +93,7 @@ def edit_offer(request, id):
         offer.deadline = request.POST.get('deadline')
         offer.offer_description = request.POST.get('offer_description')
 
-        image = request.FILES.get('image', False)
+        image = request.FILES.get('image', offer.image)
         offer.image = image
 
         offer.save()
@@ -148,7 +148,7 @@ def edit_request(request, id):
         object_request.deadline = request.POST.get('deadline')
         object_request.request_description = request.POST.get('request_description')
 
-        image = request.FILES.get('image', False)
+        image = request.FILES.get('image', object_request.image)
         object_request.image = image
 
         object_request.save()
