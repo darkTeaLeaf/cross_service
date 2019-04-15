@@ -94,7 +94,7 @@
         </div>
 
         <div class="my-3 p-3 bg-white rounded shadow-sm">
-            <h6 class="border-bottom border-gray pb-2 mb-0">Current requests</h6>
+            <h6 class="border-bottom border-gray pb-2 mb-0">Current deals</h6>
 
             {% for request in accepted_requests %}
                 <div class="media text-muted pt-3">
@@ -114,10 +114,14 @@
                                 Performer: <a
                                         href="/user/{{ request.performer.id }}"> {{ request.performer.username }} </a>
                             </strong>
+                            <div style="float: right">
+                                <a class="btn-r" href="/">
+                                    <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
+                                </a></div>
                         </div>
                     </div>
                     <div>
-                        <a class="btn-r" href="/">
+                        <a class="btn-r" href="/user/{{ request.performer.id }}/feedback">
                             <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
                         </a></div>
                 </div>
@@ -140,12 +144,12 @@
                                 Requester: <a
                                         href="/user/{{ request.user.id }}"> {{ request.user.username }} </a>
                             </strong>
+                            <div style="float: right">
+                                <a class="btn-r" href="/">
+                                    <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
+                                </a></div>
                         </div>
                     </div>
-                    <div>
-                        <a class="btn-r" href="/">
-                            <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
-                        </a></div>
                 </div>
             {% endfor %}
             <small class="d-block text-right mt-3">
@@ -198,6 +202,10 @@
                             <strong class="text-gray-dark"><a
                                     href="/requests/{{ request.id }}"> {{ request.title }} </a> {{ request.request_description }}
                             </strong>
+                            <div style="float: right">
+                                <a class="btn-r" href="requests/{{ request.id }}/close">
+                                    <button class="btn btn-outline-danger btn-sm" type="submit">Close request</button>
+                                </a></div>
                         </div>
                         {% with respond_requests=request|get_respond %}
                             {% for respond in respond_requests %}
@@ -213,15 +221,17 @@
                                     <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                                         <div class="d-flex justify-content-between align-items-center w-100">
                                             <strong class="text-gray-dark">
-                                                <a href="/user/{{ respond.user }}"> @{{ respond.user.username }} </a>
+                                                <a href="/user/{{ respond.user.id }}"> @{{ respond.user.username }} </a>
                                                 <text>{{ respond.message }}</text>
                                             </strong>
+                                            <div style="float: right">
+                                                <a class="btn-r" href="respond_request/{{ respond.id }}">
+                                                    <button class="btn btn-outline-success btn-sm" type="submit">
+                                                        Accept
+                                                    </button>
+                                                </a></div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <a class="btn-r" href="respond_request/{{ respond.id }}">
-                                            <button class="btn btn-outline-success btn-sm" type="submit">Accept</button>
-                                        </a></div>
                                 </div>
                             {% endfor %}
                         {% endwith %}
@@ -233,6 +243,33 @@
                 <a href="#">All requests</a>
             </small>
         </div>
+
+        <div class="my-3 p-3 bg-white rounded shadow-sm">
+            <h6 class="border-bottom border-gray pb-2 mb-0">Closed requests</h6>
+
+            {% for request in closed_requests %}
+                <div class="media text-muted pt-3">
+                    <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
+                         xmlns="http://www.w3.org/2000/svg"
+                         preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+                         aria-label="Placeholder: 32x32">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#007bff"/>
+                        <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
+                    </svg>
+                    <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <strong class="text-gray-dark"><a
+                                    href="/offers/{{ request.id }}"> {{ request.title }} </a> {{ request.request_description }}
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <small class="d-block text-right mt-3">
+                <a href="#">All closed requests</a>
+            </small>
+        </div>
     </main>
 
     <script>
@@ -241,7 +278,7 @@
             count: 5,
             fontSize: 16,
             inputName: 'rating',
-            value: {{mean_feedback}},
+            value: {{client.userprofile.mean_grade}},
             onUpdate: function () {
             }
         }
