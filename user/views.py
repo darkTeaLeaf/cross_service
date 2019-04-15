@@ -99,15 +99,17 @@ def user_info(request, id=0):
     # feedbacks = Feedback.objects.filter(userTo=user).order_by('-published_date')
     feedbacks = Feedback.objects.filter(userTo=user)
     requests = user.request_set.order_by('-published_date')
-    requests = requests.filter(visible=True)
+    requests = requests.filter(visible=True, closed=False)
     accepted_requests = user.request_set.order_by('-published_date')
-    accepted_requests = accepted_requests.filter(visible=False)
+    accepted_requests = accepted_requests.filter(visible=False, closed=False)
     requests_to_do = Request.objects.filter(performer=user)
+    closed_requests = user.request_set.filter(closed=True)
     offers = user.offer_set.order_by('-published_date')
 
     return render(request, 'user/index.html', {'client': user, 'me': user.id == request.user.id,
                                                'feedbacks': feedbacks,
                                                'accepted_requests': accepted_requests, 'requests_to_do': requests_to_do,
+                                               'closed_requests': closed_requests,
                                                'requests': requests, 'offers': offers})
 
 
@@ -123,6 +125,17 @@ def accept_request_performer(request, id):
     object_request.visible = False
 
     responds = RespondRequest.objects.filter(request_id=respond.request_id)
+    responds.delete()
+
+    object_request.save()
+    return redirect('/user/{}'.format(request.user.id))
+
+
+def close_request(request, id):
+    object_request = Request.objects.get(id=id)
+    object_request.closed = True
+
+    responds = RespondRequest.objects.filter(request_id=id)
     responds.delete()
 
     object_request.save()
