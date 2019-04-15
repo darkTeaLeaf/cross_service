@@ -97,15 +97,14 @@ def create_feedback(request, user_id, request_id):
             feedback.request = request_adv
             feedback.save()
 
-            # try:
-            #     Feedback.objects.get(userFrom=request.user, request=request_adv)
-            #     Feedback.objects.get(userFrom=userTo, request=request_adv)
-            #     request_adv.close()
-            #     request_adv.save()
-            # except:
-            #     pass
+            try:
+                Feedback.objects.get(userFrom=request.user, request=request_adv)
+                Feedback.objects.get(userFrom=userTo, request=request_adv)
+                request_adv.closed = True
+                request_adv.save()
+            except:
+                pass
 
-            
             request.user.userprofile.recalculate_mean_grade()
             return redirect('/user/{}/feedback/{}'.format(feedback.userTo.id, feedback.id))
 
