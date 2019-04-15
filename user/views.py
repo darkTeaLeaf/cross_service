@@ -73,6 +73,8 @@ def create_feedback(request, user_id):
             feedback.grade = request.POST.get('rating')
             feedback.save()
 
+            request.user.userprofile.recalculate_mean_grade()
+            
             return redirect('/user/{}/feedback/{}'.format(feedback.userTo.id, feedback.id))
 
     elif request.method == "GET":
@@ -103,14 +105,8 @@ def user_info(request, id=0):
     requests_to_do = Request.objects.filter(performer=user)
     offers = user.offer_set.order_by('-published_date')
 
-    mean = 0.0
-    for feedback in feedbacks:
-        mean += float(feedback.grade)
-    if mean:
-        mean = round(mean / len(feedbacks))
-
     return render(request, 'user/index.html', {'client': user, 'me': user.id == request.user.id,
-                                               'mean_feedback': int(mean), 'feedbacks': feedbacks,
+                                               'feedbacks': feedbacks,
                                                'accepted_requests': accepted_requests, 'requests_to_do': requests_to_do,
                                                'requests': requests, 'offers': offers})
 
