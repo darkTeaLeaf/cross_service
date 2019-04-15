@@ -60,17 +60,41 @@ class EditUserView(View):
         return redirect('/user/')
 
 
-def create_feedback(request, user_id):
+def create_feedback(request, user_id, request_id):
     if request.method == "POST":
-        if str(request.user.id) == user_id:
-            messages.error(request, 'You cannot leave feedback for yourself')
+        request_adv = Request.objects.get(id=request_id)
+
+        userTo = User.objects.get(id=user_id)
+        
+        for_requester = (userTo == request_adv.user) 
+
+        try:
+            Feedback.objects.get(userFrom=request.user, request=request_adv)
+            messages.error(request, 'You have already left feed feedback for this deal')
             return redirect('/user/' + user_id + '/feedback')
-        else:
+
+        except: 
+        
+            if not for_requester:
+                if userTo != request_adv.performer: 
+                    messages.error(request, 'This user is not a requester/performer\n You cannot leave feedback for this deal')
+                    return redirect('/user/' + user_id + '/feedback')
+
+            if request.user == userTo:
+                messages.error(request, 'You cannot leave feedback for yourself')
+                return redirect('/user/' + user_id + '/feedback')
+
+            if request.user != request_adv.user and request.user != request_adv.performer: 
+                messages.error(request, 'You are not a requester/performer\n You cannot leave feedback for this deal')
+                return redirect('/user/' + user_id + '/feedback')
+                
             feedback = Feedback()
             feedback.userFrom = request.user
             feedback.userTo = User.objects.get(id=user_id)
             feedback.feedback_text = request.POST.get('inputFeedback')
             feedback.grade = request.POST.get('rating')
+            feedback.for_requester = for_requester
+            feedback.request = request_adv
             feedback.save()
 
             return redirect('/user/{}/feedback/{}'.format(feedback.userTo.id, feedback.id))
@@ -88,14 +112,14 @@ def get_feedback(request, user_id, feedback_id):
     return render(request, 'user/feedback_view.html', {'author': author, 'feedback': feedback, 'target': target})
 
 def get_all_feedbacks(request, user_id=0):
-    if id == 0:  # my page
+    if user_id == 0:  # my page
         user = request.user
     else:  # page of another user
-        user = User.objects.get(id=id)
+        user = User.objects.get(id=user_id)
 
     feedbacks = Feedback.objects.filter(userTo=user).order_by('-published_date')
     as_provider = Feedback.objects.filter(userTo=user, for_requester=False)
-    as_requestor = Feedback.objects.filter(userTo=user, for_requester=True)
+    as_requester = Feedback.objects.filter(userTo=user, for_requester=True)
 
     mean = 0.0
 
@@ -105,7 +129,7 @@ def get_all_feedbacks(request, user_id=0):
         mean = round(mean/len(feedbacks))
 
     return render(request, 'user/feedback_page.html', {'client': user,
-         'mean_feedback': int(mean), 'as_provider': as_provider, 'as_requestor': as_requestor})
+         'mean_feedback': int(mean), 'as_provider': as_provider, 'as_requester': as_requester})
 
 
 def user_info(request, id=0):

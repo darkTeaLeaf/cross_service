@@ -76,7 +76,7 @@
             {% endfor %}
 
             <small class="d-block text-right mt-3">
-                <a href="#">All feedbacks</a>
+                <a href="/user/{{ client.id }}/feedback/all">All feedbacks</a>
             </small>
         </div>
 
@@ -105,10 +105,11 @@
                     </div>
                     <div>
                         {% if me %}
-                            <a class="btn-r" href="/">
+                            <a class="btn-r" href="/user/{{ request.performer.id }}/feedback/request_{{ request.id }}">
                                 <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
-                            </a></div>
+                            </a>
                         {% endif %}
+                    </div>
                 </div>
             {% endfor %}
             {% for request in requests_to_do %}
@@ -133,10 +134,11 @@
                     </div>
                     <div>
                         {% if me %}
-                            <a class="btn-r" href="/">
+                            <a class="btn-r" href="/user/{{ request.user.id }}/feedback/request_{{ request.id }}">
                                 <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
-                            </a></div>
+                            </a>
                         {% endif %}
+                    </div>
                     </div>
             {% endfor %}
             <small class="d-block text-right mt-3">
