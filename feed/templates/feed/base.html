@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 {% load staticfiles %}
+{% load static %}
 
 <html>
 <head>
@@ -21,21 +22,14 @@
 
     <title>Feed</title>
 
+    <link type="text/css" href="{% static 'css/utils.css' %}" rel="stylesheet">
+
     {% block extrahead %}
     {% endblock %}
 </head>
 
-<style>
-    .mac-style {
-        -webkit-transition: width 0.3s ease-in-out;
-        -moz-transition:width 0.3s ease-in-out;
-        -o-transition: width 0.3s ease-in-out;
-        transition: width 0.3s ease-in-out;
-     }
-</style>
-
-
 <body>
+
 <header>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark" onmouseleave="smack()">
         <div>
@@ -79,9 +73,9 @@
                                placeholder="Search"
                                {% if q %} value={{ q }} {% else %} value="" {% endif %}
                                aria-label="Search">
-
-                        <div class="bg-light collapse" id="navbarHeader"
-                             style="position: absolute; top: 100%; width: 312px; right: 17px;">
+                        <div class="overlay"></div>
+                        <div class="bg-light collapse overlay" id="navbarHeader"
+                             style="top: 100%; width: 312px; right: 17px;">
                             <div class="container">
                                 <div class="column">
                                     <div class="col-xl-8 offset-md-1 py-4">
