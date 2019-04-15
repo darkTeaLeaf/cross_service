@@ -84,9 +84,9 @@
         <section class="jumbotron text-center">
             <div class="container">
 
-                <h1 class="jumbotron-heading">{% if requests or request.path == "/requests/" %}Feed with
-                    requests{% elif offers or request.path == "/" %}Feed with offers{% else %}Your query did not
-                    match any result;({% endif %}</h1>
+                <h1 class="jumbotron-heading">{% if q and not offers and not requests %}Your query did not
+                    match any result;({% elif requests or request.path == "/requests/" %}Feed with
+                    requests{% elif offers or request.path == "/" %}Feed with offers{% endif %}</h1>
                 <form method="get" action="/users">
                     <label class="switch">
                         <input type="checkbox" {% if requests or request.path == "/requests/" %}checked{% endif %}
@@ -121,15 +121,22 @@
 
                             <div class="col-md-4">
                                 <div class="card mb-4 shadow-sm">
-                                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                                         xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
-                                         focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>
-                                        Placeholder</title>
-                                        <rect width="100%" height="100%" fill="#55595c"/>
-                                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ offer.title }}</text>
-                                    </svg>
+                                    {% if offer.image.url != '/media/False' %}
+                                        <svg class="bd-placeholder-img card-img-top" width="100%" height="0"
+                                             xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+                                             focusable="false" role="img" aria-label="Placeholder: Thumbnail">
+                                            <img src="{{ offer.image.url }}" height=175 width=100%>
+                                        </svg>
+                                    {% else %}
+                                        <svg class="bd-placeholder-img card-img-top" width="100%" height="175"
+                                             xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+                                             focusable="false" role="img" aria-label="Placeholder: Thumbnail">
+                                            <rect width="100%" height="100%" fill="#55595c"/>
+
+                                        </svg>
+                                    {% endif %}
                                     <div class="card-body">
-                                        <p class="card-text"> {{ offer.offer_description }} </p>
+                                        <p class="card-text"> {{ offer.title }} </p>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="btn-group">
 
@@ -154,15 +161,21 @@
                         {% for request in requests %}
                             <div class="col-md-4">
                                 <div class="card mb-4 shadow-sm">
-                                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                                         xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
-                                         focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>
-                                        Placeholder</title>
-                                        <rect width="100%" height="100%" fill="#55595c"/>
-                                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ request.title }}</text>
-                                    </svg>
+                                    {% if request.image.url != '/media/False' %}
+                                        <svg class="bd-placeholder-img card-img-top" width="100%" height="0"
+                                             xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+                                             focusable="false" role="img" aria-label="Placeholder: Thumbnail">
+                                            <img src="{{ request.image.url }}" height=175 width=100%>
+                                        </svg>
+                                    {% else %}
+                                        <svg class="bd-placeholder-img card-img-top" width="100%" height="175"
+                                             xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+                                             focusable="false" role="img" aria-label="Placeholder: Thumbnail">
+                                            <rect width="100%" height="100%" fill="#55595c"/>
+                                        </svg>
+                                    {% endif %}
                                     <div class="card-body">
-                                        <p class="card-text"> {{ request.request_description }} </p>
+                                        <p class="card-text"> {{ request.title }} </p>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="btn-group">
 
@@ -192,8 +205,7 @@
     <style>
         .pagination a {
             color: black;
-            {#float: left;#}
-            padding: 8px 16px;
+        {#float: left;#} padding: 8px 16px;
             text-decoration: none;
             transition: background-color .3s;
             border-radius: 5px;
