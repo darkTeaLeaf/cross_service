@@ -110,6 +110,7 @@ def get_request_creation(request):
     if request.method == "POST":
         object_request = Request()
         object_request.visible = True
+        object_request.closed = False
         object_request.title = request.POST.get('title')
         object_request.service_type = request.POST.get('service_type')
         object_request.price = request.POST.get('price')

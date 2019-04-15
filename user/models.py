@@ -19,11 +19,22 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     alias = models.CharField(max_length=250)
     bio = models.CharField(max_length=1000, null=True, blank=True)
-    avatar = models.ImageField(default="default.png")
 
+    avatar = models.ImageField(default="default.png")
+    mean_grade = models.IntegerField(default=0)
+    
     def __str__(self):
         return self.user.username
 
+    def recalculate_mean_grade(self):
+        feedbacks = Feedback.objects.filter(userTo=self.user)
+        mean = 0.0
+        for feedback in feedbacks:
+            mean += float(feedback.grade)
+        if mean:
+            mean = round(mean / len(feedbacks))
+        self.mean_grade = mean
+        self.save()
 
 class Feedback(models.Model):
     userFrom = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='author')
