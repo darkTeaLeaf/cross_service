@@ -24,6 +24,7 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+
 class Feedback(models.Model):
     userFrom = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='author')
     userTo = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='recipient')

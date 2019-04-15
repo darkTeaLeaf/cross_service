@@ -1,9 +1,9 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect, render_to_response
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
 from feed.forms import OfferForm, RequestForm
 from feed.models import Offer, Request, RespondRequest
+from . import permissions
 
 
 class IndexView(ListView):
@@ -13,22 +13,28 @@ class IndexView(ListView):
     template_name = 'feed/index.html'
     model = Offer
     context_object_name = 'offers'
-    paginate_by = 10
+    paginate_by = 9
 
     def get_queryset(self):
+        """
+        :returns: the set of documents that will be displayed on the main page
+        """
         get_request = self.request.GET
 
         # quick search
         search_tag = get_request.get('optradio')
         if get_request.get('q') and get_request.get('q') != 'None':
             if search_tag == 'bytitle':
-                return self.model.objects.filter(title__icontains=self.request.GET.get('q'))
+                result = self.model.objects.filter(title__icontains=self.request.GET.get('q'))
             elif search_tag == 'byauthor':
-                return self.model.objects.filter(user__username=self.request.GET.get('q'))
+                result = self.model.objects.filter(user__username__icontains=self.request.GET.get('q'))
             elif search_tag == 'bymonth' and 0 < int(self.request.GET.get('q')) < 13:
-                print('here')
-                return self.model.objects.filter(published_date__month=self.request.GET.get('q'))
-        return self.model.objects.order_by('title')
+                result = self.model.objects.filter(published_date__month=self.request.GET.get('q'))
+        else:
+            result = self.model.objects.order_by('title')
+        if self.model == Request:
+            result = result.filter(visible=True)
+        return result
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -42,10 +48,9 @@ class IndexRequestsView(IndexView):
     context_object_name = 'requests'
 
 
+@permissions.required('authenticated')
 def get_offer_creation(request):
     user = request.user
-    if not user.is_authenticated:
-        return redirect('/user/signin/')
 
     if request.method == "POST":
         offer = Offer()
@@ -68,15 +73,19 @@ def get_offer_creation(request):
         return render(request, 'feed/offer_creation.html', {'form': form})
 
 
-def get_offer(request, id):
-    of = Offer.objects.get(id=id)
-    return render(request, 'feed/offer_view.html', {'offer': of})
+class OfferView(DetailView):
+    model = Offer
+    template_name = 'feed/offer_view.html'
 
 
+@permissions.required('authenticated')
 def edit_offer(request, id):
+
+    offer = Offer.objects.get(id=id)
+    if not request.user.is_superuser and not request.user.id == offer.user.id:
+        redirect('/')
     if request.method == "POST":
 
-        offer = Offer.objects.get(id=id)
         offer.title = request.POST.get('title')
         offer.service_type = request.POST.get('service_type')
         offer.price = request.POST.get('price')
@@ -91,14 +100,12 @@ def edit_offer(request, id):
         return redirect('/offers/{}'.format(offer.id))
 
     elif request.method == "GET":
-        offer = Offer.objects.get(id=id)
         return render(request, 'feed/offer_edit.html', {'offer': offer})
 
 
+@permissions.required('authenticated')
 def get_request_creation(request):
     user = request.user
-    if not user.is_authenticated:
-        return redirect('/user/signin/')
 
     if request.method == "POST":
         object_request = Request()
@@ -108,7 +115,7 @@ def get_request_creation(request):
         object_request.price = request.POST.get('price')
         object_request.start_date = request.POST.get('start_date')
         object_request.deadline = request.POST.get('deadline')
-        object_request.request_description = request.POST.get('offer_description')
+        object_request.request_description = request.POST.get('request_description')
 
         image = request.FILES.get('image', False)
         object_request.image = image
@@ -122,11 +129,13 @@ def get_request_creation(request):
         return render(request, 'feed/request_creation.html', {'form': form})
 
 
-def get_request(request, id):
-    req = Request.objects.get(id=id)
-    return render(request, 'feed/request_view.html', {'req': req})
+class RequestView(DetailView):
+    model = Request
+    template_name = 'feed/request_view.html'
+    context_object_name = 'req'
 
 
+@permissions.required('authenticated')
 def edit_request(request, id):
     if request.method == "POST":
 
@@ -136,7 +145,7 @@ def edit_request(request, id):
         object_request.price = request.POST.get('price')
         object_request.start_date = request.POST.get('start_date')
         object_request.deadline = request.POST.get('deadline')
-        object_request.request_description = request.POST.get('offer_description')
+        object_request.request_description = request.POST.get('request_description')
 
         image = request.FILES.get('image', False)
         object_request.image = image
@@ -149,10 +158,9 @@ def edit_request(request, id):
         return render(request, 'feed/request_edit.html', {'req': req})
 
 
+@permissions.required('authenticated')
 def create_respond_request(request, id):
     user = request.user
-    if not user.is_authenticated:
-        return redirect('/user/signin/')
 
     if request.method == "POST":
         respond_request = RespondRequest()
