@@ -221,8 +221,14 @@
                 <div class="icon">
                     <a href="#"><i class="fa fa-arrow-left"></i></a>
                 </div>
+
                 <h3>Request</h3>
+                {% if user.is_superuser or user.id == offer.user.id %}
+                <a href="/request_edit/{{ req.id }}" class="btn btn-primary my-2">Edit</a>
+                {% endif %}
+
             </div>
+
             <div class="card__body">
                 <div class="half">
                     <div class="featured_text">

@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect, render_to_response
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
@@ -17,6 +16,9 @@ class IndexView(ListView):
     paginate_by = 9
 
     def get_queryset(self):
+        """
+        :returns: the set of documents that will be displayed on the main page
+        """
         get_request = self.request.GET
 
         # quick search
@@ -78,9 +80,12 @@ class OfferView(DetailView):
 
 @permissions.required('authenticated')
 def edit_offer(request, id):
+
+    offer = Offer.objects.get(id=id)
+    if not request.user.is_superuser and not request.user.id == offer.user.id:
+        redirect('/')
     if request.method == "POST":
 
-        offer = Offer.objects.get(id=id)
         offer.title = request.POST.get('title')
         offer.service_type = request.POST.get('service_type')
         offer.price = request.POST.get('price')
@@ -95,7 +100,6 @@ def edit_offer(request, id):
         return redirect('/offers/{}'.format(offer.id))
 
     elif request.method == "GET":
-        offer = Offer.objects.get(id=id)
         return render(request, 'feed/offer_edit.html', {'offer': offer})
 
 
@@ -111,7 +115,7 @@ def get_request_creation(request):
         object_request.price = request.POST.get('price')
         object_request.start_date = request.POST.get('start_date')
         object_request.deadline = request.POST.get('deadline')
-        object_request.request_description = request.POST.get('offer_description')
+        object_request.request_description = request.POST.get('request_description')
 
         image = request.FILES.get('image', False)
         object_request.image = image
@@ -141,7 +145,7 @@ def edit_request(request, id):
         object_request.price = request.POST.get('price')
         object_request.start_date = request.POST.get('start_date')
         object_request.deadline = request.POST.get('deadline')
-        object_request.request_description = request.POST.get('offer_description')
+        object_request.request_description = request.POST.get('request_description')
 
         image = request.FILES.get('image', False)
         object_request.image = image
