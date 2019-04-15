@@ -12,4 +12,5 @@ urlpatterns = [
     url('signout/', views.logout_view, name='logout'),
     url(r'edit/', views.EditUserView.as_view(), name='edit'),
     url(r'^respond_request/(?P<id>\d+)$', views.accept_request_performer, name='get_feedback'),
+    url(r'^requests/(?P<id>\d+)/close/$', views.close_request, name='close_request'),
 ]
