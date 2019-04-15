@@ -114,12 +114,12 @@
                                 Performer: <a
                                         href="/user/{{ request.performer.id }}"> {{ request.performer.username }} </a>
                             </strong>
+                            <div style="float: right">
+                                <a class="btn-r" href="/">
+                                    <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
+                                </a></div>
                         </div>
                     </div>
-                    <div>
-                        <a class="btn-r" href="/">
-                            <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
-                        </a></div>
                 </div>
             {% endfor %}
             {% for request in requests_to_do %}
@@ -240,7 +240,7 @@
             </small>
         </div>
 
-    <div class="my-3 p-3 bg-white rounded shadow-sm">
+        <div class="my-3 p-3 bg-white rounded shadow-sm">
             <h6 class="border-bottom border-gray pb-2 mb-0">Closed requests</h6>
 
             {% for request in closed_requests %}
