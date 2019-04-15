@@ -117,7 +117,7 @@
                         </div>
                     </div>
                     <div>
-                        <a class="btn-r" href="/">
+                        <a class="btn-r" href="/user/{{ request.performer.id }}/feedback">
                             <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
                         </a></div>
                 </div>
@@ -213,7 +213,7 @@
                                     <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                                         <div class="d-flex justify-content-between align-items-center w-100">
                                             <strong class="text-gray-dark">
-                                                <a href="/user/{{ respond.user }}"> @{{ respond.user.username }} </a>
+                                                <a href="/user/{{ respond.user.id }}"> @{{ respond.user.username }} </a>
                                                 <text>{{ respond.message }}</text>
                                             </strong>
                                         </div>

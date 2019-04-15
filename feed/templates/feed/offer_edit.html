@@ -46,11 +46,11 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="first_name">Start date</label>
-                        <input type="date" class="form-control" name="start_date" id="start_date" value="{{ offer.start_date.year }}-{{ offer.start_date.month }}-{{ offer.start_date.day }}">
+                        <input type="date" class="form-control" name="start_date" max="2100-12-31" id="start_date" value="{{ offer.start_date.year }}-{{ offer.start_date.month }}-{{ offer.start_date.day }}">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="last_name">Deadline</label>
-                        <input type="date" class="form-control" name="deadline" id="deadline" value="{{ offer.deadline.year }}-{{ offer.deadline.month }}-{{ offer.deadline.day }}"
+                        <input type="date" class="form-control" name="deadline" max="2100-12-31" id="deadline" value="{{ offer.deadline.year }}-{{ offer.deadline.month }}-{{ offer.deadline.day }}"
                         >
                     </div>
                 </div>
