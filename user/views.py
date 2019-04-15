@@ -70,23 +70,23 @@ def create_feedback(request, user_id, request_id):
 
         try:
             Feedback.objects.get(userFrom=request.user, request=request_adv)
-            messages.error(request, 'You have already left feed feedback for this deal')
-            return redirect('/user/' + user_id + '/feedback')
+            messages.error(request, 'You have already left feedback for this deal')
+            return redirect('/user/'+str(user_id)+'/feedback/request_'+str(request_id))
 
         except: 
         
             if not for_requester:
                 if userTo != request_adv.performer: 
                     messages.error(request, 'This user is not a requester/performer\n You cannot leave feedback for this deal')
-                    return redirect('/user/' + user_id + '/feedback')
+                    return redirect('/user/'+str(user_id)+'/feedback/request_'+str(request_id))
 
             if request.user == userTo:
                 messages.error(request, 'You cannot leave feedback for yourself')
-                return redirect('/user/' + user_id + '/feedback')
+                return redirect('/user/'+str(user_id)+'/feedback/request_'+str(request_id))
 
             if request.user != request_adv.user and request.user != request_adv.performer: 
                 messages.error(request, 'You are not a requester/performer\n You cannot leave feedback for this deal')
-                return redirect('/user/' + user_id + '/feedback')
+                return redirect('/user/'+str(user_id)+'/feedback/request_'+str(request_id))
                 
             feedback = Feedback()
             feedback.userFrom = request.user
@@ -96,6 +96,14 @@ def create_feedback(request, user_id, request_id):
             feedback.for_requester = for_requester
             feedback.request = request_adv
             feedback.save()
+
+            # try:
+            #     Feedback.objects.get(userFrom=request.user, request=request_adv)
+            #     Feedback.objects.get(userFrom=userTo, request=request_adv)
+            #     request_adv.close()
+            #     request_adv.save()
+            # except:
+            #     pass
 
             return redirect('/user/{}/feedback/{}'.format(feedback.userTo.id, feedback.id))
 
