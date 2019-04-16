@@ -227,7 +227,7 @@
                     <a href="#"><i class="fa fa-arrow-left"></i></a>
                 </div>
 
-                <h3>Request</h3>
+                <h3 class="px-xl-2">Request</h3>
                 {% if user.is_superuser or user.id == req.user.id %}
                 <a href="/request_edit/{{ req.id }}" class="btn btn-primary my-2">Edit</a>
                 {% endif %}
