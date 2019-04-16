@@ -253,9 +253,11 @@
                 </div>
 
                 <form>
+                    {% if user.id != offer.user.id %}
                     <div class="action">
                         <button formaction="#">Request</button>
                     </div>
+                    {% endif %}
                 </form>
             </div>
         </div>

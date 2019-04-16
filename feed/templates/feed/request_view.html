@@ -223,7 +223,7 @@
                 </div>
 
                 <h3>Request</h3>
-                {% if user.is_superuser or user.id == offer.user.id %}
+                {% if user.is_superuser or user.id == req.user.id %}
                 <a href="/request_edit/{{ req.id }}" class="btn btn-primary my-2">Edit</a>
                 {% endif %}
 
@@ -256,9 +256,11 @@
                 </div>
 
                 <form>
+                    {% if user.id != req.user.id %}
                     <div class="action">
                         <button formaction="/requests/{{ req.id }}/respond_request">Respond</button>
                     </div>
+                    {% endif %}
                 </form>
             </div>
         </div>
