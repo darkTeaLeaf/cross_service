@@ -1,0 +1,104 @@
+{% extends 'feed/base.html' %}
+{% load staticfiles %}
+
+{% block extrahead %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="{% static 'js/jquery.emojiRatingView.js' %}"></script>
+{% endblock %}
+
+
+{% block body %}
+    {% load filter_tags %}
+
+    <main role="main" class="container">
+        <div class="d-flex align-items-center p-3 my-3 rounded shadow-sm bg-purple">
+            <img class="mr-3" src="{{ client.userprofile.avatar.url }}" alt="" width="48" height="48">
+            <div class="lh-100">
+                <h6 class="mb-0 lh-100 text-gray-dark">{{ client.first_name }} {{ client.last_name }}</h6>
+                <small>{{ client.username }}</small>
+                <br>
+                <small>@{{ client.userprofile.alias }}</small>
+                {% if client.userprofile.bio != None %}
+                    <br>
+                    <small>{{ client.userprofile.bio }}</small>
+                {% endif %}
+            </div>
+            <div id="rating" class=".mx-1 .mr-1"></div>
+            {% if user.is_authenticated and me is False %}
+                <a class="btn-r" href="/user/{{ client.id }}/feedback">
+                <button class="btn btn-outline-success my-2 my-sm-0 bs-popover-left mx-2" type="submit">Feedback
+                </button>
+            {% endif %}
+            </a>
+        </div>
+
+        <div class="my-3 p-3 bg-white rounded shadow-sm">
+            <h6 class="border-bottom border-gray pb-2 mb-0">Feedbacks as provider</h6>
+
+            {% for feedback in as_provider %}
+                <div class="media text-muted pt-3">
+                    <img class="mr-3" src="{{ feedback.userFrom.userprofile.avatar.url }}" alt="" width="32" height="32">
+                    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <strong class="d-block text-gray-dark"> <a href="/user/{{ feedback.userFrom.id }}">
+                            @{{ feedback.userFrom.username }} </a> {{ feedback.feedback_text }}
+                            <div id='{{ feedback.id }}'></div>
+                        </strong>
+                    </p>
+
+                    <script>
+                        options = {
+                            inputName: 'rating' + {{feedback.id}},
+                            value: {{feedback.grade}},
+                        }
+
+                        $('#{{feedback.id}}').emojiRating(options);
+                    </script>
+                </div>
+
+            {% endfor %}
+        </div>
+
+        <div class="my-3 p-3 bg-white rounded shadow-sm">
+            <h6 class="border-bottom border-gray pb-2 mb-0">Feedbacks as requester</h6>
+
+            {% for feedback in as_requester %}
+                <div class="media text-muted pt-3">
+                    <img class="mr-3" src="{{ feedback.userFrom.userprofile.avatar.url }}" alt="" width="32" height="32">
+                    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                        <strong class="d-block text-gray-dark"> <a href="/user/{{ feedback.userFrom.id }}">
+                            @{{ feedback.userFrom.username }} </a> {{ feedback.feedback_text }}
+                            <div id='{{ feedback.id }}'></div>
+                        </strong>
+                    </p>
+
+                    <script>
+                        options = {
+                            inputName: 'rating' + {{feedback.id}},
+                            value: {{feedback.grade}},
+                        }
+
+                        $('#{{feedback.id}}').emojiRating(options);
+                    </script>
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </main>
+
+    <script>
+        options = {
+            emoji: 'U+2B50',
+            count: 5,
+            fontSize: 16,
+            inputName: 'rating',
+            value: {{mean_feedback}},
+            onUpdate: function () {
+            }
+        }
+
+        $('#rating').emojiRating(options);
+    </script>
+
+{% endblock %}

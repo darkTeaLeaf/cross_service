@@ -42,16 +42,10 @@
                     <small>{{ client.userprofile.bio }}</small>
                 {% endif %}
             </div>
+            <div id="rating" class=".mx-1 .mr-1"></div>
             {% if me %}
                 <a class="btn-r" href="/user/edit">
                 <button class="btn btn-outline-success my-2 my-sm-0 bs-popover-left mx-2" type="submit">Edit</button>
-            {% endif %}
-            </a>
-            <div id="rating" class=".mx-1 .mr-1"></div>
-            {% if user.is_authenticated and me is False %}
-                <a class="btn-r" href="/user/{{ client.id }}/feedback">
-                <button class="btn btn-outline-success my-2 my-sm-0 bs-popover-left mx-2" type="submit">Feedback
-                </button>
             {% endif %}
             </a>
         </div>
@@ -61,14 +55,7 @@
 
             {% for feedback in feedbacks %}
                 <div class="media text-muted pt-3">
-                    <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
-                         xmlns="http://www.w3.org/2000/svg"
-                         preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
-                         aria-label="Placeholder: 32x32">
-                        <title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="#007bff"/>
-                        <text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text>
-                    </svg>
+                    <img class="mr-3" src="{{ feedback.userFrom.userprofile.avatar.url }}" alt="" width="32" height="32">
                     <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                         <strong class="d-block text-gray-dark"> <a href="/user/{{ feedback.userFrom.id }}">
                             @{{ feedback.userFrom.username }} </a> {{ feedback.feedback_text }}
@@ -89,7 +76,7 @@
             {% endfor %}
 
             <small class="d-block text-right mt-3">
-                <a href="#">All feedbacks</a>
+                <a href="/user/{{ client.id }}/feedback/all">All feedbacks</a>
             </small>
         </div>
 
@@ -111,8 +98,8 @@
                             <strong class="text-gray-dark"><a
                                     href="/requests/{{ request.id }}"> {{ request.title }} </a>
                                 {{ request.request_description }} <br>
-                                Performer: <a
-                                        href="/user/{{ request.performer.id }}"> {{ request.performer.username }} </a>
+                                Provider: <a
+                                        href="/user/{{ request.performer.id }}">@{{ request.performer.username }} </a>
                             </strong>
                             <div style="float: right">
                                 <a class="btn-r" href="/">
@@ -120,10 +107,13 @@
                                 </a></div>
                         </div>
                     </div>
-                    <div>
-                        <a class="btn-r" href="/user/{{ request.performer.id }}/feedback">
-                            <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
-                        </a></div>
+                    <div style="float: right"> 
+                        {% if me %}
+                            <a class="btn-r" href="/user/{{ request.performer.id }}/feedback/request_{{ request.id }}">
+                                <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
             {% endfor %}
             {% for request in requests_to_do %}
@@ -142,15 +132,19 @@
                                     href="/requests/{{ request.id }}"> {{ request.title }} </a>
                                 {{ request.request_description }} <br>
                                 Requester: <a
-                                        href="/user/{{ request.user.id }}"> {{ request.user.username }} </a>
+                                        href="/user/{{ request.user.id }}">@{{ request.user.username }} </a>
                             </strong>
-                            <div style="float: right">
-                                <a class="btn-r" href="/">
-                                    <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
-                                </a></div>
                         </div>
                     </div>
+                    <div style="float: right">
+                        {% if me %}
+                            <a class="btn-r" href="/user/{{ request.user.id }}/feedback/request_{{ request.id }}">
+                                <button class="btn btn-outline-success btn-sm" type="submit">Feedback</button>
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
+
             {% endfor %}
             <small class="d-block text-right mt-3">
                 <a href="#">All current requests</a>
