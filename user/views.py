@@ -60,21 +60,52 @@ class EditUserView(View):
         return redirect('/user/')
 
 
-def create_feedback(request, user_id):
+def create_feedback(request, user_id, request_id):
     if request.method == "POST":
-        if str(request.user.id) == user_id:
-            messages.error(request, 'You cannot leave feedback for yourself')
-            return redirect('/user/' + user_id + '/feedback')
-        else:
+        request_adv = Request.objects.get(id=request_id)
+
+        userTo = User.objects.get(id=user_id)
+        
+        for_requester = (userTo == request_adv.user) 
+
+        try:
+            Feedback.objects.get(userFrom=request.user, request=request_adv)
+            messages.error(request, 'You have already left feedback for this deal')
+            return redirect('/user/'+str(user_id)+'/feedback/request_'+str(request_id))
+
+        except: 
+        
+            if not for_requester:
+                if userTo != request_adv.performer: 
+                    messages.error(request, 'This user is not a requester/performer\n You cannot leave feedback for this deal')
+                    return redirect('/user/'+str(user_id)+'/feedback/request_'+str(request_id))
+
+            if request.user == userTo:
+                messages.error(request, 'You cannot leave feedback for yourself')
+                return redirect('/user/'+str(user_id)+'/feedback/request_'+str(request_id))
+
+            if request.user != request_adv.user and request.user != request_adv.performer: 
+                messages.error(request, 'You are not a requester/performer\n You cannot leave feedback for this deal')
+                return redirect('/user/'+str(user_id)+'/feedback/request_'+str(request_id))
+                
             feedback = Feedback()
             feedback.userFrom = request.user
             feedback.userTo = User.objects.get(id=user_id)
             feedback.feedback_text = request.POST.get('inputFeedback')
             feedback.grade = request.POST.get('rating')
+            feedback.for_requester = for_requester
+            feedback.request = request_adv
             feedback.save()
 
+            try:
+                Feedback.objects.get(userFrom=request.user, request=request_adv)
+                Feedback.objects.get(userFrom=userTo, request=request_adv)
+                request_adv.closed = True
+                request_adv.save()
+            except:
+                pass
+
             request.user.userprofile.recalculate_mean_grade()
-            
             return redirect('/user/{}/feedback/{}'.format(feedback.userTo.id, feedback.id))
 
     elif request.method == "GET":
@@ -89,6 +120,26 @@ def get_feedback(request, user_id, feedback_id):
     # TODO what if there is no such feedback ??
     return render(request, 'user/feedback_view.html', {'author': author, 'feedback': feedback, 'target': target})
 
+def get_all_feedbacks(request, user_id=0):
+    if user_id == 0:  # my page
+        user = request.user
+    else:  # page of another user
+        user = User.objects.get(id=user_id)
+
+    feedbacks = Feedback.objects.filter(userTo=user).order_by('-published_date')
+    as_provider = Feedback.objects.filter(userTo=user, for_requester=False)
+    as_requester = Feedback.objects.filter(userTo=user, for_requester=True)
+
+    mean = 0.0
+
+    for feedback in feedbacks:
+        mean += float(feedback.grade)
+    if mean: 
+        mean = round(mean/len(feedbacks))
+
+    return render(request, 'user/feedback_page.html', {'client': user,
+         'mean_feedback': int(mean), 'as_provider': as_provider, 'as_requester': as_requester})
+
 
 def user_info(request, id=0):
     if id == 0:  # my page
@@ -96,8 +147,7 @@ def user_info(request, id=0):
     else:  # page of another user
         user = User.objects.get(id=id)
 
-    # feedbacks = Feedback.objects.filter(userTo=user).order_by('-published_date')
-    feedbacks = Feedback.objects.filter(userTo=user)
+    feedbacks = Feedback.objects.filter(userTo=user).order_by('-published_date')
     requests = user.request_set.order_by('-published_date')
     requests = requests.filter(visible=True, closed=False)
     accepted_requests = user.request_set.order_by('-published_date')
