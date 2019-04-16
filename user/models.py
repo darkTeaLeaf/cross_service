@@ -36,6 +36,7 @@ class UserProfile(models.Model):
         self.mean_grade = mean
         self.save()
 
+
 class Feedback(models.Model):
     userFrom = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='author')
     userTo = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='recipient')

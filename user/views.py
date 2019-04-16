@@ -120,6 +120,7 @@ def get_feedback(request, user_id, feedback_id):
     # TODO what if there is no such feedback ??
     return render(request, 'user/feedback_view.html', {'author': author, 'feedback': feedback, 'target': target})
 
+
 def get_all_feedbacks(request, user_id=0):
     if user_id == 0:  # my page
         user = request.user

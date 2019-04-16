@@ -256,7 +256,7 @@
                 </div>
 
                 <form>
-                    {% if user.id != req.user.id %}
+                    {% if user.id != req.user.id and  user.is_authenticarted and not req.closed %}
                     <div class="action">
                         <button formaction="/requests/{{ req.id }}/respond_request">Respond</button>
                     </div>
