@@ -152,7 +152,7 @@ def user_info(request, id=0):
     requests = requests.filter(visible=True, closed=False)
     accepted_requests = user.request_set.order_by('-published_date')
     accepted_requests = accepted_requests.filter(visible=False, closed=False)
-    requests_to_do = Request.objects.filter(performer=user)
+    requests_to_do = Request.objects.filter(performer=user, closed=False)
     closed_requests = user.request_set.filter(closed=True)
     offers = user.offer_set.order_by('-published_date')
 
