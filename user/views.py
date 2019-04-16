@@ -105,7 +105,7 @@ def create_feedback(request, user_id, request_id):
             except:
                 pass
 
-            request.user.userprofile.recalculate_mean_grade()
+            userTo.userprofile.recalculate_mean_grade()
             return redirect('/user/{}/feedback/{}'.format(feedback.userTo.id, feedback.id))
 
     elif request.method == "GET":
@@ -153,7 +153,7 @@ def user_info(request, id=0):
     requests = requests.filter(visible=True, closed=False)
     accepted_requests = user.request_set.order_by('-published_date')
     accepted_requests = accepted_requests.filter(visible=False, closed=False)
-    requests_to_do = Request.objects.filter(performer=user)
+    requests_to_do = Request.objects.filter(performer=user, closed=False)
     closed_requests = user.request_set.filter(closed=True)
     offers = user.offer_set.order_by('-published_date')
 

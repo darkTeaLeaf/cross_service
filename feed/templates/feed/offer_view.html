@@ -221,7 +221,7 @@
                 <div class="icon">
                     <a href="#"><i class="fa fa-arrow-left"></i></a>
                 </div>
-                <h3>Offer</h3>
+                <h3 class="px-xl-2">Offer</h3>
                 {% if user.is_superuser or user.id == offer.user.id %}
                 <a href="/offer_edit/{{ offer.id }}" class="btn btn-primary my-2">Edit</a>
                 {% endif %}

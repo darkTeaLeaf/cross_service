@@ -2,6 +2,11 @@
 
 {% load staticfiles %}
 
+{% block extrahead %}
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="{% static 'js/jquery.emojiRatingView.js' %}"></script>
+{% endblock %}
+
 {% block body %}
 
     <style>
@@ -222,7 +227,7 @@
                     <a href="#"><i class="fa fa-arrow-left"></i></a>
                 </div>
 
-                <h3>Request</h3>
+                <h3 class="px-xl-2">Request</h3>
                 {% if user.is_superuser or user.id == req.user.id %}
                 <a href="/request_edit/{{ req.id }}" class="btn btn-primary my-2">Edit</a>
                 {% endif %}
@@ -253,7 +258,10 @@
                 <div class="recommend">
                     <p>Posted by</p>
                     <a href="/user/{{ req.user.id }}"><h3>{{ req.user }}</h3></a>
+                    <div id="rating"></div>
                 </div>
+
+                
 
                 <form>
                     {% if user.id != req.user.id and  user.is_authenticarted and not req.closed %}
@@ -264,8 +272,22 @@
                 </form>
             </div>
         </div>
+
     </main>
 
+    <script>
+        options = {
+            emoji: 'U+2B50',
+            count: 5,
+            fontSize: 16,
+            inputName: 'rating',
+            value: {{req.user.userprofile.mean_grade}},
+            onUpdate: function () {
+            }
+        }
+
+        $('#rating').emojiRating(options);
+    </script>
     <!--&lt;!&ndash; Theme CSS &ndash;&gt;-->
     <!--<link href="{% static 'css/offer_creation.css' %}" rel="stylesheet">-->
 
