@@ -105,7 +105,7 @@ def create_feedback(request, user_id, request_id):
             except:
                 pass
 
-            request.user.userprofile.recalculate_mean_grade()
+            userTo.userprofile.recalculate_mean_grade()
             return redirect('/user/{}/feedback/{}'.format(feedback.userTo.id, feedback.id))
 
     elif request.method == "GET":
