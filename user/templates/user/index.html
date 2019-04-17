@@ -192,10 +192,12 @@
                             <strong class="text-gray-dark"><a
                                     href="/requests/{{ request.id }}"> {{ request.title }} </a> {{ request.request_description }}
                             </strong>
+                            {% if user.id == request.user.id %}
                             <div style="float: right">
                                 <a class="btn-r" href="requests/{{ request.id }}/close">
                                     <button class="btn btn-outline-danger btn-sm" type="submit">Close request</button>
                                 </a></div>
+                            {% endif %}
                         </div>
                         {% with respond_requests=request|get_respond %}
                             {% for respond in respond_requests %}
