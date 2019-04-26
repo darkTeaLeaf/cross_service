@@ -253,9 +253,9 @@
                 </div>
 
                 <form>
-                    {% if user.id != offer.user.id %}
+                    {% if user.id != offer.user.id and not offer.closed %}
                     <div class="action">
-                        <button formaction="#">Request</button>
+                        <button formaction="/offers/{{ offer.id }}/respond_offer/">Request</button>
                     </div>
                     {% endif %}
                 </form>

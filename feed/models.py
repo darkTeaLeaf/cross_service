@@ -13,6 +13,7 @@ class Offer(models.Model):
     offer_description = models.TextField(null=True)
     image = models.ImageField(blank=True, null=True)
     published_date = models.DateTimeField(default=timezone.now)
+    closed = models.BooleanField(default=False)
 
     def publish(self):
         self.save()

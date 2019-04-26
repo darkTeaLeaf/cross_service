@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect, render_to_response
 from django.http import Http404
 
-from feed.models import RespondRequest, Request
+from feed.models import RespondRequest, Request, RespondOffer
 from .forms import *
 from .models import *
 from django.db.models import Q
@@ -150,9 +150,9 @@ def user_info(request, id=0):
 
     feedbacks = Feedback.objects.filter(userTo=user).order_by('-published_date')
     requests = user.request_set.order_by('-published_date')
-    requests = requests.filter(visible=True, closed=False)
+    requests = requests.filter(closed=False, performer=None)
     accepted_requests = user.request_set.order_by('-published_date')
-    accepted_requests = accepted_requests.filter(visible=False, closed=False)
+    accepted_requests = accepted_requests.filter(visible=False, closed=False, performer__isnull=False, performer__gt=0)
     requests_to_do = Request.objects.filter(performer=user, closed=False)
     closed_requests = user.request_set.filter(closed=True)
     offers = user.offer_set.order_by('-published_date')
@@ -181,6 +181,18 @@ def accept_request_performer(request, id):
     object_request.save()
     return redirect('/user/{}'.format(request.user.id))
 
+def process_offer_respond(request, id, action):
+    respond = RespondOffer.objects.get(id=id)
+    if request.user == respond.offer.user:
+        if action  == "accept":
+            respond.request_as_response.performer = request.user
+        elif action == "decline":
+            respond.request_as_response.closed = True
+        
+        respond.request_as_response.save()
+        respond.delete()
+            
+    return redirect('/user/{}'.format(request.user.id))
 
 def close_request(request, id):
     object_request = Request.objects.get(id=id)

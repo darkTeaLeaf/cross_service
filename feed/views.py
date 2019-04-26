@@ -131,8 +131,7 @@ def get_request_creation(request):
         return redirect('/requests/{}'.format(object_request.id))
 
     elif request.method == "GET":
-        # form = RequestForm()
-        # return render(request, 'feed/request_creation.html', {'form': form})
+
         return render(request, 'feed/request_creation.html')
 
 
@@ -190,10 +189,11 @@ def create_respond_offer(request, id):
     if request.method == "POST":
         respond_offer = RespondOffer()
         respond_offer.offer = Offer.objects.get(id=id)
-        respond_offer.request = request_creation(request, user, False)
+        respond_offer.request_as_response = request_creation(request, user, False)
         
-        return redirect('/requests/{}'.format(respond_offer.request.id))
+        respond_offer.save()
 
+        return redirect('/requests/{}'.format(respond_offer.request_as_response.id))
 
     elif request.method == "GET":
         return render(request, 'feed/request_creation.html')
