@@ -57,5 +57,5 @@ class RespondRequest(models.Model):
         return self.message
 
 class RespondOffer(models.Model): 
-    offer = models.ForeignKey(Offer, on_delete=models.CASCADE)
-    request_as_response = models.ForeignKey(Request, on_delete=models.CASCADE)
+    offer = models.ForeignKey(Offer, on_delete=models.PROTECT)
+    request_as_response = models.ForeignKey(Request, on_delete=models.PROTECT)

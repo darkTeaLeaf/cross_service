@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect, render_to_response
 from django.http import Http404
 
-from feed.models import RespondRequest, Request, RespondOffer
+from feed.models import RespondRequest, Request, RespondOffer, Offer
 from .forms import *
 from .models import *
 from django.db.models import Q
@@ -156,12 +156,15 @@ def user_info(request, id=0):
     requests_to_do = Request.objects.filter(performer=user, closed=False)
     closed_requests = user.request_set.filter(closed=True)
     offers = user.offer_set.order_by('-published_date')
+    opened_offers = offers.filter(closed=False)
+    closed_offers = offers.filter(closed=True)
 
     return render(request, 'user/index.html', {'client': user, 'me': user.id == request.user.id,
                                                'feedbacks': feedbacks,
                                                'accepted_requests': accepted_requests, 'requests_to_do': requests_to_do,
                                                'closed_requests': closed_requests,
-                                               'requests': requests, 'offers': offers})
+                                               'requests': requests, 
+                                               'opened_offers': opened_offers, 'closed_offers': closed_offers})
 
 
 def logout_view(request):
@@ -179,7 +182,7 @@ def accept_request_performer(request, id):
     responds.delete()
 
     object_request.save()
-    return redirect('/user/{}'.format(request.user.id))
+    return redirect('/user')
 
 def process_offer_respond(request, id, action):
     respond = RespondOffer.objects.get(id=id)
@@ -192,14 +195,59 @@ def process_offer_respond(request, id, action):
         respond.request_as_response.save()
         respond.delete()
             
-    return redirect('/user/{}'.format(request.user.id))
+    return redirect('/user')
+
+def close_offer(request, id):
+    object_offer = Offer.objects.get(id=id)
+    if request.user == object_offer.user:
+
+        object_offer.closed = True
+
+        object_offer.save()
+
+        responds = RespondOffer.objects.filter(offer=id)
+        for respond in responds:
+            respond.request_as_response.closed = True
+            respond.save()
+        
+        responds.delete()
+
+    return redirect('/user')
 
 def close_request(request, id):
     object_request = Request.objects.get(id=id)
-    object_request.closed = True
 
-    responds = RespondRequest.objects.filter(request_id=id)
-    responds.delete()
+    if request.user == object_request.user:
 
-    object_request.save()
-    return redirect('/user/{}'.format(request.user.id))
+        object_request.closed = True
+
+        responds = RespondRequest.objects.filter(request_id=id)
+        responds.delete()
+
+        object_request.save()
+
+    return redirect('/user')
+
+def reopen_request(request, id):
+    object_request = Request.objects.get(id=id)
+
+    if request.user == object_request.user:
+        if object_request.performer != None:
+            object_request.pk = None #this way we can create a new copy of this object
+            object_request.performer = None
+
+        object_request.closed = False
+        object_request.save()
+
+    return redirect('/user')
+
+    
+def reopen_offer(request, id):
+    object_offer = Offer.objects.get(id=id)
+    if request.user == object_offer.user:
+
+        object_offer.closed = False
+
+        object_offer.save()
+
+    return redirect('/user')
