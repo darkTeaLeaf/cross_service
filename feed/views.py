@@ -197,4 +197,11 @@ def create_respond_offer(request, id):
 
     elif request.method == "GET":
         return render(request, 'feed/request_creation.html')
-        
+
+
+def handler404(request, *args, **kwargs):
+    pass
+
+
+def handler500(request, *args, **kwargs):
+    pass

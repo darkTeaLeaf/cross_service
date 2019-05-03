@@ -187,6 +187,7 @@ def accept_request_performer(request, id):
     object_request.save()
     return redirect('/user')
 
+
 def process_offer_respond(request, id, action):
     respond = RespondOffer.objects.get(id=id)
     if request.user == respond.offer.user:
@@ -199,6 +200,7 @@ def process_offer_respond(request, id, action):
         respond.delete()
             
     return redirect('/user')
+
 
 def close_offer(request, id):
     object_offer = Offer.objects.get(id=id)
@@ -217,6 +219,7 @@ def close_offer(request, id):
 
     return redirect('/user')
 
+
 @permissions.required('authenticated')
 def close_request(request, id):
     object_request = Request.objects.get(id=id)
@@ -231,6 +234,7 @@ def close_request(request, id):
         object_request.save()
 
     return redirect('/user')
+
 
 def reopen_request(request, id):
     object_request = Request.objects.get(id=id)
@@ -255,3 +259,4 @@ def reopen_offer(request, id):
         object_offer.save()
 
     return redirect('/user')
+
