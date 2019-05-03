@@ -25,7 +25,6 @@ class TestOffer(TestCase):
         o.title = "Dummy title"
         o.user = User.objects.get(username=p.username)
         o.save()
-        # print("Offers ", Offer.objects.values())
         self.assertEqual(len(Offer.objects.values()), 1)
 
     def test_feed(self):

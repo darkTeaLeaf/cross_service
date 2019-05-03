@@ -23,8 +23,10 @@ class CreateUserView(View):
         return render(request, self.template_name, {})
 
     def post(self, request):
-        print(request.POST)
-        print(request.POST.get('username'))
+        
+        if User.objects.filter(username=request.POST.get('username')).exists():
+            messages.error(request, 'This username is already taken')
+            return redirect('/user/signup/')
 
         user = User.objects.create_user(username=request.POST.get('username'),
                                         email=request.POST.get('email'))

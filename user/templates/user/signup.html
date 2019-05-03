@@ -40,6 +40,16 @@
 
     <br>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+
+    {% if messages %}
+        <br>
+        <div class="messages">
+            {% for message in messages %}
+            <h4{% if message.tags %} class="{{ message.tags }} text-center" {% endif %} style="color:#dc3545">{{ message }}</h4>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <p class="mt-5 mb-3 text-muted text-center">&copy; 2019</p>
 
     {% csrf_token %}
