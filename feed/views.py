@@ -61,7 +61,7 @@ def get_offer_creation(request):
         offer.deadline = request.POST.get('deadline')
         offer.offer_description = request.POST.get('offer_description')
 
-        image = request.FILES.get('image', False)
+        image = request.FILES.get('image', 'default.png')
         offer.image = image
 
         offer.user = User.objects.get(username=user.username)
@@ -80,10 +80,11 @@ class OfferView(DetailView):
 
 @permissions.required('authenticated')
 def edit_offer(request, id):
-
     offer = Offer.objects.get(id=id)
+
     if not request.user.is_superuser and not request.user.id == offer.user.id:
         redirect('/')
+
     if request.method == "POST":
 
         offer.title = request.POST.get('title')
@@ -102,6 +103,7 @@ def edit_offer(request, id):
     elif request.method == "GET":
         return render(request, 'feed/offer_edit.html', {'offer': offer})
 
+
 def request_creation(request, user, visible):
     object_request = Request()
     object_request.visible = visible
@@ -113,13 +115,14 @@ def request_creation(request, user, visible):
     object_request.deadline = request.POST.get('deadline')
     object_request.request_description = request.POST.get('request_description')
 
-    image = request.FILES.get('image', False)
+    image = request.FILES.get('image', 'default.png')
     object_request.image = image
 
     object_request.user = User.objects.get(username=user.username)
     object_request.save()
     
     return object_request
+
 
 @permissions.required('authenticated')
 def get_request_creation(request):
@@ -143,6 +146,11 @@ class RequestView(DetailView):
 
 @permissions.required('authenticated')
 def edit_request(request, id):
+    object_request = Request.objects.get(id=id)
+
+    if not request.user.is_superuser and not request.user.id == object_request.user.id:
+        redirect('/')
+
     if request.method == "POST":
 
         object_request = Request.objects.get(id=id)
@@ -167,10 +175,14 @@ def edit_request(request, id):
 @permissions.required('authenticated')
 def create_respond_request(request, id):
     user = request.user
+    request = Request.objects.get(id=id)
+
+    if not user.id == request.user.id:
+        redirect('/')
 
     if request.method == "POST":
         respond_request = RespondRequest()
-        respond_request.request_id = Request.objects.get(id=id)
+        respond_request.request_id = request
         respond_request.user = User.objects.get(username=user.username)
         respond_request.message = request.POST.get('message')
 
@@ -185,10 +197,14 @@ def create_respond_request(request, id):
 @permissions.required('authenticated')
 def create_respond_offer(request, id):
     user = request.user
+    offer = Offer.objects.get(id=id)
+
+    if not user.id == offer.user.id:
+        redirect('/')
 
     if request.method == "POST":
         respond_offer = RespondOffer()
-        respond_offer.offer = Offer.objects.get(id=id)
+        respond_offer.offer = offer
         respond_offer.request_as_response = request_creation(request, user, False)
         
         respond_offer.save()
@@ -197,4 +213,3 @@ def create_respond_offer(request, id):
 
     elif request.method == "GET":
         return render(request, 'feed/request_creation.html')
-        
