@@ -61,7 +61,7 @@ def get_offer_creation(request):
         offer.deadline = request.POST.get('deadline')
         offer.offer_description = request.POST.get('offer_description')
 
-        image = request.FILES.get('image', 'default.png')
+        image = request.FILES.get('image', False)
         offer.image = image
 
         offer.user = User.objects.get(username=user.username)
@@ -69,8 +69,7 @@ def get_offer_creation(request):
         return redirect('/offers/{}'.format(offer.id))
 
     elif request.method == "GET":
-        form = OfferForm()
-        return render(request, 'feed/offer_creation.html', {'form': form})
+        return render(request, 'feed/offer_creation.html')
 
 
 class OfferView(DetailView):
@@ -213,3 +212,11 @@ def create_respond_offer(request, id):
 
     elif request.method == "GET":
         return render(request, 'feed/request_creation.html')
+
+
+def handler404(request, *args, **kwargs):
+    pass
+
+
+def handler500(request, *args, **kwargs):
+    pass
