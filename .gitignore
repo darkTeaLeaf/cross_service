@@ -18,7 +18,8 @@ venv/
 *.db
 *.sqlite
 *.sqlite3
-media/
+media/*
+!media/default.png
 
 # Secret(s)
 *secret*
