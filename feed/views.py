@@ -33,7 +33,9 @@ class IndexView(ListView):
         else:
             result = self.model.objects.order_by('title')
         if self.model == Request:
-            result = result.filter(visible=True)
+            result = result.filter(visible=True, closed=False)
+        if self.model == Offer:
+            result = result.filter(closed=False)
         return result
 
     def get_context_data(self, *, object_list=None, **kwargs):
