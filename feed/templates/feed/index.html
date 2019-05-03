@@ -4,6 +4,7 @@
 {% block body %}
 
     <style>
+
         /* The switch - the box around the slider */
         .switch {
             position: relative;
@@ -99,7 +100,8 @@
                     requests{% elif offers or request.path == "/" %}Feed with offers{% endif %}</h1>
 
                 <form method="get" action="/users">
-                    <img class="mb-4" src="{% static 'default.png' %}" alt="" width="72" height="72">
+
+                    <img class="mb-4" src="/static/default.png" alt="" width="72" height="72">
 
                     <label class="switch">
                         <input type="checkbox" {% if requests or request.path == "/requests/" %}checked{% endif %}
@@ -112,6 +114,7 @@
                                }>
                         <span class="slider round"></span>
                     </label>
+
                     <img class="mb-4" src="{% static 'default_reverse.png' %}" alt="" width="72" height="72">
 
 
