@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
-from feed.forms import OfferForm, RequestForm
 from feed.models import Offer, Request, RespondRequest, RespondOffer
 from . import permissions
 
@@ -69,8 +68,7 @@ def get_offer_creation(request):
         return redirect('/offers/{}'.format(offer.id))
 
     elif request.method == "GET":
-        form = OfferForm()
-        return render(request, 'feed/offer_creation.html', {'form': form})
+        return render(request, 'feed/offer_creation.html')
 
 
 class OfferView(DetailView):
