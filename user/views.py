@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect, render_to_response
 from django.http import Http404
 
 from feed.models import RespondRequest, Request, RespondOffer, Offer
-from .forms import *
 from .models import *
 from django.db.models import Q
 from django.views.generic import View, ListView
@@ -59,15 +58,19 @@ class EditUserView(View):
 
         return redirect('/user/')
 
+class CreateFeedbackView(View):
+    @permissions.required('authenticated')
+    def get(self, request, user_id):
+        target = User.objects.get(id=user_id)
+        return render(request, 'user/feedback_creation.html', {'target': target})
 
-@permissions.required('authenticated')
-def create_feedback(request, user_id, request_id):
-    if request.method == "POST":
+    def post(self, request, user_id, request_id):
+
         request_adv = Request.objects.get(id=request_id)
 
-        userTo = User.objects.get(id=user_id)
+        user_to = User.objects.get(id=user_id)
         
-        for_requester = (userTo == request_adv.user) 
+        for_requester = (user_to == request_adv.user) 
 
         try:
             Feedback.objects.get(userFrom=request.user, request=request_adv)
@@ -77,11 +80,11 @@ def create_feedback(request, user_id, request_id):
         except: 
         
             if not for_requester:
-                if userTo != request_adv.performer: 
+                if user_to != request_adv.performer: 
                     messages.error(request, 'This user is not a requester/performer\n You cannot leave feedback for this deal')
                     return redirect('/user/'+str(user_id)+'/feedback/request_'+str(request_id))
 
-            if request.user == userTo:
+            if request.user == user_to:
                 messages.error(request, 'You cannot leave feedback for yourself')
                 return redirect('/user/'+str(user_id)+'/feedback/request_'+str(request_id))
 
@@ -100,25 +103,20 @@ def create_feedback(request, user_id, request_id):
 
             try:
                 Feedback.objects.get(userFrom=request.user, request=request_adv)
-                Feedback.objects.get(userFrom=userTo, request=request_adv)
+                Feedback.objects.get(userFrom=user_to, request=request_adv)
                 request_adv.closed = True
                 request_adv.save()
             except:
                 pass
 
-            userTo.userprofile.recalculate_mean_grade()
+            user_to.userprofile.recalculate_mean_grade()
             return redirect('/user/{}/feedback/{}'.format(feedback.userTo.id, feedback.id))
-
-    elif request.method == "GET":
-        target = User.objects.get(id=user_id)
-        return render(request, 'user/feedback_creation.html', {'target': target})
 
 
 def get_feedback(request, user_id, feedback_id):
     feedback = Feedback.objects.get(id=feedback_id)
     author = feedback.userFrom
     target = User.objects.get(id=user_id)
-    # TODO what if there is no such feedback ??
     return render(request, 'user/feedback_view.html', {'author': author, 'feedback': feedback, 'target': target})
 
 
@@ -146,9 +144,11 @@ def get_all_feedbacks(request, user_id=0):
 def user_info(request, id=0):
     if id == 0:  # my page
         user = request.user
-    else:  # page of another user
+    elif int(id) == request.user.id:
+        return redirect('/user/')
+    else: # page of another user
         user = User.objects.get(id=id)
-
+        
     feedbacks = Feedback.objects.filter(userTo=user).order_by('-published_date')
     requests = user.request_set.order_by('-published_date')
     requests = requests.filter(closed=False, performer=None)
