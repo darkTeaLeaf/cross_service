@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, render_to_response
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
-from feed.forms import OfferForm, RequestForm
+# from feed.forms import OfferForm, RequestForm
 from feed.models import Offer, Request, RespondRequest, RespondOffer
 from . import permissions
 
@@ -220,5 +220,7 @@ def handler404(request, *args, **kwargs):
     return response
 
 
-# def handler500(request, *args, **kwargs):
-#     pass
+def handler500(request, *args, **kwargs):
+    response = render(request, 'feed/500.html')
+    response.status_code = 500
+    return response
