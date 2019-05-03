@@ -11,6 +11,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth import logout
 from django.contrib import messages
 from re import match
+from feed import permissions
 
 
 class CreateUserView(View):
@@ -38,6 +39,7 @@ class CreateUserView(View):
 
 class EditUserView(View):
 
+    @permissions.required('authenticated')
     def get(self, request):
         return render(request, 'user/edit.html', {})
 
@@ -53,13 +55,12 @@ class EditUserView(View):
         if oldpsw and check_password(oldpsw, user.password):
             user.set_password(request.POST.get('newpsw'))
             login(request, user)
-        # TODO else НУЖНО КАК-ТО ЧТО-ТО ВЫВЕСТИ. Мол неправильный пароль
-        # Да и на успех лучше не редиректить сразу, а выдать что-то вроде "УСПЕХ, УМНИЦА"
         user.save()
 
         return redirect('/user/')
 
 
+@permissions.required('authenticated')
 def create_feedback(request, user_id, request_id):
     if request.method == "POST":
         request_adv = Request.objects.get(id=request_id)
@@ -164,11 +165,13 @@ def user_info(request, id=0):
                                                'requests': requests, 'offers': offers})
 
 
+@permissions.required('authenticated')
 def logout_view(request):
     logout(request)
     return redirect('/user/signin')
 
 
+@permissions.required('authenticated')
 def accept_request_performer(request, id):
     respond = RespondRequest.objects.get(id=id)
     object_request = Request.objects.get(id=respond.request_id.id)
@@ -182,6 +185,7 @@ def accept_request_performer(request, id):
     return redirect('/user/{}'.format(request.user.id))
 
 
+@permissions.required('authenticated')
 def close_request(request, id):
     object_request = Request.objects.get(id=id)
     object_request.closed = True
