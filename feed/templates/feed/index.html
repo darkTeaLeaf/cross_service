@@ -101,7 +101,7 @@
 
                 <form method="get" action="/users">
 
-                    <img class="mb-4" src="{% static 'default.png' %}" alt="" width="72" height="72">
+                    <img class="mb-4" src="/static/default.png" alt="" width="72" height="72">
 
                     <label class="switch">
                         <input type="checkbox" {% if requests or request.path == "/requests/" %}checked{% endif %}
