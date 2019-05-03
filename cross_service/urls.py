@@ -22,6 +22,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+handler404 = 'feed.views.handler404'
+handler500 = 'feed.views.handler500'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include("user.urls")),

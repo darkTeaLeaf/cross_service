@@ -10,6 +10,7 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth import logout
 from django.contrib import messages
 from re import match
+from feed import permissions
 
 
 class CreateUserView(View):
@@ -37,6 +38,7 @@ class CreateUserView(View):
 
 class EditUserView(View):
 
+    @permissions.required('authenticated')
     def get(self, request):
         return render(request, 'user/edit.html', {})
 
@@ -57,11 +59,13 @@ class EditUserView(View):
         return redirect('/user/')
 
 class CreateFeedbackView(View):
+    @permissions.required('authenticated')
     def get(self, request, user_id):
         target = User.objects.get(id=user_id)
         return render(request, 'user/feedback_creation.html', {'target': target})
 
     def post(self, request, user_id, request_id):
+
         request_adv = Request.objects.get(id=request_id)
 
         user_to = User.objects.get(id=user_id)
@@ -164,11 +168,13 @@ def user_info(request, id=0):
                                                'opened_offers': opened_offers, 'closed_offers': closed_offers})
 
 
+@permissions.required('authenticated')
 def logout_view(request):
     logout(request)
     return redirect('/user/signin')
 
 
+@permissions.required('authenticated')
 def accept_request_performer(request, id):
     respond = RespondRequest.objects.get(id=id)
     object_request = Request.objects.get(id=respond.request_id.id)
@@ -180,6 +186,7 @@ def accept_request_performer(request, id):
 
     object_request.save()
     return redirect('/user')
+
 
 def process_offer_respond(request, id, action):
     respond = RespondOffer.objects.get(id=id)
@@ -193,6 +200,7 @@ def process_offer_respond(request, id, action):
         respond.delete()
             
     return redirect('/user')
+
 
 def close_offer(request, id):
     object_offer = Offer.objects.get(id=id)
@@ -211,6 +219,8 @@ def close_offer(request, id):
 
     return redirect('/user')
 
+
+@permissions.required('authenticated')
 def close_request(request, id):
     object_request = Request.objects.get(id=id)
 
@@ -224,6 +234,7 @@ def close_request(request, id):
         object_request.save()
 
     return redirect('/user')
+
 
 def reopen_request(request, id):
     object_request = Request.objects.get(id=id)
@@ -248,3 +259,4 @@ def reopen_offer(request, id):
         object_offer.save()
 
     return redirect('/user')
+
