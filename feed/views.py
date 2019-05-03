@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, render_to_response
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
 from feed.forms import OfferForm, RequestForm
-from feed.models import Offer, Request, RespondRequest
+from feed.models import Offer, Request, RespondRequest, RespondOffer
 from . import permissions
 
 
@@ -102,32 +102,37 @@ def edit_offer(request, id):
     elif request.method == "GET":
         return render(request, 'feed/offer_edit.html', {'offer': offer})
 
+def request_creation(request, user, visible):
+    object_request = Request()
+    object_request.visible = visible
+    object_request.closed = False
+    object_request.title = request.POST.get('title')
+    object_request.service_type = request.POST.get('service_type')
+    object_request.price = request.POST.get('price')
+    object_request.start_date = request.POST.get('start_date')
+    object_request.deadline = request.POST.get('deadline')
+    object_request.request_description = request.POST.get('request_description')
+
+    image = request.FILES.get('image', False)
+    object_request.image = image
+
+    object_request.user = User.objects.get(username=user.username)
+    object_request.save()
+    
+    return object_request
 
 @permissions.required('authenticated')
 def get_request_creation(request):
     user = request.user
 
     if request.method == "POST":
-        object_request = Request()
-        object_request.visible = True
-        object_request.closed = False
-        object_request.title = request.POST.get('title')
-        object_request.service_type = request.POST.get('service_type')
-        object_request.price = request.POST.get('price')
-        object_request.start_date = request.POST.get('start_date')
-        object_request.deadline = request.POST.get('deadline')
-        object_request.request_description = request.POST.get('request_description')
-
-        image = request.FILES.get('image', False)
-        object_request.image = image
-
-        object_request.user = User.objects.get(username=user.username)
-        object_request.save()
+        object_request = request_creation(request, user, True)
+        
         return redirect('/requests/{}'.format(object_request.id))
 
     elif request.method == "GET":
-        form = RequestForm()
-        return render(request, 'feed/request_creation.html', {'form': form})
+
+        return render(request, 'feed/request_creation.html')
 
 
 class RequestView(DetailView):
@@ -173,6 +178,23 @@ def create_respond_request(request, id):
         return render_to_response('feed/success_page.html')
 
     elif request.method == "GET":
-        form = Request()
-        return render(request, 'feed/respond_request.html', {'form': form})
 
+        return render(request, 'feed/respond_request.html')
+
+
+@permissions.required('authenticated')
+def create_respond_offer(request, id):
+    user = request.user
+
+    if request.method == "POST":
+        respond_offer = RespondOffer()
+        respond_offer.offer = Offer.objects.get(id=id)
+        respond_offer.request_as_response = request_creation(request, user, False)
+        
+        respond_offer.save()
+
+        return redirect('/requests/{}'.format(respond_offer.request_as_response.id))
+
+    elif request.method == "GET":
+        return render(request, 'feed/request_creation.html')
+        

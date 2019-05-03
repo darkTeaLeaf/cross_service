@@ -66,6 +66,16 @@
         .slider.round:before {
             border-radius: 50%;
         }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .active:not(:last-child) {
+            margin-right: 10px;
+        }
     </style>
     <script>
         function to_requests() {

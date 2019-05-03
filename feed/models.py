@@ -13,6 +13,7 @@ class Offer(models.Model):
     offer_description = models.TextField(null=True)
     image = models.ImageField(blank=True, null=True)
     published_date = models.DateTimeField(default=timezone.now)
+    closed = models.BooleanField(default=False)
 
     def publish(self):
         self.save()
@@ -54,3 +55,7 @@ class RespondRequest(models.Model):
 
     def __str__(self):
         return self.message
+
+class RespondOffer(models.Model): 
+    offer = models.ForeignKey(Offer, on_delete=models.PROTECT)
+    request_as_response = models.ForeignKey(Request, on_delete=models.PROTECT)
